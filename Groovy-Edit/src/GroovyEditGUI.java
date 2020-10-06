@@ -1,9 +1,16 @@
+
+import java.awt.event.ActionEvent;
+import java.io.File;
+import java.io.FileWriter;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileFilter;
+import jdk.jfr.events.FileReadEvent;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author Sarmad Barya
@@ -14,6 +21,8 @@ public class GroovyEditGUI extends javax.swing.JFrame {
      * Creates new form GroovyEditGUI
      */
     public GroovyEditGUI() {
+        this.currentFilePath = ""; // Initializes the string
+        this.currentFileExt = "";
         initComponents();
     }
 
@@ -26,6 +35,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jCheckBoxMenuItem1 = new javax.swing.JCheckBoxMenuItem();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextPane1 = new javax.swing.JTextPane();
         jToolBar1 = new javax.swing.JToolBar();
@@ -37,10 +47,14 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenuItem5 = new javax.swing.JMenuItem();
         jMenuItem6 = new javax.swing.JMenuItem();
+        jMenuItem7 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
+
+        jCheckBoxMenuItem1.setSelected(true);
+        jCheckBoxMenuItem1.setText("jCheckBoxMenuItem1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -87,7 +101,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
 
         jMenu1.setText("File");
 
-        jMenuItem4.setText("jMenuItem4");
+        jMenuItem4.setText("New");
         jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem4ActionPerformed(evt);
@@ -95,7 +109,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         });
         jMenu1.add(jMenuItem4);
 
-        jMenuItem5.setText("jMenuItem5");
+        jMenuItem5.setText("Open");
         jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem5ActionPerformed(evt);
@@ -103,13 +117,21 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         });
         jMenu1.add(jMenuItem5);
 
-        jMenuItem6.setText("jMenuItem6");
+        jMenuItem6.setText("Open Previous");
         jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem6ActionPerformed(evt);
             }
         });
         jMenu1.add(jMenuItem6);
+
+        jMenuItem7.setText("Save");
+        jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem7ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem7);
 
         jMenuBar1.add(jMenu1);
 
@@ -177,11 +199,32 @@ public class GroovyEditGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-        // TODO add your handling code here:
+        // NEW FUNCTION IN FILE MENU
+        // TODO: Check if file is open and unsaved before wiping
+        // TODO: Set jTextPanel text to empty string
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
-        // TODO add your handling code here:
+        // OPEN FUNCTION IN FILE MENU
+        final JFileChooser fc = new JFileChooser();
+
+        //Handle open button action.
+        int returnVal = fc.showOpenDialog(GroovyEditGUI.this);
+
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            // retrieve the file from the file selector screen
+            File file = fc.getSelectedFile();
+            currentFilePath = file.getAbsolutePath();
+            FileHandler currFile = new FileHandler(currentFilePath);
+            System.out.println("path: " + currentFilePath);
+            if (currFile.getFileExt().contains(".")) {
+                // Has a file extension
+                currentFileExt = currFile.getFileExt();
+            }
+            jTextPane1.setText(currFile.arraylistToString());
+        } else {
+            System.out.println("Open command cancelled by user." + "\n");
+        }
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
@@ -199,6 +242,46 @@ public class GroovyEditGUI extends javax.swing.JFrame {
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
+        // SAVE FUNCTION IN FILE MENU
+        System.out.println(currentFilePath);
+        if (!currentFilePath.equals("")) {
+            // There is a current file open
+            FileHandler saveThis = new FileHandler(currentFilePath);
+            System.out.println(jTextPane1.getText());
+            saveThis.writeFile(jTextPane1.getText());
+        } else {
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.addChoosableFileFilter(new TXTSaveFilter());
+            fileChooser.setDialogTitle("Specify a file to save");
+
+            int userSelection = fileChooser.showSaveDialog(GroovyEditGUI.this);
+
+            if (userSelection == JFileChooser.APPROVE_OPTION) {
+
+                String extension = fileChooser.getFileFilter().getDescription();
+
+                if (extension.equals("*.txt,*.TXT")) {
+                    currentFileExt = ".txt";
+                } else {
+                    currentFileExt = ".txt";
+                }
+
+                File fileToSave = fileChooser.getSelectedFile();
+                
+                System.out.println("Save as file: " + fileToSave.getAbsolutePath());
+                try {
+                    File newFile = new File(fileToSave.getAbsolutePath() + currentFileExt);
+                    FileWriter myWriter = new FileWriter(newFile);
+                } catch (Exception e) {
+                    System.out.println("File save error: " + e.getMessage());
+                }
+
+            }
+        }
+
+    }//GEN-LAST:event_jMenuItem7ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -234,11 +317,16 @@ public class GroovyEditGUI extends javax.swing.JFrame {
             }
         });
     }
+    // Custom Variables
+    // End of Custom Variables
+    private String currentFilePath;
+    private String currentFileExt;
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
@@ -248,6 +336,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
+    private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextPane jTextPane1;
     private javax.swing.JToolBar jToolBar1;
