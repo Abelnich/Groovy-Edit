@@ -10,25 +10,18 @@ import java.util.Scanner;
  */
 public class FileHandler {
     
-    private String fileName;
-    private String fileExtension = "";
     private File myFile;
     private Scanner fileIn;
     
+    private String fileName;
+    private String fileExtension = "";
+    private ArrayList<String> fileContents;
+    
     public FileHandler(String fileName) {
         this.fileName = fileName;
+        myFile = new File(fileName);
+        fileContents = new ArrayList();
 
-        try {
-            // Creates an File object 
-            myFile = new File(fileName);
-            if (myFile.createNewFile()) {
-                // if the file did not exist before
-                System.out.println("File created: " + myFile.getName());
-            }
-        } catch (Exception e) {
-            System.out.println("An error occurred: " + e.getMessage());
-        }
-        
         boolean extension = false;
         for (char ch: fileName.toCharArray()) {
             // look for the file extension
@@ -36,18 +29,19 @@ public class FileHandler {
                 extension = true;
                 fileExtension += ch;
             }
-        }
+        } // end for each
+        
+        readFile();
         
     }
 
-    public ArrayList<String> readFile() {
-        ArrayList<String> contents = new ArrayList();
+    public void readFile() {
 
         try {
             fileIn = new Scanner(myFile);
         } catch (Exception e) {
             // Will print any exception to the console
-            System.out.println(e.getMessage());
+            System.out.println("ReadFile() error: " + e.getMessage());
         }
 
         String line;
@@ -55,13 +49,11 @@ public class FileHandler {
         while (fileIn.hasNext()) {
             // Iterates through the file line by line. Adds each whole line to the array.
             line = fileIn.nextLine();
-            contents.add(line);
+            fileContents.add(line);
         }
 
         // Close file to avoid potential corruption.
         fileIn.close();
-
-        return contents;
     }
 
     public void writeFile(ArrayList<String> writeMe) {
@@ -80,8 +72,28 @@ public class FileHandler {
         
     }
     
+        public void writeFile(String writeMe) {
+
+        // Same as above but with a string parameter
+
+        try {
+            FileWriter myWriter = new FileWriter(this.fileName);
+            myWriter.write(writeMe);
+            myWriter.close();
+            System.out.println("Successfully wrote to the file.");
+        } catch (Exception e) {
+            System.out.println("An error occurred: " + e.getMessage());
+        }
+        
+    }
+    
     public String getFileExt() {
         return fileExtension;
+    }
+    
+    public String arraylistToString() {
+        String arrayToString = String.join("\n", fileContents);
+        return arrayToString;
     }
     
 }
