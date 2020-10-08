@@ -3,6 +3,7 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileWriter;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 import jdk.jfr.events.FileReadEvent;
 
@@ -20,10 +21,22 @@ public class GroovyEditGUI extends javax.swing.JFrame {
     /**
      * Creates new form GroovyEditGUI
      */
-    boldItalic b = new boldItalic();
+    
+// Custom Variables
+    private boldItalic b;
+    private boolean unsaved;
+    private String currentFileExt;
+    private String currentFilePath;
+// End of Custom Variables
+    
     public GroovyEditGUI() {
-        this.currentFilePath = ""; // Initializes the string
+        // Constructor
+        b = new boldItalic();
+
         this.currentFileExt = "";
+        this.currentFilePath = "";
+        this.unsaved = false;
+
         initComponents();
     }
 
@@ -40,15 +53,15 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextPane1 = new javax.swing.JTextPane();
         jToolBar1 = new javax.swing.JToolBar();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnBold = new javax.swing.JButton();
+        btnItalic = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        jMenuItem4 = new javax.swing.JMenuItem();
-        jMenuItem5 = new javax.swing.JMenuItem();
-        jMenuItem6 = new javax.swing.JMenuItem();
-        jMenuItem7 = new javax.swing.JMenuItem();
+        menuItem_New = new javax.swing.JMenuItem();
+        menuItem_Open = new javax.swing.JMenuItem();
+        menuItem_OpenPrev = new javax.swing.JMenuItem();
+        menuItem_Save = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
@@ -59,6 +72,11 @@ public class GroovyEditGUI extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jTextPane1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextPane1KeyPressed(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTextPane1);
 
         jToolBar1.setRollover(true);
@@ -67,27 +85,27 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         jToolBar1.setMinimumSize(new java.awt.Dimension(440, 40));
         jToolBar1.setPreferredSize(new java.awt.Dimension(430, 40));
 
-        jButton1.setText("Bold");
-        jButton1.setFocusable(false);
-        jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnBold.setText("Bold");
+        btnBold.setFocusable(false);
+        btnBold.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnBold.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnBold.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnBoldActionPerformed(evt);
             }
         });
-        jToolBar1.add(jButton1);
+        jToolBar1.add(btnBold);
 
-        jButton2.setText("Italic");
-        jButton2.setFocusable(false);
-        jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnItalic.setText("Italic");
+        btnItalic.setFocusable(false);
+        btnItalic.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnItalic.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnItalic.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnItalicActionPerformed(evt);
             }
         });
-        jToolBar1.add(jButton2);
+        jToolBar1.add(btnItalic);
 
         jButton3.setText("jButton3");
         jButton3.setFocusable(false);
@@ -102,37 +120,40 @@ public class GroovyEditGUI extends javax.swing.JFrame {
 
         jMenu1.setText("File");
 
-        jMenuItem4.setText("New");
-        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+        menuItem_New.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        menuItem_New.setText("New");
+        menuItem_New.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem4ActionPerformed(evt);
+                menuItem_NewActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem4);
+        jMenu1.add(menuItem_New);
 
-        jMenuItem5.setText("Open");
-        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+        menuItem_Open.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        menuItem_Open.setText("Open");
+        menuItem_Open.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem5ActionPerformed(evt);
+                menuItem_OpenActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem5);
+        jMenu1.add(menuItem_Open);
 
-        jMenuItem6.setText("Open Previous");
-        jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
+        menuItem_OpenPrev.setText("Open Previous");
+        menuItem_OpenPrev.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem6ActionPerformed(evt);
+                menuItem_OpenPrevActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem6);
+        jMenu1.add(menuItem_OpenPrev);
 
-        jMenuItem7.setText("Save");
-        jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
+        menuItem_Save.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        menuItem_Save.setText("Save");
+        menuItem_Save.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem7ActionPerformed(evt);
+                menuItem_SaveActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem7);
+        jMenu1.add(menuItem_Save);
 
         jMenuBar1.add(jMenu1);
 
@@ -187,25 +208,38 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnBoldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBoldActionPerformed
         b.changeStyle(jTextPane1, 1);
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnBoldActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void btnItalicActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnItalicActionPerformed
         b.changeStyle(jTextPane1, 0);
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_btnItalicActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+    private void menuItem_NewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItem_NewActionPerformed
         // NEW FUNCTION IN FILE MENU
         // TODO: Check if file is open and unsaved before wiping
         // TODO: Set jTextPanel text to empty string
-    }//GEN-LAST:event_jMenuItem4ActionPerformed
 
-    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+        if (unsaved) {
+            // Ask user if they want to create new file even though they have unsaved work
+            int dialogResult = JOptionPane.showConfirmDialog(null, "You have unsaved work, are you sure you want to create a new file?", "Warning", DO_NOTHING_ON_CLOSE);
+            if (dialogResult == JOptionPane.YES_OPTION) {
+                jTextPane1.setText("");
+                unsaved = false;
+            }
+        } else {
+            jTextPane1.setText("");
+            unsaved = false;
+        }
+
+    }//GEN-LAST:event_menuItem_NewActionPerformed
+
+    private void menuItem_OpenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItem_OpenActionPerformed
         // OPEN FUNCTION IN FILE MENU
         final JFileChooser fc = new JFileChooser();
 
@@ -226,11 +260,11 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         } else {
             System.out.println("Open command cancelled by user." + "\n");
         }
-    }//GEN-LAST:event_jMenuItem5ActionPerformed
+    }//GEN-LAST:event_menuItem_OpenActionPerformed
 
-    private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
+    private void menuItem_OpenPrevActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItem_OpenPrevActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem6ActionPerformed
+    }//GEN-LAST:event_menuItem_OpenPrevActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         // TODO add your handling code here:
@@ -244,7 +278,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
-    private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
+    private void menuItem_SaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItem_SaveActionPerformed
         // SAVE FUNCTION IN FILE MENU
         System.out.println(currentFilePath);
         if (!currentFilePath.equals("")) {
@@ -270,11 +304,12 @@ public class GroovyEditGUI extends javax.swing.JFrame {
                 }
 
                 File fileToSave = fileChooser.getSelectedFile();
-                
+
                 System.out.println("Save as file: " + fileToSave.getAbsolutePath());
                 try {
                     File newFile = new File(fileToSave.getAbsolutePath() + currentFileExt);
                     FileWriter myWriter = new FileWriter(newFile);
+                    this.unsaved = false;
                 } catch (Exception e) {
                     System.out.println("File save error: " + e.getMessage());
                 }
@@ -282,7 +317,12 @@ public class GroovyEditGUI extends javax.swing.JFrame {
             }
         }
 
-    }//GEN-LAST:event_jMenuItem7ActionPerformed
+    }//GEN-LAST:event_menuItem_SaveActionPerformed
+
+    private void jTextPane1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextPane1KeyPressed
+        // When something is typed, the file gets marked as having unsaved changes
+        this.unsaved = true;
+    }//GEN-LAST:event_jTextPane1KeyPressed
 
     /**
      * @param args the command line arguments
@@ -318,14 +358,10 @@ public class GroovyEditGUI extends javax.swing.JFrame {
             }
         });
     }
-    // Custom Variables
-    // End of Custom Variables
-    private String currentFilePath;
-    private String currentFileExt;
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton btnBold;
+    private javax.swing.JButton btnItalic;
     private javax.swing.JButton jButton3;
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
     private javax.swing.JMenu jMenu1;
@@ -334,12 +370,12 @@ public class GroovyEditGUI extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JMenuItem jMenuItem5;
-    private javax.swing.JMenuItem jMenuItem6;
-    private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextPane jTextPane1;
     private javax.swing.JToolBar jToolBar1;
+    private javax.swing.JMenuItem menuItem_New;
+    private javax.swing.JMenuItem menuItem_Open;
+    private javax.swing.JMenuItem menuItem_OpenPrev;
+    private javax.swing.JMenuItem menuItem_Save;
     // End of variables declaration//GEN-END:variables
 }
