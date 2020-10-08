@@ -20,6 +20,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
     /**
      * Creates new form GroovyEditGUI
      */
+    boldItalic b = new boldItalic();
     public GroovyEditGUI() {
         this.currentFilePath = ""; // Initializes the string
         this.currentFileExt = "";
@@ -66,7 +67,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         jToolBar1.setMinimumSize(new java.awt.Dimension(440, 40));
         jToolBar1.setPreferredSize(new java.awt.Dimension(430, 40));
 
-        jButton1.setText("jButton1");
+        jButton1.setText("Bold");
         jButton1.setFocusable(false);
         jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -77,7 +78,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         });
         jToolBar1.add(jButton1);
 
-        jButton2.setText("jButton2");
+        jButton2.setText("Italic");
         jButton2.setFocusable(false);
         jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButton2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -187,11 +188,11 @@ public class GroovyEditGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        b.changeStyle(jTextPane1, 1);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+        b.changeStyle(jTextPane1, 0);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
