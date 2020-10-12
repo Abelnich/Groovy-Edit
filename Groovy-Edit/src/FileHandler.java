@@ -9,30 +9,30 @@ import java.util.Scanner;
  * @author NickAbel
  */
 public class FileHandler {
-    
+
     private File myFile;
     private Scanner fileIn;
-    
+
     private String fileName;
     private String fileExtension = "";
     private ArrayList<String> fileContents;
-    
+
     public FileHandler(String fileName) {
         this.fileName = fileName;
         myFile = new File(fileName);
         fileContents = new ArrayList();
 
         boolean extension = false;
-        for (char ch: fileName.toCharArray()) {
+        for (char ch : fileName.toCharArray()) {
             // look for the file extension
             if (ch == '.' || extension) {
                 extension = true;
                 fileExtension += ch;
             }
         } // end for each
-        
+
         readFile();
-        
+
     }
 
     public void readFile() {
@@ -41,7 +41,7 @@ public class FileHandler {
             fileIn = new Scanner(myFile);
         } catch (Exception e) {
             // Will print any exception to the console
-            System.out.println("ReadFile() error: " + e.getMessage());
+            System.out.println("readFile() error: " + e.getMessage());
         }
 
         String line;
@@ -69,13 +69,12 @@ public class FileHandler {
         } catch (Exception e) {
             System.out.println("An error occurred: " + e.getMessage());
         }
-        
+
     }
-    
-        public void writeFile(String writeMe) {
+
+    public void writeFile(String writeMe) {
 
         // Same as above but with a string parameter
-
         try {
             FileWriter myWriter = new FileWriter(this.fileName);
             myWriter.write(writeMe);
@@ -84,16 +83,16 @@ public class FileHandler {
         } catch (Exception e) {
             System.out.println("An error occurred: " + e.getMessage());
         }
-        
+
     }
-    
+
     public String getFileExt() {
         return fileExtension;
     }
-    
+
     public String arraylistToString() {
         String arrayToString = String.join("\n", fileContents);
         return arrayToString;
     }
-    
+
 }
