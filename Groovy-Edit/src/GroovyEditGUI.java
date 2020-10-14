@@ -28,14 +28,13 @@ public class GroovyEditGUI extends javax.swing.JFrame {
     /**
      * Creates new form GroovyEditGUI
      */
-    
 // Custom Variables
     private boldItalic b;
     private boolean unsaved;
     private String currentFileExt;
     private String currentFilePath;
 // End of Custom Variables
-    
+
     public GroovyEditGUI() {
         // Constructor
         b = new boldItalic();
@@ -258,13 +257,16 @@ public class GroovyEditGUI extends javax.swing.JFrame {
             // retrieve the file from the file selector screen
             File file = fc.getSelectedFile();
             currentFilePath = file.getAbsolutePath();
-            FileHandler currFile = new FileHandler(currentFilePath);
-            System.out.println("path: " + currentFilePath);
-            if (currFile.getFileExt().contains(".")) {
-                // Has a file extension
-                currentFileExt = currFile.getFileExt();
+            currentFileExt = "";
+            boolean extension = false;
+            for (char ch : currentFilePath.toCharArray()) {
+                if (ch == '.' || extension) {
+                    extension = true;
+                    currentFileExt += ch;
+                }
             }
-            jTextPane1.setText(currFile.arraylistToString());
+            FileHandler currFile = new FileHandler(currentFilePath, currentFileExt);
+            jTextPane1.setText(currFile.getContents());
         } else {
             System.out.println("Open command cancelled by user." + "\n");
         }
@@ -276,7 +278,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         String s = jTextPane1.getText();
-        new FindGUI(s,jTextPane1).setVisible(true);
+        new FindGUI(s, jTextPane1).setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
@@ -292,9 +294,9 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         System.out.println(currentFilePath);
         if (!currentFilePath.equals("")) {
             // There is a current file open
-            FileHandler saveThis = new FileHandler(currentFilePath);
+            FileHandler saveThis = new FileHandler(currentFilePath, currentFileExt);
             System.out.println(jTextPane1.getText());
-            saveThis.writeFile(jTextPane1.getText());
+            saveThis.writeFile(jTextPane1.getText(), currentFileExt);
         } else {
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.addChoosableFileFilter(new TXTSaveFilter());
