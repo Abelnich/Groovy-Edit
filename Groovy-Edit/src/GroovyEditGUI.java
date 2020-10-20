@@ -25,6 +25,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
     
 // Custom Variables
     private boldItalic b;
+    private changeStyle c;
     private boolean unsaved;
     private String currentFileExt;
     private String currentFilePath;
@@ -33,7 +34,8 @@ public class GroovyEditGUI extends javax.swing.JFrame {
     public GroovyEditGUI() {
         // Constructor
         b = new boldItalic();
-
+        c = new changeStyle();
+        
         this.currentFileExt = "";
         this.currentFilePath = "";
         this.unsaved = false;
@@ -340,18 +342,16 @@ public class GroovyEditGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextPane1KeyPressed
 
     private void cbFontTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbFontTypeActionPerformed
+        cbFontType.setFocusable(false);
         if(cbFontType.getSelectedItem().toString() != null) {
-    
-    font = new Font(cbFontType.getSelectedItem().toString(), font.getStyle(), font.getSize());
-    jTextPane1.setFont(font);
+        c.changeFont(jTextPane1, font.getSize(), cbFontType.getSelectedItem().toString());
         }
     }//GEN-LAST:event_cbFontTypeActionPerformed
 
     private void cbFontSizeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbFontSizeActionPerformed
+        cbFontSize.setFocusable(false);
         if(cbFontSize.getSelectedItem().toString() != null) {
-    font = new Font(font.getFontName(), font.getStyle(), Integer.parseInt(cbFontSize.getSelectedItem().toString()));
-    jTextPane1.setFont(font);
-
+    c.changeFont(jTextPane1, Integer.parseInt(cbFontSize.getSelectedItem().toString()), font.getFontName());
     }//GEN-LAST:event_cbFontSizeActionPerformed
     }
     /**
