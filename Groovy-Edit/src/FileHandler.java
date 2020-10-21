@@ -9,43 +9,71 @@ import java.util.Scanner;
  * @author NickAbel
  */
 public class FileHandler {
-    
+
     private File myFile;
     private Scanner fileIn;
-    
+
     private String fileName;
     private String fileExtension = "";
     private ArrayList<String> fileContents;
-    
-    public FileHandler(String fileName) {
+
+    public FileHandler(String fileName, String fileExtension) {
         this.fileName = fileName;
         myFile = new File(fileName);
         fileContents = new ArrayList();
 
         boolean extension = false;
-        for (char ch: fileName.toCharArray()) {
+        String tempStr = ""; // Temporary string for file name w/o extension
+        for (char ch : fileName.toCharArray()) {
             // look for the file extension
             if (ch == '.' || extension) {
                 extension = true;
-                fileExtension += ch;
+            } else {
+                tempStr += ch;
             }
         } // end for each
         
-        readFile();
+        fileName = tempStr;
         
-    }
+        switch (fileExtension) {
+            case ".txt":
+                readTxtFile();
+                break;
+            default:
+                fileExtension = ".txt";
+                readTxtFile();
+                break;
+        } // end switch
+    } // end constructor
+    
+    public void readFile(String ext) {
+        // will route to correct read function based on extension
+        switch (ext) {
+            case ".txt":
+                readTxtFile();
+                break;
+        }
+    } // end readFile()
+    
+    public void writeFile(String contents, String ext) {
+        // will route to correct write function based on extension
+        switch (ext) {
+            case ".txt":
+                writeTxtFile(contents);
+                break;
+        }
+    } // end readFile()
 
-    public void readFile() {
+    public void readTxtFile() {
 
         try {
             fileIn = new Scanner(myFile);
         } catch (Exception e) {
             // Will print any exception to the console
-            System.out.println("ReadFile() error: " + e.getMessage());
+            System.out.println("readFile() error: " + e.getMessage());
         }
 
         String line;
-
         while (fileIn.hasNext()) {
             // Iterates through the file line by line. Adds each whole line to the array.
             line = fileIn.nextLine();
@@ -56,25 +84,9 @@ public class FileHandler {
         fileIn.close();
     }
 
-    public void writeFile(ArrayList<String> writeMe) {
+    public void writeTxtFile(String writeMe) {
 
         // Converts writeMe Array to a String seperated by a new line character
-        String arrayToString = String.join("\n", writeMe);
-
-        try {
-            FileWriter myWriter = new FileWriter(this.fileName);
-            myWriter.write(arrayToString);
-            myWriter.close();
-            System.out.println("Successfully wrote to the file.");
-        } catch (Exception e) {
-            System.out.println("An error occurred: " + e.getMessage());
-        }
-        
-    }
-    
-        public void writeFile(String writeMe) {
-
-        // Same as above but with a string parameter
 
         try {
             FileWriter myWriter = new FileWriter(this.fileName);
@@ -84,16 +96,20 @@ public class FileHandler {
         } catch (Exception e) {
             System.out.println("An error occurred: " + e.getMessage());
         }
-        
+
     }
-    
+
     public String getFileExt() {
         return fileExtension;
     }
-    
-    public String arraylistToString() {
-        String arrayToString = String.join("\n", fileContents);
+
+    public String arraylistToString(ArrayList<String> changeMe) {
+        String arrayToString = String.join("\n", changeMe);
         return arrayToString;
     }
     
+    public String getContents() {
+        return arraylistToString(fileContents);
+    }
+
 }
