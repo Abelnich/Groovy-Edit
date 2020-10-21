@@ -44,10 +44,11 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         
         String[] fontType = {"Ariel", "Serif", "Comic Sans", "Times New Roman", "Calibari"}; //Makes the options for font type
         cbFontType.setModel(new javax.swing.DefaultComboBoxModel(fontType));
+        cbFontType.setFocusable(false);
         
         String[] fontSize = {"8", "10", "12", "14", "16"}; // Makes the options for font size
         cbFontSize.setModel(new javax.swing.DefaultComboBoxModel(fontSize));
-
+        cbFontSize.setFocusable(false);
     }
 
     /**
@@ -341,15 +342,17 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         this.unsaved = true;
     }//GEN-LAST:event_jTextPane1KeyPressed
 
+   
+    
     private void cbFontTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbFontTypeActionPerformed
-        cbFontType.setFocusable(false);
+        
         if(cbFontType.getSelectedItem().toString() != null) {
         c.changeFont(jTextPane1, font.getSize(), cbFontType.getSelectedItem().toString());
         }
     }//GEN-LAST:event_cbFontTypeActionPerformed
 
     private void cbFontSizeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbFontSizeActionPerformed
-        cbFontSize.setFocusable(false);
+        
         if(cbFontSize.getSelectedItem().toString() != null) {
     c.changeFont(jTextPane1, Integer.parseInt(cbFontSize.getSelectedItem().toString()), font.getFontName());
     }//GEN-LAST:event_cbFontSizeActionPerformed
