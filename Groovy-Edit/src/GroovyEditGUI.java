@@ -1,18 +1,12 @@
 
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileWriter;
-import javax.swing.Box;
-import javax.swing.JButton;
 import javax.swing.JFileChooser;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
 import javax.swing.filechooser.FileFilter;
 import jdk.jfr.events.FileReadEvent;
+import java.awt.Font;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -28,22 +22,33 @@ public class GroovyEditGUI extends javax.swing.JFrame {
     /**
      * Creates new form GroovyEditGUI
      */
+    
 // Custom Variables
     private boldItalic b;
+    private changeStyle c;
     private boolean unsaved;
     private String currentFileExt;
     private String currentFilePath;
 // End of Custom Variables
-
+    
     public GroovyEditGUI() {
         // Constructor
         b = new boldItalic();
-
+        c = new changeStyle();
+        
         this.currentFileExt = "";
         this.currentFilePath = "";
         this.unsaved = false;
 
         initComponents();
+        
+        String[] fontType = {"Ariel", "Serif", "Comic Sans", "Times New Roman", "Calibari"}; //Makes the options for font type
+        cbFontType.setModel(new javax.swing.DefaultComboBoxModel(fontType));
+        cbFontType.setFocusable(false);
+        
+        String[] fontSize = {"8", "10", "12", "14", "16"}; // Makes the options for font size
+        cbFontSize.setModel(new javax.swing.DefaultComboBoxModel(fontSize));
+        cbFontSize.setFocusable(false);
     }
 
     /**
@@ -61,7 +66,8 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         jToolBar1 = new javax.swing.JToolBar();
         btnBold = new javax.swing.JButton();
         btnItalic = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        cbFontType = new javax.swing.JComboBox<>();
+        cbFontSize = new javax.swing.JComboBox<>();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         menuItem_New = new javax.swing.JMenuItem();
@@ -113,16 +119,21 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         });
         jToolBar1.add(btnItalic);
 
-        jButton3.setText("jButton3");
-        jButton3.setFocusable(false);
-        jButton3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton3.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        cbFontType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbFontType.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                cbFontTypeActionPerformed(evt);
             }
         });
-        jToolBar1.add(jButton3);
+        jToolBar1.add(cbFontType);
+
+        cbFontSize.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbFontSize.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbFontSizeActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(cbFontSize);
 
         jMenu1.setText("File");
 
@@ -165,8 +176,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
 
         jMenu2.setText("Edit");
 
-        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItem1.setText("Find");
+        jMenuItem1.setText("jMenuItem1");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem1ActionPerformed(evt);
@@ -223,10 +233,6 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         b.changeStyle(jTextPane1, 0);
     }//GEN-LAST:event_btnItalicActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
-
     private void menuItem_NewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItem_NewActionPerformed
         // NEW FUNCTION IN FILE MENU
         // TODO: Check if file is open and unsaved before wiping
@@ -257,16 +263,13 @@ public class GroovyEditGUI extends javax.swing.JFrame {
             // retrieve the file from the file selector screen
             File file = fc.getSelectedFile();
             currentFilePath = file.getAbsolutePath();
-            currentFileExt = "";
-            boolean extension = false;
-            for (char ch : currentFilePath.toCharArray()) {
-                if (ch == '.' || extension) {
-                    extension = true;
-                    currentFileExt += ch;
-                }
+            FileHandler currFile = new FileHandler(currentFilePath);
+            System.out.println("path: " + currentFilePath);
+            if (currFile.getFileExt().contains(".")) {
+                // Has a file extension
+                currentFileExt = currFile.getFileExt();
             }
-            FileHandler currFile = new FileHandler(currentFilePath, currentFileExt);
-            jTextPane1.setText(currFile.getContents());
+            jTextPane1.setText(currFile.arraylistToString());
         } else {
             System.out.println("Open command cancelled by user." + "\n");
         }
@@ -277,8 +280,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_menuItem_OpenPrevActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        String s = jTextPane1.getText();
-        new FindGUI(s, jTextPane1).setVisible(true);
+        // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
@@ -294,9 +296,9 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         System.out.println(currentFilePath);
         if (!currentFilePath.equals("")) {
             // There is a current file open
-            FileHandler saveThis = new FileHandler(currentFilePath, currentFileExt);
+            FileHandler saveThis = new FileHandler(currentFilePath);
             System.out.println(jTextPane1.getText());
-            saveThis.writeFile(jTextPane1.getText(), currentFileExt);
+            saveThis.writeFile(jTextPane1.getText());
         } else {
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.addChoosableFileFilter(new TXTSaveFilter());
@@ -330,11 +332,31 @@ public class GroovyEditGUI extends javax.swing.JFrame {
 
     }//GEN-LAST:event_menuItem_SaveActionPerformed
 
+    
+    int size = 12; // Makes initial font size
+    Font font = new Font("Serif", Font.PLAIN, size); // Makes initial font object to alter
+
+    
     private void jTextPane1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextPane1KeyPressed
         // When something is typed, the file gets marked as having unsaved changes
         this.unsaved = true;
     }//GEN-LAST:event_jTextPane1KeyPressed
 
+   
+    
+    private void cbFontTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbFontTypeActionPerformed
+        
+        if(cbFontType.getSelectedItem().toString() != null) {
+        c.changeFont(jTextPane1, font.getSize(), cbFontType.getSelectedItem().toString());
+        }
+    }//GEN-LAST:event_cbFontTypeActionPerformed
+
+    private void cbFontSizeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbFontSizeActionPerformed
+        
+        if(cbFontSize.getSelectedItem().toString() != null) {
+    c.changeFont(jTextPane1, Integer.parseInt(cbFontSize.getSelectedItem().toString()), font.getFontName());
+    }//GEN-LAST:event_cbFontSizeActionPerformed
+    }
     /**
      * @param args the command line arguments
      */
@@ -373,7 +395,8 @@ public class GroovyEditGUI extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBold;
     private javax.swing.JButton btnItalic;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JComboBox<String> cbFontSize;
+    private javax.swing.JComboBox<String> cbFontType;
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
