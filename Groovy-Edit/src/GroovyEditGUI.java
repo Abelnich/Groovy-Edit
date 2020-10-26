@@ -1,6 +1,9 @@
 
 import java.awt.GridLayout;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
+import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.io.FileWriter;
 import javax.swing.Box;
@@ -11,7 +14,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
 import javax.swing.filechooser.FileFilter;
+import javax.swing.text.Caret;
+import javax.swing.text.JTextComponent;
+import javax.swing.text.Position;
 import jdk.jfr.events.FileReadEvent;
 
 /*
@@ -31,19 +39,24 @@ public class GroovyEditGUI extends javax.swing.JFrame {
 // Custom Variables
     private boldItalic b;
     private boolean unsaved;
+    private int rowNum, colNum; // current cursor position
     private String currentFileExt;
     private String currentFilePath;
 // End of Custom Variables
 
     public GroovyEditGUI() {
         // Constructor
+        initComponents();
+
         b = new boldItalic();
 
         this.currentFileExt = "";
         this.currentFilePath = "";
         this.unsaved = false;
 
-        initComponents();
+        rowNum = 1;
+        colNum = 0;
+        lblRowColNums.setText("row: " + rowNum + " col: " + colNum); // sets the initial row and col display
     }
 
     /**
@@ -62,6 +75,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         btnBold = new javax.swing.JButton();
         btnItalic = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        lblRowColNums = new java.awt.Label();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         menuItem_New = new javax.swing.JMenuItem();
@@ -124,9 +138,13 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         });
         jToolBar1.add(jButton3);
 
+        lblRowColNums.setAlignment(java.awt.Label.RIGHT);
+        lblRowColNums.setText("row:0 col: 0");
+        jToolBar1.add(lblRowColNums);
+
         jMenu1.setText("File");
 
-        menuItem_New.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
+        menuItem_New.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         menuItem_New.setText("New");
         menuItem_New.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -135,7 +153,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         });
         jMenu1.add(menuItem_New);
 
-        menuItem_Open.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
+        menuItem_Open.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         menuItem_Open.setText("Open");
         menuItem_Open.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -152,7 +170,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         });
         jMenu1.add(menuItem_OpenPrev);
 
-        menuItem_Save.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
+        menuItem_Save.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         menuItem_Save.setText("Save");
         menuItem_Save.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -165,7 +183,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
 
         jMenu2.setText("Edit");
 
-        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         jMenuItem1.setText("Find");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -333,7 +351,30 @@ public class GroovyEditGUI extends javax.swing.JFrame {
     private void jTextPane1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextPane1KeyPressed
         // When something is typed, the file gets marked as having unsaved changes
         this.unsaved = true;
+
+        calcCursPos();
     }//GEN-LAST:event_jTextPane1KeyPressed
+
+    private void calcCursPos() {
+
+        jTextPane1.addCaretListener(new CaretListener() {
+            public void caretUpdate(CaretEvent e) {
+                JTextComponent textComp = (JTextComponent) e.getSource();
+                try {
+                    // Convert the UI to a 2d-rectangle
+                    Rectangle2D rect = textComp.modelToView2D(e.getDot());
+                    
+                    // Get the x and y coords from the rect and assign them to appropriate variable
+                    // Math accounts for character size
+                    rowNum = (int)(((rect.getY() - 4) / 16) + 1); // 
+                    colNum = (int)(((rect.getX() - 6) / 7));
+                    lblRowColNums.setText("row: " + rowNum + " col: " + colNum);
+                } catch (Exception ex) {
+                    System.out.println("Caret Exception: " + ex.getMessage());
+                }
+            }
+        }); // end addCaretListener
+    }
 
     /**
      * @param args the command line arguments
@@ -384,6 +425,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextPane jTextPane1;
     private javax.swing.JToolBar jToolBar1;
+    private java.awt.Label lblRowColNums;
     private javax.swing.JMenuItem menuItem_New;
     private javax.swing.JMenuItem menuItem_Open;
     private javax.swing.JMenuItem menuItem_OpenPrev;

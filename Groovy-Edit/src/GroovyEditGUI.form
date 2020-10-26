@@ -203,6 +203,12 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton3ActionPerformed"/>
           </Events>
         </Component>
+        <Component class="java.awt.Label" name="lblRowColNums">
+          <Properties>
+            <Property name="alignment" type="int" value="2"/>
+            <Property name="text" type="java.lang.String" value="row:0 col: 0"/>
+          </Properties>
+        </Component>
       </SubComponents>
     </Container>
   </SubComponents>
