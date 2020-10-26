@@ -263,13 +263,13 @@ public class GroovyEditGUI extends javax.swing.JFrame {
             // retrieve the file from the file selector screen
             File file = fc.getSelectedFile();
             currentFilePath = file.getAbsolutePath();
-            FileHandler currFile = new FileHandler(currentFilePath);
+            FileHandler currFile = new FileHandler(currentFilePath, currentFileExt);
             System.out.println("path: " + currentFilePath);
             if (currFile.getFileExt().contains(".")) {
                 // Has a file extension
                 currentFileExt = currFile.getFileExt();
             }
-            jTextPane1.setText(currFile.arraylistToString());
+            jTextPane1.setText(currFile.getContents());
         } else {
             System.out.println("Open command cancelled by user." + "\n");
         }
@@ -296,9 +296,9 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         System.out.println(currentFilePath);
         if (!currentFilePath.equals("")) {
             // There is a current file open
-            FileHandler saveThis = new FileHandler(currentFilePath);
+            FileHandler saveThis = new FileHandler(currentFilePath, currentFileExt);
             System.out.println(jTextPane1.getText());
-            saveThis.writeFile(jTextPane1.getText());
+            saveThis.writeFile(jTextPane1.getText(), currentFileExt);
         } else {
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.addChoosableFileFilter(new TXTSaveFilter());
