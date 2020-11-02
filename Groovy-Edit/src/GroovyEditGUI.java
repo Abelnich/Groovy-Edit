@@ -283,6 +283,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         // TODO add your handling code here:
+        
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
@@ -333,6 +334,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
     private void jTextPane1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextPane1KeyPressed
         // When something is typed, the file gets marked as having unsaved changes
         this.unsaved = true;
+        
     }//GEN-LAST:event_jTextPane1KeyPressed
 
     /**
