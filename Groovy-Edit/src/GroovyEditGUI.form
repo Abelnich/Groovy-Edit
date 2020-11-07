@@ -203,6 +203,11 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton3ActionPerformed"/>
           </Events>
         </Component>
+        <Component class="javax.swing.JLabel" name="counter">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Length:   Lines:   Words:   "/>
+          </Properties>
+        </Component>
       </SubComponents>
     </Container>
   </SubComponents>

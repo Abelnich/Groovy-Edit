@@ -62,6 +62,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         btnBold = new javax.swing.JButton();
         btnItalic = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        counter = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         menuItem_New = new javax.swing.JMenuItem();
@@ -123,6 +124,9 @@ public class GroovyEditGUI extends javax.swing.JFrame {
             }
         });
         jToolBar1.add(jButton3);
+
+        counter.setText("Length:   Lines:   Words:   ");
+        jToolBar1.add(counter);
 
         jMenu1.setText("File");
 
@@ -333,6 +337,11 @@ public class GroovyEditGUI extends javax.swing.JFrame {
     private void jTextPane1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextPane1KeyPressed
         // When something is typed, the file gets marked as having unsaved changes
         this.unsaved = true;
+        int length, lines, words;
+        length = jTextPane1.getText().length();
+        lines = (jTextPane1.getText() + "|").split("\n").length;
+        words = jTextPane1.getText().trim().split("\\s+").length;
+        counter.setText("Length:   " + length + " Lines:   " + lines + " Words:   " + words);
     }//GEN-LAST:event_jTextPane1KeyPressed
 
     /**
@@ -373,6 +382,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBold;
     private javax.swing.JButton btnItalic;
+    private javax.swing.JLabel counter;
     private javax.swing.JMenuItem emojib;
     private javax.swing.JButton jButton3;
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
