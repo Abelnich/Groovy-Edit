@@ -35,7 +35,7 @@ public class Emoji extends javax.swing.JFrame {
 
         jButton1 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jButton1.setFont(new java.awt.Font("Segoe UI Emoji", 0, 11)); // NOI18N
         jButton1.setText("\\uD83D\\uDE00");
@@ -106,6 +106,7 @@ public class Emoji extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                // new Emoji().setVisible(true);
+               
             }
         });
     }
