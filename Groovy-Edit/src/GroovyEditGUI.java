@@ -11,6 +11,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JTextPane;
 import javax.swing.filechooser.FileFilter;
 import jdk.jfr.events.FileReadEvent;
 
@@ -79,6 +80,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jTextPane1.setFont(new java.awt.Font("Segoe UI Emoji", 0, 11)); // NOI18N
         jTextPane1.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 jTextPane1KeyPressed(evt);
@@ -286,7 +288,11 @@ public class GroovyEditGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void emojibActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_emojibActionPerformed
-        new Emoji().setVisible(true);
+        String emo;
+        Emoji em = new Emoji(jTextPane1);
+        em.setVisible(true);
+        
+        
     }//GEN-LAST:event_emojibActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
