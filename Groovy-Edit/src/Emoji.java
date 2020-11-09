@@ -48,7 +48,7 @@ public class Emoji extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jButton1.setFont(new java.awt.Font("Segoe UI Emoji", 0, 11)); // NOI18N
-        jButton1.setText("\\uD83D\\uDE00");
+        jButton1.setText("\uD83D\uDE00");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -56,7 +56,7 @@ public class Emoji extends javax.swing.JFrame {
         });
 
         jButton2.setFont(new java.awt.Font("Segoe UI Emoji", 0, 11)); // NOI18N
-        jButton2.setText("\\uD83D\\uDE02");
+        jButton2.setText("\uD83D\uDE02");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -64,7 +64,7 @@ public class Emoji extends javax.swing.JFrame {
         });
 
         jButton3.setFont(new java.awt.Font("Segoe UI Emoji", 0, 11)); // NOI18N
-        jButton3.setText("\\uD83E\\uDD70");
+        jButton3.setText("\uD83E\uDD70");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -72,7 +72,7 @@ public class Emoji extends javax.swing.JFrame {
         });
 
         jButton4.setFont(new java.awt.Font("Segoe UI Emoji", 0, 11)); // NOI18N
-        jButton4.setText("\\uD83E\\uDD70");
+        jButton4.setText("\uD83D\uDC4C");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton4ActionPerformed(evt);
@@ -80,7 +80,7 @@ public class Emoji extends javax.swing.JFrame {
         });
 
         jButton5.setFont(new java.awt.Font("Segoe UI Emoji", 0, 11)); // NOI18N
-        jButton5.setText("\\u270C");
+        jButton5.setText("\u270C");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton5ActionPerformed(evt);
@@ -88,7 +88,7 @@ public class Emoji extends javax.swing.JFrame {
         });
 
         jButton6.setFont(new java.awt.Font("Segoe UI Emoji", 0, 11)); // NOI18N
-        jButton6.setText("\\uD83D\\uDC97");
+        jButton6.setText("\uD83D\uDC97");
         jButton6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton6ActionPerformed(evt);
@@ -96,7 +96,7 @@ public class Emoji extends javax.swing.JFrame {
         });
 
         jButton7.setFont(new java.awt.Font("Segoe UI Emoji", 0, 11)); // NOI18N
-        jButton7.setText("\\uD83D\\uDE0E");
+        jButton7.setText("\uD83D\uDE0E");
         jButton7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton7ActionPerformed(evt);
@@ -104,7 +104,7 @@ public class Emoji extends javax.swing.JFrame {
         });
 
         jButton8.setFont(new java.awt.Font("Segoe UI Emoji", 0, 11)); // NOI18N
-        jButton8.setText("\\uD83E\\uDD2C");
+        jButton8.setText("\uD83E\uDD2C");
         jButton8.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton8ActionPerformed(evt);
@@ -112,7 +112,7 @@ public class Emoji extends javax.swing.JFrame {
         });
 
         jButton9.setFont(new java.awt.Font("Segoe UI Emoji", 0, 11)); // NOI18N
-        jButton9.setText("\\uD83D\\uDC2C");
+        jButton9.setText("\uD83D\uDC2C");
         jButton9.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton9ActionPerformed(evt);
@@ -120,7 +120,7 @@ public class Emoji extends javax.swing.JFrame {
         });
 
         jButton10.setFont(new java.awt.Font("Segoe UI Emoji", 0, 11)); // NOI18N
-        jButton10.setText("\\uD83C\\uDF34");
+        jButton10.setText("\uD83C\uDF34");
         jButton10.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton10ActionPerformed(evt);
@@ -128,7 +128,7 @@ public class Emoji extends javax.swing.JFrame {
         });
 
         jButton11.setFont(new java.awt.Font("Segoe UI Emoji", 0, 11)); // NOI18N
-        jButton11.setText("\\u26F2");
+        jButton11.setText("\u26F2");
         jButton11.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton11ActionPerformed(evt);
@@ -168,7 +168,7 @@ public class Emoji extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jButton11)
                                 .addGap(0, 0, Short.MAX_VALUE)))))
-                .addGap(0, 35, Short.MAX_VALUE))
+                .addGap(0, 59, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
