@@ -14,7 +14,7 @@ import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.filechooser.FileFilter;
 import jdk.jfr.events.FileReadEvent;
-
+import javax.swing.ImageIcon;
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -229,8 +229,8 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         b.changeStyle(jTextPane1, 0);
     }//GEN-LAST:event_btnItalicActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
+    private void insertImageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        insertActionPerformed();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void menuItem_NewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItem_NewActionPerformed
@@ -349,7 +349,29 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         words = jTextPane1.getText().trim().split("\\s+").length;
         counter.setText("Length:   " + length + " Lines:   " + lines + " Words:   " + words);
     }//GEN-LAST:event_jTextPane1KeyPressed
-
+    private void insertActionPerformed()
+    {
+        JFileChooser jf=new JFileChooser();
+        // Show open dialog
+        int option=jf.showOpenDialog(this);       
+            // If user chooses to insert
+            if(option==JFileChooser.APPROVE_OPTION)
+            {
+                File file=jf.getSelectedFile();
+                    if(isImage(file))
+                    {
+                        jTextPane1.insertIcon(new ImageIcon(file.getAbsolutePath()));
+                    }
+                    else
+                    // Show an error message, if not an image
+                    JOptionPane.showMessageDialog(this,"The file is not an image.","Not Image",JOptionPane.ERROR_MESSAGE);
+            }
+    }
+    private boolean isImage(File file)
+    {
+        String name=file.getName();
+            return name.endsWith(".jpg") || name.endsWith(".png") || name.endsWith(".jpeg") || name.endsWith(".gif") || name.endsWith(".JPG") || name.endsWith(".PNG") || name.endsWith(".JPEG") || name.endsWith(".GIF");
+    }
     /**
      * @param args the command line arguments
      */
