@@ -62,7 +62,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         jToolBar1 = new javax.swing.JToolBar();
         btnBold = new javax.swing.JButton();
         btnItalic = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        insertImage = new javax.swing.JButton();
         counter = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
@@ -116,16 +116,17 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         });
         jToolBar1.add(btnItalic);
 
-        jButton3.setText("jButton3");
-        jButton3.setFocusable(false);
-        jButton3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton3.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        insertImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/image-x-generic.png"))); // NOI18N
+        insertImage.setText("Insert Image");
+        insertImage.setFocusable(false);
+        insertImage.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        insertImage.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        insertImage.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                insertImageActionPerformed(evt);
             }
         });
-        jToolBar1.add(jButton3);
+        jToolBar1.add(insertImage);
 
         counter.setText("Length:   Lines:   Words:   ");
         jToolBar1.add(counter);
@@ -210,9 +211,9 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 472, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 455, Short.MAX_VALUE))
         );
 
         jToolBar1.getAccessibleContext().setAccessibleDescription("");
@@ -229,9 +230,9 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         b.changeStyle(jTextPane1, 0);
     }//GEN-LAST:event_btnItalicActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void insertImageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertImageActionPerformed
         insertActionPerformed();
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_insertImageActionPerformed
 
     private void menuItem_NewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItem_NewActionPerformed
         // NEW FUNCTION IN FILE MENU
@@ -412,7 +413,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
     private javax.swing.JButton btnItalic;
     private javax.swing.JLabel counter;
     private javax.swing.JMenuItem emojib;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JButton insertImage;
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
