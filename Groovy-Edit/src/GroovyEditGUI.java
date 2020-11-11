@@ -1,20 +1,23 @@
 
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.KeyboardFocusManager;
+import java.awt.Toolkit;
 import java.io.File;
 import java.io.FileWriter;
-import javax.swing.Box;
-import javax.swing.JButton;
 import javax.swing.JFileChooser;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
 import javax.swing.JTextPane;
-import javax.swing.filechooser.FileFilter;
-import jdk.jfr.events.FileReadEvent;
 import javax.swing.ImageIcon;
+import javax.swing.JColorChooser;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.MutableAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyleContext;
+import javax.swing.text.StyledDocument;
+import javax.swing.text.StyledEditorKit;
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -34,6 +37,9 @@ public class GroovyEditGUI extends javax.swing.JFrame {
     private boolean unsaved;
     private String currentFileExt;
     private String currentFilePath;
+    private JTextPane activePane;
+    private Color fontColor;
+    private Color clrCrnt;
 // End of Custom Variables
 
     public GroovyEditGUI() {
@@ -45,8 +51,10 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         this.unsaved = false;
 
         initComponents();
+        Dimension layout = Toolkit.getDefaultToolkit().getScreenSize();
+        this.setLocation(layout.width/2 - this.getWidth()/2, layout.height/2 - this.getHeight()/2);
+        this.setSize(1200,600);
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -60,8 +68,11 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextPane1 = new javax.swing.JTextPane();
         jToolBar1 = new javax.swing.JToolBar();
+        changeColor = new javax.swing.JButton();
+        underline = new javax.swing.JButton();
         btnBold = new javax.swing.JButton();
         btnItalic = new javax.swing.JButton();
+        removeFormatting = new javax.swing.JButton();
         insertImage = new javax.swing.JButton();
         counter = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
@@ -91,10 +102,32 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         jToolBar1.setRollover(true);
         jToolBar1.setAlignmentY(0.5F);
         jToolBar1.setMaximumSize(new java.awt.Dimension(66000, 33000));
-        jToolBar1.setMinimumSize(new java.awt.Dimension(440, 40));
-        jToolBar1.setPreferredSize(new java.awt.Dimension(430, 40));
+        jToolBar1.setMinimumSize(new java.awt.Dimension(440, 20));
+        jToolBar1.setPreferredSize(new java.awt.Dimension(430, 20));
 
-        btnBold.setText("Bold");
+        changeColor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/colorText.png"))); // NOI18N
+        changeColor.setFocusable(false);
+        changeColor.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        changeColor.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        changeColor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                changeColorActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(changeColor);
+
+        underline.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/format-text-underline.png"))); // NOI18N
+        underline.setFocusable(false);
+        underline.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        underline.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        underline.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                underlineActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(underline);
+
+        btnBold.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/format-text-bold.png"))); // NOI18N
         btnBold.setFocusable(false);
         btnBold.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnBold.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -105,7 +138,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         });
         jToolBar1.add(btnBold);
 
-        btnItalic.setText("Italic");
+        btnItalic.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/format-text-italic.png"))); // NOI18N
         btnItalic.setFocusable(false);
         btnItalic.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnItalic.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -116,8 +149,18 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         });
         jToolBar1.add(btnItalic);
 
+        removeFormatting.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/Eraser-icon.png"))); // NOI18N
+        removeFormatting.setFocusable(false);
+        removeFormatting.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        removeFormatting.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        removeFormatting.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeFormattingActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(removeFormatting);
+
         insertImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/image-x-generic.png"))); // NOI18N
-        insertImage.setText("Insert Image");
         insertImage.setFocusable(false);
         insertImage.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         insertImage.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -211,9 +254,9 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 455, Short.MAX_VALUE))
+                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 511, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         jToolBar1.getAccessibleContext().setAccessibleDescription("");
@@ -350,6 +393,50 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         words = jTextPane1.getText().trim().split("\\s+").length;
         counter.setText("Length:   " + length + " Lines:   " + lines + " Words:   " + words);
     }//GEN-LAST:event_jTextPane1KeyPressed
+
+    private void changeColorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeColorActionPerformed
+        int start = getFocusedComponent().getSelectionStart();
+        int end = getFocusedComponent().getSelectionEnd();
+        int selectedLength = end-start;
+        StyledDocument style = getFocusedComponent().getStyledDocument();
+        AttributeSet oldset = style.getCharacterElement(end-1).getAttributes();
+        StyleContext sc = StyleContext.getDefaultStyleContext();
+        fontColor = JColorChooser.showDialog(this, "Select Text Color", clrCrnt);
+        AttributeSet s = sc.addAttribute(oldset, StyleConstants.Foreground, fontColor);
+        style.setCharacterAttributes(start, selectedLength, s, true);
+    }//GEN-LAST:event_changeColorActionPerformed
+
+    private void removeFormattingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeFormattingActionPerformed
+        int start = getFocusedComponent().getSelectionStart();
+        int end = getFocusedComponent().getSelectionEnd();
+        int selectedLength = end - start;
+        if (selectedLength == 0){
+        } else {
+            Font font = new Font("Tahoma", Font.PLAIN, 11);
+            clearFormat(getFocusedComponent(), font, Color.black, start);
+        }
+    }//GEN-LAST:event_removeFormattingActionPerformed
+
+    private void underlineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_underlineActionPerformed
+       underline.addActionListener(new StyledEditorKit.UnderlineAction());
+
+    }//GEN-LAST:event_underlineActionPerformed
+    public void clearFormat(JTextPane jtp, Font font, Color c, int start) {
+        MutableAttributeSet attrs = jtp.getInputAttributes();
+        StyleConstants.setFontFamily(attrs, font.getFamily());
+        StyleConstants.setFontSize(attrs, font.getSize());
+        StyleConstants.setItalic(attrs, false);
+        StyleConstants.setBold(attrs, false);
+        StyleConstants.setUnderline(attrs, false);
+        StyleConstants.setStrikeThrough(attrs, false);
+        // Set the font color
+        StyleConstants.setForeground(attrs, c);
+        // Retrieve the pane's document object
+        StyledDocument doc = jtp.getStyledDocument();
+
+        // Replace the style for the entire document.
+        doc.setCharacterAttributes(start, getFocusedComponent().getSelectedText().length(), attrs, true);
+    }
     private void insertActionPerformed()
     {
         JFileChooser jf=new JFileChooser();
@@ -411,6 +498,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBold;
     private javax.swing.JButton btnItalic;
+    private javax.swing.JButton changeColor;
     private javax.swing.JLabel counter;
     private javax.swing.JMenuItem emojib;
     private javax.swing.JButton insertImage;
@@ -427,5 +515,19 @@ public class GroovyEditGUI extends javax.swing.JFrame {
     private javax.swing.JMenuItem menuItem_Open;
     private javax.swing.JMenuItem menuItem_OpenPrev;
     private javax.swing.JMenuItem menuItem_Save;
+    private javax.swing.JButton removeFormatting;
+    private javax.swing.JButton underline;
     // End of variables declaration//GEN-END:variables
-}
+protected final JTextPane getFocusedComponent()
+    {
+            activePane = jTextPane1;
+
+            KeyboardFocusManager kfm = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+            Component focused = kfm.getPermanentFocusOwner();
+            if (focused instanceof JTextPane){
+                activePane = (JTextPane) focused;
+            }
+            return activePane;
+        }
+    }
+
