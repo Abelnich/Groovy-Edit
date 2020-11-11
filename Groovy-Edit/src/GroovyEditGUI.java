@@ -71,8 +71,13 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         menuItem_Save = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
+<<<<<<< Updated upstream
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
+=======
+        emojib = new javax.swing.JMenuItem();
+        mailjb = new javax.swing.JMenuItem();
+>>>>>>> Stashed changes
 
         jCheckBoxMenuItem1.setSelected(true);
         jCheckBoxMenuItem1.setText("jCheckBoxMenuItem1");
@@ -127,7 +132,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
 
         jMenu1.setText("File");
 
-        menuItem_New.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
+        menuItem_New.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         menuItem_New.setText("New");
         menuItem_New.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -136,7 +141,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         });
         jMenu1.add(menuItem_New);
 
-        menuItem_Open.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
+        menuItem_Open.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         menuItem_Open.setText("Open");
         menuItem_Open.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -153,7 +158,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         });
         jMenu1.add(menuItem_OpenPrev);
 
-        menuItem_Save.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
+        menuItem_Save.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         menuItem_Save.setText("Save");
         menuItem_Save.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -166,7 +171,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
 
         jMenu2.setText("Edit");
 
-        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         jMenuItem1.setText("Find");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -183,13 +188,13 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         });
         jMenu2.add(jMenuItem2);
 
-        jMenuItem3.setText("jMenuItem3");
-        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+        mailjb.setText("jMenuItem3");
+        mailjb.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem3ActionPerformed(evt);
+                mailjbActionPerformed(evt);
             }
         });
-        jMenu2.add(jMenuItem3);
+        jMenu2.add(mailjb);
 
         jMenuBar1.add(jMenu2);
 
@@ -283,9 +288,11 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
-    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem3ActionPerformed
+    private void mailjbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mailjbActionPerformed
+       String forMail;
+       EmailSending mail = new EmailSending(jTextPane1);
+       mail.setVisible(true);
+    }//GEN-LAST:event_mailjbActionPerformed
 
     private void menuItem_SaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItem_SaveActionPerformed
         // SAVE FUNCTION IN FILE MENU
@@ -377,11 +384,15 @@ public class GroovyEditGUI extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
+<<<<<<< Updated upstream
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
+=======
+>>>>>>> Stashed changes
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextPane jTextPane1;
     private javax.swing.JToolBar jToolBar1;
+    private javax.swing.JMenuItem mailjb;
     private javax.swing.JMenuItem menuItem_New;
     private javax.swing.JMenuItem menuItem_Open;
     private javax.swing.JMenuItem menuItem_OpenPrev;
