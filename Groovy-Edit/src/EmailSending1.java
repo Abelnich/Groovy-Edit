@@ -32,10 +32,9 @@ public class EmailSending1 extends javax.swing.JFrame {
      * Creates new form Emoji
      */
     String text;
-    JTextPane jTextPane1;
-    public EmailSending1(JTextPane jTextPane5) {
-        jTextPane1 = jTextPane5;
-        text = jTextPane5.getText();
+    String jTextPane1;
+    public EmailSending1(String jTextPane5) {
+        text = jTextPane5;
         initComponents();
     }
 
