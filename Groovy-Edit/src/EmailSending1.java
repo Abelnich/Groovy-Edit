@@ -202,7 +202,7 @@ public class EmailSending1 extends javax.swing.JFrame {
         String toEmail = txtToEmail.getText();
         String fromEmail = txtFromEmail.getText(); //me@gmail.com
         String FromEmailPassword = "sonic"; //Your Email Password
-        String Subjects = txtSubject.getText();
+        String Subjects = text;
         
         Properties properties = new Properties();
         properties.put("mail.smtp.auth","true");
