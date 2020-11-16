@@ -341,7 +341,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         String emo;
-        EmailSending1 em = new EmailSending1(jTextPane1.toString());
+        EmailSending2 em = new EmailSending2(jTextPane1.toString());
         em.setVisible(true);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
