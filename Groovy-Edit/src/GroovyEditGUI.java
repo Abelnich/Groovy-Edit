@@ -1,5 +1,10 @@
 
 import java.awt.event.ActionEvent;
+import java.awt.print.PageFormat;
+import java.awt.print.Paper;
+import java.awt.print.Printable;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
 import java.io.File;
 import java.io.FileWriter;
 import javax.swing.JFileChooser;
@@ -89,7 +94,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         });
         jToolBar1.add(jButton2);
 
-        jButton3.setText("jButton3");
+        jButton3.setText("Print");
         jButton3.setFocusable(false);
         jButton3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButton3.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -196,7 +201,23 @@ public class GroovyEditGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
+        new Thread(() -> {  //Multithread it so that it doesn't freeze the system
+            PrinterJob job = PrinterJob.getPrinterJob();
+            PageFormat form = job.defaultPage();
+            Paper pap = new Paper();
+            pap.setImageableArea(40, 40, pap.getWidth() - 40 * 2, pap.getHeight() - 40 * 2); //Margin is 40, can change to variable later
+            form.setPaper(pap);
+            Printable gPrint = jTextPane1.getPrintable(null, null);  //Header and footer are arguments, we don't need those
+            job.setPrintable(gPrint,form); 
+            boolean doPrint = job.printDialog();
+            if (doPrint) {
+                try {
+                    job.print();
+                } catch (PrinterException e) {
+                    // Job failed
+                }
+            }
+        }).start();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
