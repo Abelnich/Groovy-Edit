@@ -340,9 +340,9 @@ public class GroovyEditGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_emojibActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        String emo;
-        EmailSending2 em = new EmailSending2(jTextPane1.toString());
-        em.setVisible(true);
+
+        String msg = jTextPane1.getText();
+        new EmailSending2(msg).setVisible(true);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void menuItem_SaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItem_SaveActionPerformed
