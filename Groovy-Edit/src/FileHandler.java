@@ -1,6 +1,7 @@
 
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -20,6 +21,16 @@ public class FileHandler {
     public FileHandler(String fileName, String fileExtension) {
         this.fileName = fileName;
         myFile = new File(fileName);
+        
+        if (!myFile.isFile()) {
+            // creates the file if it doesn't exist
+            try {
+                myFile.createNewFile();
+            } catch (IOException ioe) {
+                System.out.println("File creation error: " + ioe.getMessage());
+            }
+        }
+        
         fileContents = new ArrayList();
 
         boolean extension = false;
@@ -70,7 +81,7 @@ public class FileHandler {
             fileIn = new Scanner(myFile);
         } catch (Exception e) {
             // Will print any exception to the console
-            System.out.println("readFile() error: " + e.getMessage());
+            System.out.println("readTxtFile() error: " + e.getMessage());
         }
 
         String line;
@@ -108,8 +119,18 @@ public class FileHandler {
         return arrayToString;
     }
     
+    public void stringToArrayList(String changeMe, String delim) {
+        String[] strArry = changeMe.split(delim);
+        
+        
+    }
+    
     public String getContents() {
         return arraylistToString(fileContents);
+    }
+    
+    public ArrayList<String> getContentsArry() {
+        return fileContents;
     }
 
 }
