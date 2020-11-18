@@ -14,6 +14,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JColorChooser;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.MutableAttributeSet;
+import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 import javax.swing.text.StyledDocument;
@@ -40,6 +41,8 @@ public class GroovyEditGUI extends javax.swing.JFrame {
     private JTextPane activePane;
     private Color fontColor;
     private Color clrCrnt;
+    private changeStyle c;
+    SimpleAttributeSet alignment = new SimpleAttributeSet();
 // End of Custom Variables
 
     public GroovyEditGUI() {
@@ -49,11 +52,23 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         this.currentFileExt = "";
         this.currentFilePath = "";
         this.unsaved = false;
+        c = new changeStyle();
+        
+        String[] fontType = {"Ariel", "Serif", "Comic Sans", "Times New Roman", "Calibari"}; //Makes the options for font type
+        cbFontType.setModel(new javax.swing.DefaultComboBoxModel(fontType));
+        cbFontType.setFocusable(false);
+
+        String[] fontSize = {"8", "10", "12", "14", "16"}; // Makes the options for font size
+        cbFontSize.setModel(new javax.swing.DefaultComboBoxModel(fontSize));
+        cbFontSize.setFocusable(false);
+        
 
         initComponents();
         Dimension layout = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation(layout.width/2 - this.getWidth()/2, layout.height/2 - this.getHeight()/2);
         this.setSize(1200,600);
+        
+        
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -65,6 +80,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
     private void initComponents() {
 
         jCheckBoxMenuItem1 = new javax.swing.JCheckBoxMenuItem();
+        jButton1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextPane1 = new javax.swing.JTextPane();
         jToolBar1 = new javax.swing.JToolBar();
@@ -75,6 +91,11 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         removeFormatting = new javax.swing.JButton();
         insertImage = new javax.swing.JButton();
         counter = new javax.swing.JLabel();
+        leftbtn = new javax.swing.JButton();
+        centerbtn = new javax.swing.JButton();
+        rightbtn = new javax.swing.JButton();
+        cbFontType = new javax.swing.JComboBox<>();
+        cbFontSize = new javax.swing.JComboBox<>();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         menuItem_New = new javax.swing.JMenuItem();
@@ -88,6 +109,8 @@ public class GroovyEditGUI extends javax.swing.JFrame {
 
         jCheckBoxMenuItem1.setSelected(true);
         jCheckBoxMenuItem1.setText("jCheckBoxMenuItem1");
+
+        jButton1.setText("jButton1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -174,6 +197,41 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         counter.setText("Length:   Lines:   Words:   ");
         jToolBar1.add(counter);
 
+        leftbtn.setText("Left");
+        leftbtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                leftbtnActionPerformed(evt);
+            }
+        });
+
+        centerbtn.setText("Center");
+        centerbtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                centerbtnActionPerformed(evt);
+            }
+        });
+
+        rightbtn.setText("Right");
+        rightbtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rightbtnActionPerformed(evt);
+            }
+        });
+
+        cbFontType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbFontType.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbFontTypeActionPerformed(evt);
+            }
+        });
+
+        cbFontSize.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbFontSize.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbFontSizeActionPerformed(evt);
+            }
+        });
+
         jMenu1.setText("File");
 
         menuItem_New.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_DOWN_MASK));
@@ -248,15 +306,38 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jToolBar1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 518, Short.MAX_VALUE)
-            .addComponent(jScrollPane1)
+            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 564, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(leftbtn, javax.swing.GroupLayout.DEFAULT_SIZE, 73, Short.MAX_VALUE)
+                    .addComponent(centerbtn, javax.swing.GroupLayout.DEFAULT_SIZE, 73, Short.MAX_VALUE)
+                    .addComponent(rightbtn, javax.swing.GroupLayout.DEFAULT_SIZE, 73, Short.MAX_VALUE)
+                    .addComponent(cbFontType, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cbFontSize, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 511, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 511, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(leftbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(centerbtn)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(rightbtn)
+                        .addGap(39, 39, 39)
+                        .addComponent(cbFontType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(cbFontSize, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
         );
 
         jToolBar1.getAccessibleContext().setAccessibleDescription("");
@@ -423,6 +504,41 @@ public class GroovyEditGUI extends javax.swing.JFrame {
        underline.addActionListener(new StyledEditorKit.UnderlineAction());
 
     }//GEN-LAST:event_underlineActionPerformed
+
+    private void leftbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_leftbtnActionPerformed
+         StyleConstants.setAlignment(alignment, StyleConstants.ALIGN_LEFT);
+        jTextPane1.getStyledDocument().setParagraphAttributes(0, jTextPane1.getDocument().getLength(), alignment, false);
+    }//GEN-LAST:event_leftbtnActionPerformed
+
+    private void centerbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_centerbtnActionPerformed
+        StyleConstants.setAlignment(alignment, StyleConstants.ALIGN_CENTER);
+        jTextPane1.getStyledDocument().setParagraphAttributes(0, jTextPane1.getDocument().getLength(),alignment, false);
+    }//GEN-LAST:event_centerbtnActionPerformed
+
+    private void rightbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rightbtnActionPerformed
+        StyleConstants.setAlignment(alignment, StyleConstants.ALIGN_RIGHT);
+        jTextPane1.getStyledDocument().setParagraphAttributes(0, jTextPane1.getDocument().getLength(), alignment, false);
+    }//GEN-LAST:event_rightbtnActionPerformed
+
+    
+    private void cbFontTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbFontTypeActionPerformed
+        int size = 12; // Makes initial font size
+        Font font = new Font("Serif", Font.PLAIN, size);
+        
+        if(cbFontType.getSelectedItem().toString() != null) {
+            c.changeFont(jTextPane1, font.getSize(), cbFontType.getSelectedItem().toString());
+        }
+    }//GEN-LAST:event_cbFontTypeActionPerformed
+
+    private void cbFontSizeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbFontSizeActionPerformed
+        // TODO add your handling code here:
+        int size = 12; // Makes initial font size
+        Font font = new Font("Serif", Font.PLAIN, size);
+        
+        if(cbFontSize.getSelectedItem().toString() != null) {
+            c.changeFont(jTextPane1, Integer.parseInt(cbFontSize.getSelectedItem().toString()), font.getFontName());
+         }
+    }//GEN-LAST:event_cbFontSizeActionPerformed
     public void clearFormat(JTextPane jtp, Font font, Color c, int start) {
         MutableAttributeSet attrs = jtp.getInputAttributes();
         StyleConstants.setFontFamily(attrs, font.getFamily());
@@ -499,10 +615,14 @@ public class GroovyEditGUI extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBold;
     private javax.swing.JButton btnItalic;
+    private javax.swing.JComboBox<String> cbFontSize;
+    private javax.swing.JComboBox<String> cbFontType;
+    private javax.swing.JButton centerbtn;
     private javax.swing.JButton changeColor;
     private javax.swing.JLabel counter;
     private javax.swing.JMenuItem emojib;
     private javax.swing.JButton insertImage;
+    private javax.swing.JButton jButton1;
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
@@ -512,11 +632,13 @@ public class GroovyEditGUI extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextPane jTextPane1;
     private javax.swing.JToolBar jToolBar1;
+    private javax.swing.JButton leftbtn;
     private javax.swing.JMenuItem menuItem_New;
     private javax.swing.JMenuItem menuItem_Open;
     private javax.swing.JMenuItem menuItem_OpenPrev;
     private javax.swing.JMenuItem menuItem_Save;
     private javax.swing.JButton removeFormatting;
+    private javax.swing.JButton rightbtn;
     private javax.swing.JButton underline;
     // End of variables declaration//GEN-END:variables
 protected final JTextPane getFocusedComponent()

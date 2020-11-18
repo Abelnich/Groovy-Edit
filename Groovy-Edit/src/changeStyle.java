@@ -1,12 +1,6 @@
 
 import java.awt.Font;
 import javax.swing.JTextPane;
-
-/**
- * @author Max
- */
-
-
 import javax.swing.text.AttributeSet;
 import javax.swing.text.Element;
 import javax.swing.text.MutableAttributeSet;
