@@ -1,4 +1,5 @@
 
+import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -57,6 +58,13 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         rowNum = 1;
         colNum = 0;
         lblRowColNums.setText("row: " + rowNum + " col: " + colNum); // sets the initial row and col display
+        
+        // Open the settings file and read it
+        FileHandler handleSettings = new FileHandler("settings.txt", ".txt");
+        handleSettings.readTxtFile();
+        // Create a new color based on the saved rgb values from the settings file (parsed as it is saved as a string but needs an int)
+        Color savedColor = new Color(Integer.parseInt(handleSettings.getContentsArry().get(1)));
+        jTextPane1.setForeground(savedColor);
     }
 
     /**
@@ -82,6 +90,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         menuItem_Open = new javax.swing.JMenuItem();
         menuItem_OpenPrev = new javax.swing.JMenuItem();
         menuItem_Save = new javax.swing.JMenuItem();
+        menuItem_Settings = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
@@ -179,6 +188,15 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         });
         jMenu1.add(menuItem_Save);
 
+        menuItem_Settings.setText("Settings");
+        menuItem_Settings.setName("menuItem_Settings"); // NOI18N
+        menuItem_Settings.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItem_SettingsActionPerformed(evt);
+            }
+        });
+        jMenu1.add(menuItem_Settings);
+
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Edit");
@@ -246,9 +264,8 @@ public class GroovyEditGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void menuItem_NewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItem_NewActionPerformed
-        // NEW FUNCTION IN FILE MENU
-        // TODO: Check if file is open and unsaved before wiping
-        // TODO: Set jTextPanel text to empty string
+        // Checks if file is open and unsaved before wiping
+        // Sets jTextPanel text to empty string
 
         if (unsaved) {
             // Ask user if they want to create new file even though they have unsaved work
@@ -355,6 +372,13 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         calcCursPos();
     }//GEN-LAST:event_jTextPane1KeyPressed
 
+    private void menuItem_SettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItem_SettingsActionPerformed
+        // TODO add your handling code here:
+        Settings settingsWindow = new Settings();
+        settingsWindow.setVisible(true);
+        
+    }//GEN-LAST:event_menuItem_SettingsActionPerformed
+
     private void calcCursPos() {
 
         jTextPane1.addCaretListener(new CaretListener() {
@@ -430,5 +454,6 @@ public class GroovyEditGUI extends javax.swing.JFrame {
     private javax.swing.JMenuItem menuItem_Open;
     private javax.swing.JMenuItem menuItem_OpenPrev;
     private javax.swing.JMenuItem menuItem_Save;
+    private javax.swing.JMenuItem menuItem_Settings;
     // End of variables declaration//GEN-END:variables
 }
