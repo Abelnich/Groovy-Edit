@@ -20,6 +20,16 @@ public class FileHandler {
     public FileHandler(String fileName, String fileExtension) {
         this.fileName = fileName;
         myFile = new File(fileName);
+                
+        if (!myFile.isFile()) {
+            // creates the file if it doesn't exist
+            try {
+                myFile.createNewFile();
+            } catch (IOException ioe) {
+                System.out.println("File creation error: " + ioe.getMessage());
+            }
+        }
+        
         fileContents = new ArrayList();
 
         boolean extension = false;
