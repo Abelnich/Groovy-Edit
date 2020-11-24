@@ -9,6 +9,11 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
 public class changeStyle {
+    
+    public void changeStyle() {
+        
+    }
+    
     public boolean changeFont(JTextPane inp, int size, String style) {
         
         StyledDocument d = (StyledDocument) inp.getStyledDocument();
