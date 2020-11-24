@@ -61,6 +61,14 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuItem_SaveActionPerformed"/>
               </Events>
             </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="menuItemSettings">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Settings"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuItemSettingsActionPerformed"/>
+              </Events>
+            </MenuItem>
           </SubComponents>
         </Menu>
         <Menu class="javax.swing.JMenu" name="jMenu2">
@@ -289,6 +297,11 @@
         <Component class="javax.swing.JLabel" name="counter">
           <Properties>
             <Property name="text" type="java.lang.String" value="Length:   Lines:   Words:   "/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblRowColNums">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Row: Col: "/>
           </Properties>
         </Component>
       </SubComponents>

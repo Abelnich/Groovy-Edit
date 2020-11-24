@@ -4,7 +4,9 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.KeyboardFocusManager;
+import java.awt.Rectangle;
 import java.awt.Toolkit;
+import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.io.FileWriter;
 import javax.swing.JFileChooser;
@@ -12,7 +14,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextPane;
 import javax.swing.ImageIcon;
 import javax.swing.JColorChooser;
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
 import javax.swing.text.AttributeSet;
+import javax.swing.text.JTextComponent;
 import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
@@ -36,6 +41,8 @@ public class GroovyEditGUI extends javax.swing.JFrame {
 // Custom Variables
     private boldItalic b;
     private boolean unsaved;
+    private int rowNum, colNum; // current cursor position
+    
     private String currentFileExt;
     private String currentFilePath;
     private JTextPane activePane;
@@ -47,6 +54,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
 
     public GroovyEditGUI() {
         // Constructor
+        initComponents();
         b = new boldItalic();
 
         this.currentFileExt = "";
@@ -61,14 +69,27 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         String[] fontSize = {"8", "10", "12", "14", "16"}; // Makes the options for font size
         cbFontSize.setModel(new javax.swing.DefaultComboBoxModel(fontSize));
         cbFontSize.setFocusable(false);
-        
 
-        initComponents();
         Dimension layout = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation(layout.width/2 - this.getWidth()/2, layout.height/2 - this.getHeight()/2);
         this.setSize(1200,600);
         
+        FileHandler handleSettings = new FileHandler("settings.txt", ".txt");
+        handleSettings.readTxtFile();
+        if (handleSettings.getContentsArry().get(0).equals("Enable")) {
+            // TODO: Change all components to look good over darker background
+            this.getContentPane().setBackground(Color.GRAY);
+            this.jTextPane1.setBackground(Color.GRAY);
+        }
         
+        // Create a new color based on the saved rgb values from the settings file (parsed saved string as int)
+        Color savedColor = new Color(Integer.parseInt(handleSettings.getContentsArry().get(1)));
+        // Sets the text color
+        jTextPane1.setForeground(savedColor);
+        
+        rowNum = 1;
+        colNum = 0;
+        lblRowColNums.setText(" Row: " + rowNum + " Col: " + colNum); // Sets the initial row and col display
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -91,6 +112,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         removeFormatting = new javax.swing.JButton();
         insertImage = new javax.swing.JButton();
         counter = new javax.swing.JLabel();
+        lblRowColNums = new javax.swing.JLabel();
         leftbtn = new javax.swing.JButton();
         centerbtn = new javax.swing.JButton();
         rightbtn = new javax.swing.JButton();
@@ -102,6 +124,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         menuItem_Open = new javax.swing.JMenuItem();
         menuItem_OpenPrev = new javax.swing.JMenuItem();
         menuItem_Save = new javax.swing.JMenuItem();
+        menuItemSettings = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         emojib = new javax.swing.JMenuItem();
@@ -197,6 +220,9 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         counter.setText("Length:   Lines:   Words:   ");
         jToolBar1.add(counter);
 
+        lblRowColNums.setText("Row: Col: ");
+        jToolBar1.add(lblRowColNums);
+
         leftbtn.setText("Left");
         leftbtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -234,7 +260,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
 
         jMenu1.setText("File");
 
-        menuItem_New.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        menuItem_New.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
         menuItem_New.setText("New");
         menuItem_New.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -243,7 +269,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         });
         jMenu1.add(menuItem_New);
 
-        menuItem_Open.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        menuItem_Open.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
         menuItem_Open.setText("Open");
         menuItem_Open.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -260,7 +286,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         });
         jMenu1.add(menuItem_OpenPrev);
 
-        menuItem_Save.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        menuItem_Save.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
         menuItem_Save.setText("Save");
         menuItem_Save.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -269,11 +295,19 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         });
         jMenu1.add(menuItem_Save);
 
+        menuItemSettings.setText("Settings");
+        menuItemSettings.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemSettingsActionPerformed(evt);
+            }
+        });
+        jMenu1.add(menuItemSettings);
+
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Edit");
 
-        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem1.setText("Find");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -539,6 +573,13 @@ public class GroovyEditGUI extends javax.swing.JFrame {
             c.changeFont(jTextPane1, Integer.parseInt(cbFontSize.getSelectedItem().toString()), font.getFontName());
          }
     }//GEN-LAST:event_cbFontSizeActionPerformed
+
+    private void menuItemSettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemSettingsActionPerformed
+        // TODO add your handling code here:
+        Settings settingsWindow = new Settings();
+        settingsWindow.setVisible(true);
+        
+    }//GEN-LAST:event_menuItemSettingsActionPerformed
     public void clearFormat(JTextPane jtp, Font font, Color c, int start) {
         MutableAttributeSet attrs = jtp.getInputAttributes();
         StyleConstants.setFontFamily(attrs, font.getFamily());
@@ -578,6 +619,27 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         String name=file.getName();
             return name.endsWith(".jpg") || name.endsWith(".png") || name.endsWith(".jpeg") || name.endsWith(".gif") || name.endsWith(".JPG") || name.endsWith(".PNG") || name.endsWith(".JPEG") || name.endsWith(".GIF");
     }
+    
+    private void calcCursPos() {
+        jTextPane1.addCaretListener(new CaretListener() {
+            public void caretUpdate(CaretEvent e) {
+                JTextComponent textComp = (JTextComponent) e.getSource();
+                try {
+                    // Convert the UI to a 2d-rectangle
+                    Rectangle rect = textComp.modelToView(e.getDot());
+                    
+                    // Get the x and y coords from the rect and assign them to appropriate variable
+                    // Math accounts for character size
+                    rowNum = (int)(((rect.getY() - 4) / 16) + 1); // 
+                    colNum = (int)(((rect.getX() - 6) / 7));
+                    lblRowColNums.setText(" Row: " + rowNum + " Col: " + colNum);
+                } catch (Exception ex) {
+                    System.out.println("Caret Exception: " + ex.getMessage());
+                }
+            }
+        }); // end addCaretListener
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -632,7 +694,9 @@ public class GroovyEditGUI extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextPane jTextPane1;
     private javax.swing.JToolBar jToolBar1;
+    private javax.swing.JLabel lblRowColNums;
     private javax.swing.JButton leftbtn;
+    private javax.swing.JMenuItem menuItemSettings;
     private javax.swing.JMenuItem menuItem_New;
     private javax.swing.JMenuItem menuItem_Open;
     private javax.swing.JMenuItem menuItem_OpenPrev;
