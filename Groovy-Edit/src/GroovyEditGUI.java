@@ -47,6 +47,9 @@ public class GroovyEditGUI extends javax.swing.JFrame {
 
     public GroovyEditGUI() {
         // Constructor
+        
+        initComponents();
+        
         b = new boldItalic();
 
         this.currentFileExt = "";
@@ -63,7 +66,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         cbFontSize.setFocusable(false);
         
 
-        initComponents();
+        
         Dimension layout = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation(layout.width/2 - this.getWidth()/2, layout.height/2 - this.getHeight()/2);
         this.setSize(1200,600);
