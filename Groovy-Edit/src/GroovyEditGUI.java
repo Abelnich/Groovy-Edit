@@ -24,6 +24,7 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 import javax.swing.text.StyledDocument;
 import javax.swing.text.StyledEditorKit;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -42,7 +43,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
     private boldItalic b;
     private boolean unsaved;
     private int rowNum, colNum; // current cursor position
-    
+
     private String currentFileExt;
     private String currentFilePath;
     private JTextPane activePane;
@@ -61,7 +62,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         this.currentFilePath = "";
         this.unsaved = false;
         c = new changeStyle();
-        
+
         String[] fontType = {"Ariel", "Serif", "Comic Sans", "Times New Roman", "Calibari"}; //Makes the options for font type
         cbFontType.setModel(new javax.swing.DefaultComboBoxModel(fontType));
         cbFontType.setFocusable(false);
@@ -71,26 +72,29 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         cbFontSize.setFocusable(false);
 
         Dimension layout = Toolkit.getDefaultToolkit().getScreenSize();
-        this.setLocation(layout.width/2 - this.getWidth()/2, layout.height/2 - this.getHeight()/2);
-        this.setSize(1200,600);
-        
+        this.setLocation(layout.width / 2 - this.getWidth() / 2, layout.height / 2 - this.getHeight() / 2);
+        this.setSize(1200, 600);
+
         FileHandler handleSettings = new FileHandler("settings.txt", ".txt");
         handleSettings.readTxtFile();
-        if (handleSettings.getContentsArry().get(0).equals("Enable")) {
-            // TODO: Change all components to look good over darker background
-            this.getContentPane().setBackground(Color.GRAY);
-            this.jTextPane1.setBackground(Color.GRAY);
+        if (!handleSettings.getContentsArry().isEmpty()) {
+            if (handleSettings.getContentsArry().get(0).equals("Enable")) {
+                // TODO: Change all components to look good over darker background
+                this.getContentPane().setBackground(Color.GRAY);
+                this.jTextPane1.setBackground(Color.GRAY);
+            }
         }
-        
+
         // Create a new color based on the saved rgb values from the settings file (parsed saved string as int)
         Color savedColor = new Color(Integer.parseInt(handleSettings.getContentsArry().get(1)));
         // Sets the text color
         jTextPane1.setForeground(savedColor);
-        
+
         rowNum = 1;
         colNum = 0;
         lblRowColNums.setText(" Row: " + rowNum + " Col: " + colNum); // Sets the initial row and col display
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -450,8 +454,8 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         String emo;
         Emoji em = new Emoji(jTextPane1);
         em.setVisible(true);
-        
-        
+
+
     }//GEN-LAST:event_emojibActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
@@ -514,9 +518,9 @@ public class GroovyEditGUI extends javax.swing.JFrame {
     private void changeColorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeColorActionPerformed
         int start = getFocusedComponent().getSelectionStart();
         int end = getFocusedComponent().getSelectionEnd();
-        int selectedLength = end-start;
+        int selectedLength = end - start;
         StyledDocument style = getFocusedComponent().getStyledDocument();
-        AttributeSet oldset = style.getCharacterElement(end-1).getAttributes();
+        AttributeSet oldset = style.getCharacterElement(end - 1).getAttributes();
         StyleContext sc = StyleContext.getDefaultStyleContext();
         fontColor = JColorChooser.showDialog(this, "Select Text Color", clrCrnt);
         AttributeSet s = sc.addAttribute(oldset, StyleConstants.Foreground, fontColor);
@@ -527,7 +531,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         int start = getFocusedComponent().getSelectionStart();
         int end = getFocusedComponent().getSelectionEnd();
         int selectedLength = end - start;
-        if (selectedLength == 0){
+        if (selectedLength == 0) {
         } else {
             Font font = new Font("Tahoma", Font.PLAIN, 11);
             clearFormat(getFocusedComponent(), font, Color.black, start);
@@ -535,18 +539,18 @@ public class GroovyEditGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_removeFormattingActionPerformed
 
     private void underlineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_underlineActionPerformed
-       underline.addActionListener(new StyledEditorKit.UnderlineAction());
+        underline.addActionListener(new StyledEditorKit.UnderlineAction());
 
     }//GEN-LAST:event_underlineActionPerformed
 
     private void leftbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_leftbtnActionPerformed
-         StyleConstants.setAlignment(alignment, StyleConstants.ALIGN_LEFT);
+        StyleConstants.setAlignment(alignment, StyleConstants.ALIGN_LEFT);
         jTextPane1.getStyledDocument().setParagraphAttributes(0, jTextPane1.getDocument().getLength(), alignment, false);
     }//GEN-LAST:event_leftbtnActionPerformed
 
     private void centerbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_centerbtnActionPerformed
         StyleConstants.setAlignment(alignment, StyleConstants.ALIGN_CENTER);
-        jTextPane1.getStyledDocument().setParagraphAttributes(0, jTextPane1.getDocument().getLength(),alignment, false);
+        jTextPane1.getStyledDocument().setParagraphAttributes(0, jTextPane1.getDocument().getLength(), alignment, false);
     }//GEN-LAST:event_centerbtnActionPerformed
 
     private void rightbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rightbtnActionPerformed
@@ -554,12 +558,12 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         jTextPane1.getStyledDocument().setParagraphAttributes(0, jTextPane1.getDocument().getLength(), alignment, false);
     }//GEN-LAST:event_rightbtnActionPerformed
 
-    
+
     private void cbFontTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbFontTypeActionPerformed
         int size = 12; // Makes initial font size
         Font font = new Font("Serif", Font.PLAIN, size);
-        
-        if(cbFontType.getSelectedItem().toString() != null) {
+
+        if (cbFontType.getSelectedItem().toString() != null) {
             c.changeFont(jTextPane1, font.getSize(), cbFontType.getSelectedItem().toString());
         }
     }//GEN-LAST:event_cbFontTypeActionPerformed
@@ -568,17 +572,17 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
         int size = 12; // Makes initial font size
         Font font = new Font("Serif", Font.PLAIN, size);
-        
-        if(cbFontSize.getSelectedItem().toString() != null) {
+
+        if (cbFontSize.getSelectedItem().toString() != null) {
             c.changeFont(jTextPane1, Integer.parseInt(cbFontSize.getSelectedItem().toString()), font.getFontName());
-         }
+        }
     }//GEN-LAST:event_cbFontSizeActionPerformed
 
     private void menuItemSettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemSettingsActionPerformed
         // TODO add your handling code here:
         Settings settingsWindow = new Settings();
         settingsWindow.setVisible(true);
-        
+
     }//GEN-LAST:event_menuItemSettingsActionPerformed
     public void clearFormat(JTextPane jtp, Font font, Color c, int start) {
         MutableAttributeSet attrs = jtp.getInputAttributes();
@@ -596,30 +600,28 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         // Replace the style for the entire document.
         doc.setCharacterAttributes(start, getFocusedComponent().getSelectedText().length(), attrs, true);
     }
-    private void insertActionPerformed()
-    {
-        JFileChooser jf=new JFileChooser();
+
+    private void insertActionPerformed() {
+        JFileChooser jf = new JFileChooser();
         // Show open dialog
-        int option=jf.showOpenDialog(this);       
-            // If user chooses to insert
-            if(option==JFileChooser.APPROVE_OPTION)
+        int option = jf.showOpenDialog(this);
+        // If user chooses to insert
+        if (option == JFileChooser.APPROVE_OPTION) {
+            File file = jf.getSelectedFile();
+            if (isImage(file)) {
+                jTextPane1.insertIcon(new ImageIcon(file.getAbsolutePath()));
+            } else // Show an error message, if not an image
             {
-                File file=jf.getSelectedFile();
-                    if(isImage(file))
-                    {
-                        jTextPane1.insertIcon(new ImageIcon(file.getAbsolutePath()));
-                    }
-                    else
-                    // Show an error message, if not an image
-                    JOptionPane.showMessageDialog(this,"The file is not an image.","Not Image",JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "The file is not an image.", "Not Image", JOptionPane.ERROR_MESSAGE);
             }
+        }
     }
-    private boolean isImage(File file)
-    {
-        String name=file.getName();
-            return name.endsWith(".jpg") || name.endsWith(".png") || name.endsWith(".jpeg") || name.endsWith(".gif") || name.endsWith(".JPG") || name.endsWith(".PNG") || name.endsWith(".JPEG") || name.endsWith(".GIF");
+
+    private boolean isImage(File file) {
+        String name = file.getName();
+        return name.endsWith(".jpg") || name.endsWith(".png") || name.endsWith(".jpeg") || name.endsWith(".gif") || name.endsWith(".JPG") || name.endsWith(".PNG") || name.endsWith(".JPEG") || name.endsWith(".GIF");
     }
-    
+
     private void calcCursPos() {
         jTextPane1.addCaretListener(new CaretListener() {
             public void caretUpdate(CaretEvent e) {
@@ -627,11 +629,11 @@ public class GroovyEditGUI extends javax.swing.JFrame {
                 try {
                     // Convert the UI to a 2d-rectangle
                     Rectangle rect = textComp.modelToView(e.getDot());
-                    
+
                     // Get the x and y coords from the rect and assign them to appropriate variable
                     // Math accounts for character size
-                    rowNum = (int)(((rect.getY() - 4) / 16) + 1); // 
-                    colNum = (int)(((rect.getX() - 6) / 7));
+                    rowNum = (int) (((rect.getY() - 4) / 16) + 1); // 
+                    colNum = (int) (((rect.getX() - 6) / 7));
                     lblRowColNums.setText(" Row: " + rowNum + " Col: " + colNum);
                 } catch (Exception ex) {
                     System.out.println("Caret Exception: " + ex.getMessage());
@@ -639,7 +641,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
             }
         }); // end addCaretListener
     }
-    
+
     /**
      * @param args the command line arguments
      */
@@ -705,16 +707,14 @@ public class GroovyEditGUI extends javax.swing.JFrame {
     private javax.swing.JButton rightbtn;
     private javax.swing.JButton underline;
     // End of variables declaration//GEN-END:variables
-protected final JTextPane getFocusedComponent()
-    {
-            activePane = jTextPane1;
+protected final JTextPane getFocusedComponent() {
+        activePane = jTextPane1;
 
-            KeyboardFocusManager kfm = KeyboardFocusManager.getCurrentKeyboardFocusManager();
-            Component focused = kfm.getPermanentFocusOwner();
-            if (focused instanceof JTextPane){
-                activePane = (JTextPane) focused;
-            }
-            return activePane;
+        KeyboardFocusManager kfm = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+        Component focused = kfm.getPermanentFocusOwner();
+        if (focused instanceof JTextPane) {
+            activePane = (JTextPane) focused;
         }
+        return activePane;
     }
-
+}

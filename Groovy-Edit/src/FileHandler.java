@@ -32,6 +32,7 @@ public class FileHandler {
         }
         
         fileContents = new ArrayList();
+        System.out.println("File " + fileContents.size());
 
         boolean extension = false;
         String tempStr = ""; // Temporary string for file name w/o extension
