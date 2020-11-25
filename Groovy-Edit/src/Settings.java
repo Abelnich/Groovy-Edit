@@ -29,8 +29,6 @@ public class Settings extends javax.swing.JFrame {
     static String filePath = "C:\\Users\\Sheku\\Desktop\\Programming Stuff\\Software Engennering and Practice\\Groovy-Edit\\Groovy-Edit\\src\\Vaporwave Chillwave - Ultimate Mix.wav";
     static long clipTimePosition;
     
-    boolean encrypted = false;
-    GroovyEditGUI parent;
     static boolean isPlaying = true;
     static boolean isLooping = false;
     
@@ -39,11 +37,10 @@ public class Settings extends javax.swing.JFrame {
     
     private String darkMode;
     
-    public Settings(GroovyEditGUI par) {
+    public Settings() {
         initComponents();
         
-        parent = par;
-        fileHandle = new FileHandler("settings.txt", ".txt", false);
+        fileHandle = new FileHandler("settings.txt", ".txt");
         settingsList = fileHandle.getContentsArry();
         player.loadMusic(filePath);
         
@@ -85,8 +82,6 @@ public class Settings extends javax.swing.JFrame {
         fileInputTextField = new javax.swing.JTextField();
         loadButton = new javax.swing.JButton();
         btnPause = new javax.swing.JButton();
-        jToggleButton1 = new javax.swing.JToggleButton();
-        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Settings");
@@ -162,15 +157,6 @@ public class Settings extends javax.swing.JFrame {
             }
         });
 
-        jToggleButton1.setText("Enable");
-        jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jToggleButton1ActionPerformed(evt);
-            }
-        });
-
-        jLabel2.setText("Encrypt Save");
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -203,23 +189,18 @@ public class Settings extends javax.swing.JFrame {
                                 .addGap(0, 0, Short.MAX_VALUE)))
                         .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(61, 61, 61)
+                        .addComponent(btnPause)
+                        .addGap(268, 278, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(btnBack)
                         .addGap(18, 18, 18)
                         .addComponent(btnPlayPause)
                         .addGap(18, 18, 18)
                         .addComponent(btnNext)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 101, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(loadButton, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(37, 37, 37))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(61, 61, 61)
-                                .addComponent(btnPause))
-                            .addComponent(jLabel2))
-                        .addGap(15, 15, 15)
-                        .addComponent(jToggleButton1)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGap(37, 37, 37))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -233,11 +214,7 @@ public class Settings extends javax.swing.JFrame {
                     .addComponent(lblDefaultTxtColor)
                     .addComponent(btnSelectColor)
                     .addComponent(lblTextTest, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jToggleButton1)
-                    .addComponent(jLabel2))
-                .addGap(29, 29, 29)
+                .addGap(70, 70, 70)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblMusic)
                     .addComponent(lblCurrentTrack)
@@ -313,18 +290,6 @@ public class Settings extends javax.swing.JFrame {
     private void fileInputTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileInputTextFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_fileInputTextFieldActionPerformed
-
-    private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
-        if (parent!=null){
-            parent.toggleEncrypt();
-            if (this.jToggleButton1.getText()=="Enable"){
-                this.jToggleButton1.setText("Disable");
-            } else {
-                this.jToggleButton1.setText("Enable");
-            }
-
-        }
-    }//GEN-LAST:event_jToggleButton1ActionPerformed
    
     private void changeDarkMode(String eOrD) {
         if (eOrD.equals("Disable")) {
@@ -349,7 +314,7 @@ public class Settings extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public void main(String args[]) {
+    public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -374,10 +339,9 @@ public class Settings extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        final GroovyEditGUI pare = parent;
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Settings(pare).setVisible(true);
+                new Settings().setVisible(true);
             }
         });
     }
@@ -390,8 +354,6 @@ public class Settings extends javax.swing.JFrame {
     private javax.swing.JButton btnSelectColor;
     private javax.swing.JTextField fileInputTextField;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JToggleButton jToggleButton1;
     private javax.swing.JLabel lblCurrentTrack;
     private javax.swing.JLabel lblDark;
     private javax.swing.JLabel lblDefaultTxtColor;
