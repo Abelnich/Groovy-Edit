@@ -1,4 +1,5 @@
 
+import Music.MusicPlayerForm;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 
@@ -22,6 +23,12 @@ public static void main(String[] args) throws Exception {
         obj.setResizable(true);
         obj.setVisible(true);
         obj.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        //For Music Stuff
+        MusicPlayerForm playerForm = new MusicPlayerForm();
+        playerForm.setVisible(true);
+        playerForm.setResizable(false);
+        playerForm.setLocationRelativeTo(null);
     }
     
 }
