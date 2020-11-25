@@ -49,7 +49,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
     private JTextPane activePane;
     private Color fontColor;
     private Color clrCrnt;
-    private changeStyle c;
+    private changeStyle cS;
     SimpleAttributeSet alignment = new SimpleAttributeSet();
 // End of Custom Variables
 
@@ -61,7 +61,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         this.currentFileExt = "";
         this.currentFilePath = "";
         this.unsaved = false;
-        c = new changeStyle();
+        cS = new changeStyle();
 
         String[] fontType = {"Ariel", "Serif", "Comic Sans", "Times New Roman", "Calibari"}; //Makes the options for font type
         cbFontType.setModel(new javax.swing.DefaultComboBoxModel(fontType));
@@ -564,7 +564,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         Font font = new Font("Serif", Font.PLAIN, size);
 
         if (cbFontType.getSelectedItem().toString() != null) {
-            c.changeFont(jTextPane1, font.getSize(), cbFontType.getSelectedItem().toString());
+            cS.changeFont(jTextPane1, font.getSize(), cbFontType.getSelectedItem().toString());
         }
     }//GEN-LAST:event_cbFontTypeActionPerformed
 
@@ -574,7 +574,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         Font font = new Font("Serif", Font.PLAIN, size);
 
         if (cbFontSize.getSelectedItem().toString() != null) {
-            c.changeFont(jTextPane1, Integer.parseInt(cbFontSize.getSelectedItem().toString()), font.getFontName());
+            cS.changeFont(jTextPane1, Integer.parseInt(cbFontSize.getSelectedItem().toString()), font.getFontName());
         }
     }//GEN-LAST:event_cbFontSizeActionPerformed
 
