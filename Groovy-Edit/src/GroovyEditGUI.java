@@ -9,11 +9,13 @@ import java.awt.Toolkit;
 import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.io.FileWriter;
+import java.util.ArrayList;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTextPane;
 import javax.swing.ImageIcon;
 import javax.swing.JColorChooser;
+import javax.swing.UIManager;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import javax.swing.text.AttributeSet;
@@ -50,7 +52,9 @@ public class GroovyEditGUI extends javax.swing.JFrame {
     private Color fontColor;
     private Color clrCrnt;
     private changeStyle cS;
-    SimpleAttributeSet alignment = new SimpleAttributeSet();
+    private SimpleAttributeSet alignment = new SimpleAttributeSet();
+    
+    private ArrayList<String> settingsContents;
 // End of Custom Variables
 
     public GroovyEditGUI() {
@@ -77,11 +81,15 @@ public class GroovyEditGUI extends javax.swing.JFrame {
 
         FileHandler handleSettings = new FileHandler("settings.txt", ".txt");
         handleSettings.readTxtFile();
-        if (!handleSettings.getContentsArry().isEmpty()) {
-            if (handleSettings.getContentsArry().get(0).equals("Enable")) {
+        settingsContents = handleSettings.getContentsArry();
+        if (!settingsContents.isEmpty()) {
+            if (settingsContents.get(0).equals("Enable")) {
                 // TODO: Change all components to look good over darker background
                 this.getContentPane().setBackground(Color.GRAY);
-                this.jTextPane1.setBackground(Color.GRAY);
+                //this.jTextPane1.setBackground(Color.GRAY);
+            } else {
+                this.getContentPane().setBackground(UIManager.getColor("Panel.background"));
+                //this.().setBackground(UIManager.getColor("Panel.background"));
             }
         }
 
@@ -140,6 +148,13 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         jButton1.setText("jButton1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowFocusListener(new java.awt.event.WindowFocusListener() {
+            public void windowGainedFocus(java.awt.event.WindowEvent evt) {
+                formWindowGainedFocus(evt);
+            }
+            public void windowLostFocus(java.awt.event.WindowEvent evt) {
+            }
+        });
 
         jTextPane1.setFont(new java.awt.Font("Segoe UI Emoji", 0, 11)); // NOI18N
         jTextPane1.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -264,7 +279,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
 
         jMenu1.setText("File");
 
-        menuItem_New.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
+        menuItem_New.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         menuItem_New.setText("New");
         menuItem_New.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -273,7 +288,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         });
         jMenu1.add(menuItem_New);
 
-        menuItem_Open.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
+        menuItem_Open.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         menuItem_Open.setText("Open");
         menuItem_Open.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -290,7 +305,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         });
         jMenu1.add(menuItem_OpenPrev);
 
-        menuItem_Save.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
+        menuItem_Save.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         menuItem_Save.setText("Save");
         menuItem_Save.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -311,7 +326,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
 
         jMenu2.setText("Edit");
 
-        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         jMenuItem1.setText("Find");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -579,11 +594,26 @@ public class GroovyEditGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_cbFontSizeActionPerformed
 
     private void menuItemSettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemSettingsActionPerformed
-        // TODO add your handling code here:
         Settings settingsWindow = new Settings();
         settingsWindow.setVisible(true);
-
     }//GEN-LAST:event_menuItemSettingsActionPerformed
+
+    private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
+        // TODO add your handling code here:
+        FileHandler checkSettings = new FileHandler("settings.txt", ".txt");
+        checkSettings.readTxtFile();
+        settingsContents = checkSettings.getContentsArry();
+        if (!settingsContents.isEmpty()) {
+            if (settingsContents.get(0).equals("Enable")) {
+                // TODO: Change all components to look good over darker background
+                this.getContentPane().setBackground(Color.GRAY);
+                //this.jTextPane1.setBackground(Color.GRAY);
+            } else {
+                this.getContentPane().setBackground(UIManager.getColor("Panel.background"));
+                //this.().setBackground(UIManager.getColor("Panel.background"));
+            }
+        }
+    }//GEN-LAST:event_formWindowGainedFocus
     public void clearFormat(JTextPane jtp, Font font, Color c, int start) {
         MutableAttributeSet attrs = jtp.getInputAttributes();
         StyleConstants.setFontFamily(attrs, font.getFamily());
