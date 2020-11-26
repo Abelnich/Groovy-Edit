@@ -28,6 +28,7 @@ public class Settings extends javax.swing.JFrame {
     private static String filePath;
     private static String trackTitle;
     private static long clipTimePosition;
+    
 
     private static boolean isPlaying = false;
     private static boolean isLooping = false;
@@ -57,6 +58,7 @@ public class Settings extends javax.swing.JFrame {
             lblTextTest.setForeground(savedColor);
         }
 
+        System.out.println(isPlaying);
         // Music Stuff
         player.loadMusic(filePath);
         if (isPlaying) {
@@ -90,6 +92,7 @@ public class Settings extends javax.swing.JFrame {
         lblTextTest = new javax.swing.JLabel();
         fileLocationField = new javax.swing.JTextField();
         btn_Browse = new javax.swing.JButton();
+        btnPlayPause1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Settings");
@@ -148,6 +151,15 @@ public class Settings extends javax.swing.JFrame {
             }
         });
 
+        btnPlayPause1.setText("⏸");
+        btnPlayPause1.setToolTipText("Play/Pause");
+        btnPlayPause1.setOpaque(false);
+        btnPlayPause1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPlayPause1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -175,11 +187,16 @@ public class Settings extends javax.swing.JFrame {
                         .addComponent(lblTextTest)
                         .addContainerGap(133, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnBack)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnPlayPause)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnNext)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnBack)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnPlayPause)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnNext))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(61, 61, 61)
+                                .addComponent(btnPlayPause1)))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
@@ -204,7 +221,9 @@ public class Settings extends javax.swing.JFrame {
                     .addComponent(btnBack)
                     .addComponent(btnPlayPause)
                     .addComponent(btnNext))
-                .addContainerGap(57, Short.MAX_VALUE))
+                .addGap(35, 35, 35)
+                .addComponent(btnPlayPause1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         fileLocationField.setEditable(false);
@@ -282,6 +301,11 @@ public class Settings extends javax.swing.JFrame {
 
     }//GEN-LAST:event_browseForMusicFile
 
+    private void btnPlayPause1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPlayPause1ActionPerformed
+        clipTimePosition = player.clip.getMicrosecondPosition();
+        player.clip.stop();
+    }//GEN-LAST:event_btnPlayPause1ActionPerformed
+
     private void changeDarkMode(String eOrD) {
         if (eOrD.equals("Disable")) {
             tglDark.setText("Enable");
@@ -339,9 +363,10 @@ public class Settings extends javax.swing.JFrame {
     private javax.swing.JButton btnBack;
     private javax.swing.JButton btnNext;
     private javax.swing.JButton btnPlayPause;
+    private javax.swing.JButton btnPlayPause1;
     private javax.swing.JButton btnSelectColor;
     private javax.swing.JButton btn_Browse;
-    private javax.swing.JTextField fileLocationField;
+    public javax.swing.JTextField fileLocationField;
     private javax.swing.JLabel lblDark;
     private javax.swing.JLabel lblDefaultTxtColor;
     private javax.swing.JLabel lblMusic;
