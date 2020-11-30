@@ -32,7 +32,6 @@ public class FileHandler {
         }
         
         fileContents = new ArrayList();
-        System.out.println("File " + fileContents.size());
 
         boolean extension = false;
         String tempStr = ""; // Temporary string for file name w/o extension
@@ -77,6 +76,7 @@ public class FileHandler {
     } // end readFile()
 
     public void readTxtFile() {
+        fileContents.clear(); // clears the saved contents so it isn't duplicated
 
         try {
             fileIn = new Scanner(myFile);
@@ -98,13 +98,10 @@ public class FileHandler {
 
     public void writeTxtFile(String writeMe) {
 
-        // Converts writeMe Array to a String seperated by a new line character
-
         try {
             FileWriter myWriter = new FileWriter(this.fileName);
             myWriter.write(writeMe);
             myWriter.close();
-            System.out.println("Successfully wrote to the file.");
         } catch (Exception e) {
             System.out.println("An error occurred: " + e.getMessage());
         }
@@ -116,6 +113,7 @@ public class FileHandler {
     }
 
     public String arraylistToString(ArrayList<String> changeMe) {
+        // Converts writeMe Array to a String seperated by a new line character
         String arrayToString = String.join("\n", changeMe);
         return arrayToString;
     }
@@ -132,6 +130,10 @@ public class FileHandler {
     
     public ArrayList<String> getContentsArry() {
         return fileContents;
+    }
+    
+    public void clearTxtFile() {
+        writeTxtFile("");
     }
 
 }
