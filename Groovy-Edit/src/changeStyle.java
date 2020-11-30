@@ -10,7 +10,8 @@ import javax.swing.text.StyledDocument;
 
 public class changeStyle {
     
-
+    public changeStyle() {
+   }
    
     public boolean changeFont(JTextPane inp, int size, String style) {
         
