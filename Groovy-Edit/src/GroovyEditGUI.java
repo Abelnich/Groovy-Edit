@@ -128,9 +128,9 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         rightbtn = new javax.swing.JButton();
         cbFontType = new javax.swing.JComboBox<>();
         cbFontSize = new javax.swing.JComboBox<>();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        halfbtn = new javax.swing.JButton();
+        singlebtn = new javax.swing.JButton();
+        doublebtn = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         menuItem_New = new javax.swing.JMenuItem();
@@ -272,9 +272,14 @@ public class GroovyEditGUI extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setFocusable(false);
-        jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        halfbtn.setFocusable(false);
+        halfbtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/half.png"))); // NOI18N
+        halfbtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        halfbtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+
+        singlebtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/single.png"))); // NOI18N
+
+        doublebtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/double.png"))); // NOI18N
 
         jMenu1.setText("File");
 
@@ -376,9 +381,9 @@ public class GroovyEditGUI extends javax.swing.JFrame {
                         .addComponent(leftbtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(centerbtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(rightbtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(halfbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(singlebtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(doublebtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1))
         );
@@ -402,11 +407,11 @@ public class GroovyEditGUI extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(cbFontSize, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(halfbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(singlebtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(doublebtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap())))
         );
 
@@ -740,12 +745,11 @@ public class GroovyEditGUI extends javax.swing.JFrame {
     private javax.swing.JButton centerbtn;
     private javax.swing.JButton changeColor;
     private javax.swing.JLabel counter;
+    private javax.swing.JButton doublebtn;
     private javax.swing.JMenuItem emojib;
+    private javax.swing.JButton halfbtn;
     private javax.swing.JButton insertImage;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
@@ -765,6 +769,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
     private javax.swing.JMenuItem menuItem_Save;
     private javax.swing.JButton removeFormatting;
     private javax.swing.JButton rightbtn;
+    private javax.swing.JButton singlebtn;
     private javax.swing.JButton underline;
     // End of variables declaration//GEN-END:variables
 protected final JTextPane getFocusedComponent() {
