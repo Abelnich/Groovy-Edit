@@ -276,10 +276,27 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         halfbtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/half.png"))); // NOI18N
         halfbtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         halfbtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        halfbtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                halfbtnActionPerformed(evt);
+            }
+        });
 
+        singlebtn.setFocusable(false);
         singlebtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/single.png"))); // NOI18N
+        singlebtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                singlebtnActionPerformed(evt);
+            }
+        });
 
+        doublebtn.setFocusable(false);
         doublebtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/double.png"))); // NOI18N
+        doublebtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                doublebtnActionPerformed(evt);
+            }
+        });
 
         jMenu1.setText("File");
 
@@ -645,6 +662,25 @@ public class GroovyEditGUI extends javax.swing.JFrame {
             }
         }).start();
     }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    SimpleAttributeSet spacing = new SimpleAttributeSet();
+    
+    
+    private void halfbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_halfbtnActionPerformed
+        StyleConstants.setLineSpacing(spacing, (float).25);
+        jTextPane1.getStyledDocument().setParagraphAttributes(0, jTextPane1.getDocument().getLength(), spacing, false);
+    }//GEN-LAST:event_halfbtnActionPerformed
+
+    private void singlebtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_singlebtnActionPerformed
+        StyleConstants.setLineSpacing(spacing, (float).5);
+        jTextPane1.getStyledDocument().setParagraphAttributes(0, jTextPane1.getDocument().getLength(), spacing, false);
+
+    }//GEN-LAST:event_singlebtnActionPerformed
+
+    private void doublebtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doublebtnActionPerformed
+        StyleConstants.setLineSpacing(spacing, (float)1);
+        jTextPane1.getStyledDocument().setParagraphAttributes(0, jTextPane1.getDocument().getLength(), spacing, false);
+    }//GEN-LAST:event_doublebtnActionPerformed
     public void clearFormat(JTextPane jtp, Font font, Color c, int start) {
         MutableAttributeSet attrs = jtp.getInputAttributes();
         StyleConstants.setFontFamily(attrs, font.getFamily());
