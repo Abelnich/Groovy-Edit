@@ -237,19 +237,21 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         lblRowColNums.setText("Row: Col: ");
         jToolBar1.add(lblRowColNums);
 
-        leftbtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/colorText.png"))); // NOI18N
+        leftbtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/align-left-4-32.png"))); // NOI18N
         leftbtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 leftbtnActionPerformed(evt);
             }
         });
 
+        centerbtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/align-center-2-32.png"))); // NOI18N
         centerbtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 centerbtnActionPerformed(evt);
             }
         });
 
+        rightbtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/align-right-4-32.png"))); // NOI18N
         rightbtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 rightbtnActionPerformed(evt);
