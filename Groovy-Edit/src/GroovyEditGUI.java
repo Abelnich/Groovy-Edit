@@ -51,34 +51,34 @@ public class GroovyEditGUI extends javax.swing.JFrame {
     private JTextPane activePane;
     private Color fontColor;
     private Color clrCrnt;
-    changeStyle cSS;
+    private changeStyle cS;
     private SimpleAttributeSet alignment = new SimpleAttributeSet();
-    
-        //Create Global music player object
+
+    //Create Global music player object
     private static musicPlayer player = musicPlayer.getInstance();
     private static String filePath;
+    private String savedFilePath;
     private static String trackTitle;
     private static long clipTimePosition;
-    public Settings set;
-    
+
     private static boolean isPlaying = false;
     private static boolean isLooping = false;
-    
+
+    private FileHandler handleSettings;
     private ArrayList<String> settingsContents;
+    private boolean darkMode;
 // End of Custom Variables
 
     public GroovyEditGUI() {
         // Constructor
         initComponents();
         b = new boldItalic();
-        
-         set = new Settings();
+
         this.currentFileExt = "";
         this.currentFilePath = "";
         this.unsaved = false;
-        cSS = new changeStyle();
-       
-        
+        cS = new changeStyle();
+
         String[] fontType = {"Ariel", "Serif", "Comic Sans", "Times New Roman", "Calibari"}; //Makes the options for font type
         cbFontType.setModel(new javax.swing.DefaultComboBoxModel(fontType));
         cbFontType.setFocusable(false);
@@ -91,38 +91,64 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         this.setLocation(layout.width / 2 - this.getWidth() / 2, layout.height / 2 - this.getHeight() / 2);
         this.setSize(1200, 600);
 
-        FileHandler handleSettings = new FileHandler("settings.txt", ".txt");
-        handleSettings.readTxtFile();
-        settingsContents = handleSettings.getContentsArry();
-        if (!settingsContents.isEmpty()) {
-            if (settingsContents.get(0).equals("Enable")) {
-                // TODO: Change all components to look good over darker background
-                this.getContentPane().setBackground(Color.GRAY);
-                //this.jTextPane1.setBackground(Color.GRAY);
-            } else {
-                this.getContentPane().setBackground(UIManager.getColor("Panel.background"));
-                //this.().setBackground(UIManager.getColor("Panel.background"));
-            }
-        }
+        // Settings stuff
+        handleSettings = new FileHandler("settings.txt", ".txt");
 
+        settingsContents = handleSettings.getContentsArry();
+
+        // Dark mode
+        if (settingsContents.size() == 0) {
+            // if settings file is missing the first item
+            settingsContents.add("Disable"); // dark mode toggle : index 0
+            handleSettings.clearTxtFile();
+            handleSettings.writeTxtFile(handleSettings.arraylistToString(handleSettings.getContentsArry()));
+        }
+        
+        if (settingsContents.get(0).equals("Enable")) {
+            darkMode = true;
+        } else {
+            darkMode = false;
+        }
+        
+        // Default text color
+        if (settingsContents.size() == 1) {
+            // if settings file is missing the second item
+            settingsContents.add("-16777216"); // default text color (black in this case) in rgb : index 1
+            handleSettings.clearTxtFile();
+            handleSettings.writeTxtFile(handleSettings.arraylistToString(handleSettings.getContentsArry()));
+        }
+        
         // Create a new color based on the saved rgb values from the settings file (parsed saved string as int)
         Color savedColor = new Color(Integer.parseInt(handleSettings.getContentsArry().get(1)));
         // Sets the text color
         jTextPane1.setForeground(savedColor);
+        
+        // Last saved music file location
+        if (settingsContents.size() == 2) {
+            // if settings file is missing the third item
+            savedFilePath = "C:\\Users"; // first \ is an escape character for the second
+            settingsContents.add(savedFilePath); // default music file location : index 2
+            handleSettings.clearTxtFile();
+            handleSettings.writeTxtFile(handleSettings.arraylistToString(handleSettings.getContentsArry()));
+        }
+        savedFilePath = settingsContents.get(2);
 
         rowNum = 1;
         colNum = 0;
         lblRowColNums.setText(" Row: " + rowNum + " Col: " + colNum); // Sets the initial row and col display
-        
-        
-        System.out.println(isPlaying);
+
         // Music Stuff
-        player.loadMusic(filePath);
+        player.loadMusic(savedFilePath);
         if (isPlaying) {
             // There is currently music playing
             fileLocationField.setText(filePath);
         } else {
             // Nothing is playing
+            System.out.println(savedFilePath);
+            if (savedFilePath != null && savedFilePath.contains(".wav")) {
+                // if file exists and is playable
+                fileLocationField.setText(savedFilePath);
+            }
             filePath = "";
             trackTitle = "";
         }
@@ -513,10 +539,14 @@ public class GroovyEditGUI extends javax.swing.JFrame {
             if (dialogResult == JOptionPane.YES_OPTION) {
                 jTextPane1.setText("");
                 unsaved = false;
+                currentFilePath = "";
+                currentFileExt = "";
             }
         } else {
             jTextPane1.setText("");
             unsaved = false;
+            currentFilePath = "";
+            currentFileExt = "";
         }
 
     }//GEN-LAST:event_menuItem_NewActionPerformed
@@ -542,8 +572,6 @@ public class GroovyEditGUI extends javax.swing.JFrame {
             }
             FileHandler currFile = new FileHandler(currentFilePath, currentFileExt);
             jTextPane1.setText(currFile.getContents());
-        } else {
-            System.out.println("Open command cancelled by user." + "\n");
         }
     }//GEN-LAST:event_menuItem_OpenActionPerformed
 
@@ -572,11 +600,9 @@ public class GroovyEditGUI extends javax.swing.JFrame {
 
     private void menuItem_SaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItem_SaveActionPerformed
         // SAVE FUNCTION IN FILE MENU
-        System.out.println(currentFilePath);
         if (!currentFilePath.equals("")) {
             // There is a current file open
             FileHandler saveThis = new FileHandler(currentFilePath, currentFileExt);
-            System.out.println(jTextPane1.getText());
             saveThis.writeFile(jTextPane1.getText(), currentFileExt);
         } else {
             JFileChooser fileChooser = new JFileChooser();
@@ -592,15 +618,25 @@ public class GroovyEditGUI extends javax.swing.JFrame {
                 if (extension.equals("*.txt,*.TXT")) {
                     currentFileExt = ".txt";
                 } else {
+                    // All Files
                     currentFileExt = ".txt";
                 }
 
                 File fileToSave = fileChooser.getSelectedFile();
 
-                System.out.println("Save as file: " + fileToSave.getAbsolutePath());
+                //FileHandler saveThis = new FileHandler();
                 try {
-                    File newFile = new File(fileToSave.getAbsolutePath() + currentFileExt);
-                    FileWriter myWriter = new FileWriter(newFile);
+                    FileHandler saveThis;
+                    currentFilePath = fileToSave.getAbsolutePath();
+                    if (currentFilePath.contains(".txt")) {
+                        // If the file name contains the extension, don't add it again
+                        System.out.println("has extension");
+                        saveThis = new FileHandler(currentFilePath.substring(0, currentFilePath.length() - 3), currentFileExt);
+                    } else {
+                        System.out.println("hasn't extension");
+                        saveThis = new FileHandler(currentFilePath + currentFileExt, currentFileExt);
+                    }
+                    saveThis.writeFile(jTextPane1.getText(), currentFileExt);
                     this.unsaved = false;
                 } catch (Exception e) {
                     System.out.println("File save error: " + e.getMessage());
@@ -619,6 +655,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         lines = (jTextPane1.getText() + "|").split("\n").length;
         words = jTextPane1.getText().trim().split("\\s+").length;
         counter.setText("Length:   " + length + " Lines:   " + lines + " Words:   " + words);
+        calcCursPos(); // update the cursor location displayed
     }//GEN-LAST:event_jTextPane1KeyPressed
 
     private void changeColorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeColorActionPerformed
@@ -670,7 +707,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         Font font = new Font("Serif", Font.PLAIN, size);
 
         if (cbFontType.getSelectedItem().toString() != null) {
-            cSS.changeFont(jTextPane1, font.getSize(), cbFontType.getSelectedItem().toString());
+            cS.changeFont(jTextPane1, font.getSize(), cbFontType.getSelectedItem().toString());
         }
     }//GEN-LAST:event_cbFontTypeActionPerformed
 
@@ -680,7 +717,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         Font font = new Font("Serif", Font.PLAIN, size);
 
         if (cbFontSize.getSelectedItem().toString() != null) {
-            cSS.changeFont(jTextPane1, Integer.parseInt(cbFontSize.getSelectedItem().toString()), font.getFontName());
+            cS.changeFont(jTextPane1, Integer.parseInt(cbFontSize.getSelectedItem().toString()), font.getFontName());
         }
     }//GEN-LAST:event_cbFontSizeActionPerformed
 
@@ -691,23 +728,20 @@ public class GroovyEditGUI extends javax.swing.JFrame {
 
     private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
         // TODO add your handling code here:
-        FileHandler checkSettings = new FileHandler("settings.txt", ".txt");
-        checkSettings.readTxtFile();
-        settingsContents = checkSettings.getContentsArry();
+        handleSettings.readTxtFile();
+        settingsContents = handleSettings.getContentsArry();
         if (!settingsContents.isEmpty()) {
             if (settingsContents.get(0).equals("Enable")) {
-                // TODO: Change all components to look good over darker background
-                this.getContentPane().setBackground(Color.GRAY);
-                //this.jTextPane1.setBackground(Color.GRAY);
+                darkMode = true;
             } else {
-                this.getContentPane().setBackground(UIManager.getColor("Panel.background"));
-                //this.().setBackground(UIManager.getColor("Panel.background"));
+                darkMode = false;
             }
         }
+        changeDarkMode(darkMode);
     }//GEN-LAST:event_formWindowGainedFocus
 
     private void btnPlayPauseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPlayPauseActionPerformed
-
+        if (savedFilePath.contains(".wav")) {filePath = savedFilePath;}
         if (!filePath.isEmpty()) {
             // A file has been loaded
             int extStart = filePath.indexOf(".");
@@ -746,12 +780,15 @@ public class GroovyEditGUI extends javax.swing.JFrame {
             trackTitle = file.getPath().substring(0, extStart);
             if (filePath.substring(extStart).equals(".wav")) {
                 player.loadMusic(filePath);
+                savedFilePath = filePath;
+                settingsContents.set(2, savedFilePath); // write last file location to settings
+                handleSettings.clearTxtFile();
+                System.out.println("f " + settingsContents);
+                handleSettings.writeTxtFile(handleSettings.arraylistToString(settingsContents));
             } else {
                 // not a supported file
                 JOptionPane.showMessageDialog(null, "Please select a wav file.", "File Compatibility Error", JOptionPane.INFORMATION_MESSAGE);
             }
-        } else {
-            System.out.println("Open command cancelled by user." + "\n");
         }
     }//GEN-LAST:event_btn_BrowsebrowseForMusicFile
     public void clearFormat(JTextPane jtp, Font font, Color c, int start) {
@@ -810,6 +847,16 @@ public class GroovyEditGUI extends javax.swing.JFrame {
                 }
             }
         }); // end addCaretListener
+    }
+
+    private void changeDarkMode(boolean dark) {
+        if (dark) {
+            this.getContentPane().setBackground(Color.GRAY);
+            this.jTextPane1.setBackground(Color.LIGHT_GRAY);
+        } else {
+            this.getContentPane().setBackground(UIManager.getColor("Panel.background"));
+            this.jTextPane1.setBackground(Color.WHITE);
+        }
     }
 
     /**
