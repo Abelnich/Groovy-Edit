@@ -23,7 +23,6 @@ public static void main(String[] args) throws Exception {
         obj.setResizable(true);
         obj.setVisible(true);
         obj.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
     }
     
 }
