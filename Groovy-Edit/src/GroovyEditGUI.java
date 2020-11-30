@@ -123,6 +123,9 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         insertImage = new javax.swing.JButton();
         counter = new javax.swing.JLabel();
         lblRowColNums = new javax.swing.JLabel();
+        oneInch = new javax.swing.JButton();
+        oneAndHalfInch = new javax.swing.JButton();
+        twoInch = new javax.swing.JButton();
         leftbtn = new javax.swing.JButton();
         centerbtn = new javax.swing.JButton();
         rightbtn = new javax.swing.JButton();
@@ -236,6 +239,39 @@ public class GroovyEditGUI extends javax.swing.JFrame {
 
         lblRowColNums.setText("Row: Col: ");
         jToolBar1.add(lblRowColNums);
+
+        oneInch.setText("1\"");
+        oneInch.setFocusable(false);
+        oneInch.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        oneInch.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        oneInch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                oneInchActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(oneInch);
+
+        oneAndHalfInch.setText("1.5\"");
+        oneAndHalfInch.setFocusable(false);
+        oneAndHalfInch.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        oneAndHalfInch.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        oneAndHalfInch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                oneAndHalfInchActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(oneAndHalfInch);
+
+        twoInch.setText("2\"");
+        twoInch.setFocusable(false);
+        twoInch.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        twoInch.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        twoInch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                twoInchActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(twoInch);
 
         leftbtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/align-left-4-32.png"))); // NOI18N
         leftbtn.addActionListener(new java.awt.event.ActionListener() {
@@ -681,6 +717,22 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         StyleConstants.setLineSpacing(spacing, (float)1);
         jTextPane1.getStyledDocument().setParagraphAttributes(0, jTextPane1.getDocument().getLength(), spacing, false);
     }//GEN-LAST:event_doublebtnActionPerformed
+
+    SimpleAttributeSet margins = new SimpleAttributeSet();
+    
+    private void twoInchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_twoInchActionPerformed
+        StyleConstants.setLeftIndent(margins, 150);
+        jTextPane1.getStyledDocument().setParagraphAttributes(0, jTextPane1.getDocument().getLength(), margins, false);
+    }//GEN-LAST:event_twoInchActionPerformed
+
+    private void oneInchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_oneInchActionPerformed
+        StyleConstants.setLeftIndent(margins, 75);
+        jTextPane1.getStyledDocument().setParagraphAttributes(0, jTextPane1.getDocument().getLength(), margins, false);    }//GEN-LAST:event_oneInchActionPerformed
+
+    private void oneAndHalfInchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_oneAndHalfInchActionPerformed
+        StyleConstants.setLeftIndent(margins, 113);
+        jTextPane1.getStyledDocument().setParagraphAttributes(0, jTextPane1.getDocument().getLength(), margins, false);
+    }//GEN-LAST:event_oneAndHalfInchActionPerformed
     public void clearFormat(JTextPane jtp, Font font, Color c, int start) {
         MutableAttributeSet attrs = jtp.getInputAttributes();
         StyleConstants.setFontFamily(attrs, font.getFamily());
@@ -803,9 +855,12 @@ public class GroovyEditGUI extends javax.swing.JFrame {
     private javax.swing.JMenuItem menuItem_Open;
     private javax.swing.JMenuItem menuItem_OpenPrev;
     private javax.swing.JMenuItem menuItem_Save;
+    private javax.swing.JButton oneAndHalfInch;
+    private javax.swing.JButton oneInch;
     private javax.swing.JButton removeFormatting;
     private javax.swing.JButton rightbtn;
     private javax.swing.JButton singlebtn;
+    private javax.swing.JButton twoInch;
     private javax.swing.JButton underline;
     // End of variables declaration//GEN-END:variables
 protected final JTextPane getFocusedComponent() {
