@@ -400,11 +400,11 @@ public class GroovyEditGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnBoldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBoldActionPerformed
-        b.changeStyle(jTextPane1, 1);
+        b.changeItB(jTextPane1, 1);
     }//GEN-LAST:event_btnBoldActionPerformed
 
     private void btnItalicActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnItalicActionPerformed
-        b.changeStyle(jTextPane1, 0);
+        b.changeItB(jTextPane1, 0);
     }//GEN-LAST:event_btnItalicActionPerformed
 
     private void insertImageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertImageActionPerformed
