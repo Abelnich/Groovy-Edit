@@ -144,7 +144,6 @@ public class GroovyEditGUI extends javax.swing.JFrame {
             fileLocationField.setText(filePath);
         } else {
             // Nothing is playing
-            System.out.println(savedFilePath);
             if (savedFilePath != null && savedFilePath.contains(".wav")) {
                 // if file exists and is playable
                 fileLocationField.setText(savedFilePath);
