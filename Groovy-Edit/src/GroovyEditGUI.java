@@ -14,11 +14,13 @@ import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.io.File;
 import java.io.FileWriter;
+import java.util.ArrayList;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTextPane;
 import javax.swing.ImageIcon;
 import javax.swing.JColorChooser;
+import javax.swing.UIManager;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import javax.swing.text.AttributeSet;
@@ -55,8 +57,22 @@ public class GroovyEditGUI extends javax.swing.JFrame {
     private JTextPane activePane;
     private Color fontColor;
     private Color clrCrnt;
-    private changeStyle c;
-    SimpleAttributeSet alignment = new SimpleAttributeSet();
+    private changeStyle cS;
+    private SimpleAttributeSet alignment = new SimpleAttributeSet();
+
+    //Create Global music player object
+    private static musicPlayer player = musicPlayer.getInstance();
+    private static String filePath;
+    private String savedFilePath;
+    private static String trackTitle;
+    private static long clipTimePosition;
+
+    private static boolean isPlaying = false;
+    private static boolean isLooping = false;
+
+    private FileHandler handleSettings;
+    private ArrayList<String> settingsContents;
+    private boolean darkMode;
 // End of Custom Variables
 
     public GroovyEditGUI() {
@@ -67,7 +83,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         this.currentFileExt = "";
         this.currentFilePath = "";
         this.unsaved = false;
-        c = new changeStyle();
+        cS = new changeStyle();
 
         String[] fontType = {"Ariel", "Serif", "Comic Sans", "Times New Roman", "Calibari"}; //Makes the options for font type
         cbFontType.setModel(new javax.swing.DefaultComboBoxModel(fontType));
@@ -81,24 +97,67 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         this.setLocation(layout.width / 2 - this.getWidth() / 2, layout.height / 2 - this.getHeight() / 2);
         this.setSize(1200, 600);
 
-        FileHandler handleSettings = new FileHandler("settings.txt", ".txt",false);
-        handleSettings.readTxtFile();
-        if (!handleSettings.getContentsArry().isEmpty()) {
-            if (handleSettings.getContentsArry().get(0).equals("Enable")) {
-                // TODO: Change all components to look good over darker background
-                this.getContentPane().setBackground(Color.GRAY);
-                this.jTextPane1.setBackground(Color.GRAY);
-            }
-        }
+        // Settings stuff
+        handleSettings = new FileHandler("settings.txt", ".txt", false);
 
+        settingsContents = handleSettings.getContentsArry();
+
+        // Dark mode
+        if (settingsContents.size() == 0) {
+            // if settings file is missing the first item
+            settingsContents.add("Disable"); // dark mode toggle : index 0
+            handleSettings.clearTxtFile();
+            handleSettings.writeTxtFile(handleSettings.arraylistToString(handleSettings.getContentsArry()));
+        }
+        
+        if (settingsContents.get(0).equals("Enable")) {
+            darkMode = true;
+        } else {
+            darkMode = false;
+        }
+        
+        // Default text color
+        if (settingsContents.size() == 1) {
+            // if settings file is missing the second item
+            settingsContents.add("-16777216"); // default text color (black in this case) in rgb : index 1
+            handleSettings.clearTxtFile();
+            handleSettings.writeTxtFile(handleSettings.arraylistToString(handleSettings.getContentsArry()));
+        }
+        
         // Create a new color based on the saved rgb values from the settings file (parsed saved string as int)
         Color savedColor = new Color(Integer.parseInt(handleSettings.getContentsArry().get(1)));
         // Sets the text color
         jTextPane1.setForeground(savedColor);
+        
+        // Last saved music file location
+        if (settingsContents.size() == 2) {
+            // if settings file is missing the third item
+            savedFilePath = "C:\\Users"; // first \ is an escape character for the second
+            settingsContents.add(savedFilePath); // default music file location : index 2
+            handleSettings.clearTxtFile();
+            handleSettings.writeTxtFile(handleSettings.arraylistToString(handleSettings.getContentsArry()));
+        }
+        savedFilePath = settingsContents.get(2);
 
         rowNum = 1;
         colNum = 0;
         lblRowColNums.setText(" Row: " + rowNum + " Col: " + colNum); // Sets the initial row and col display
+
+        // Music Stuff
+        player.loadMusic(savedFilePath);
+        if (isPlaying) {
+            // There is currently music playing
+            fileLocationField.setText(filePath);
+        } else {
+            // Nothing is playing
+            System.out.println(savedFilePath);
+            if (savedFilePath != null && savedFilePath.contains(".wav")) {
+                // if file exists and is playable
+                fileLocationField.setText(savedFilePath);
+            }
+            filePath = "";
+            trackTitle = "";
+        }
     }
 
     /**
@@ -128,6 +187,12 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         rightbtn = new javax.swing.JButton();
         cbFontType = new javax.swing.JComboBox<>();
         cbFontSize = new javax.swing.JComboBox<>();
+        btnPlayPause = new javax.swing.JButton();
+        btnNext = new javax.swing.JButton();
+        btnBack = new javax.swing.JButton();
+        fileLocationField = new javax.swing.JTextField();
+        lblMusic = new javax.swing.JLabel();
+        btn_Browse = new javax.swing.JButton();
         halfbtn = new javax.swing.JButton();
         singlebtn = new javax.swing.JButton();
         doublebtn = new javax.swing.JButton();
@@ -150,6 +215,13 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         jButton1.setText("jButton1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowFocusListener(new java.awt.event.WindowFocusListener() {
+            public void windowGainedFocus(java.awt.event.WindowEvent evt) {
+                formWindowGainedFocus(evt);
+            }
+            public void windowLostFocus(java.awt.event.WindowEvent evt) {
+            }
+        });
 
         jTextPane1.setFont(new java.awt.Font("Segoe UI Emoji", 0, 11)); // NOI18N
         jTextPane1.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -272,6 +344,36 @@ public class GroovyEditGUI extends javax.swing.JFrame {
             }
         });
 
+        btnPlayPause.setText("▶⏸");
+        btnPlayPause.setToolTipText("Play/Pause");
+        btnPlayPause.setOpaque(false);
+        btnPlayPause.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPlayPauseActionPerformed(evt);
+            }
+        });
+
+        btnNext.setText("⏭");
+        btnNext.setToolTipText("Next");
+        btnNext.setOpaque(false);
+
+        btnBack.setText("⏮");
+        btnBack.setToolTipText("Restart");
+        btnBack.setFocusable(false);
+        btnBack.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnBack.setOpaque(false);
+        btnBack.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+
+        fileLocationField.setText("none");
+
+        lblMusic.setText("Music:");
+        lblMusic.setAutoscrolls(true);
+
+        btn_Browse.setText("...");
+        btn_Browse.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_BrowsebrowseForMusicFile(evt);
+              
         halfbtn.setFocusable(false);
         halfbtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/half.png"))); // NOI18N
         halfbtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -295,12 +397,13 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         doublebtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 doublebtnActionPerformed(evt);
+
             }
         });
 
         jMenu1.setText("File");
 
-        menuItem_New.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
+        menuItem_New.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         menuItem_New.setText("New");
         menuItem_New.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -309,7 +412,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         });
         jMenu1.add(menuItem_New);
 
-        menuItem_Open.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
+        menuItem_Open.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         menuItem_Open.setText("Open");
         menuItem_Open.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -326,7 +429,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         });
         jMenu1.add(menuItem_OpenPrev);
 
-        menuItem_Save.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
+        menuItem_Save.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         menuItem_Save.setText("Save");
         menuItem_Save.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -355,7 +458,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
 
         jMenu2.setText("Edit");
 
-        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         jMenuItem1.setText("Find");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -388,9 +491,38 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 564, Short.MAX_VALUE)
+            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 1089, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addGap(15, 15, 15)
+
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(leftbtn, javax.swing.GroupLayout.DEFAULT_SIZE, 73, Short.MAX_VALUE)
+                    .addComponent(centerbtn, javax.swing.GroupLayout.DEFAULT_SIZE, 73, Short.MAX_VALUE)
+                    .addComponent(rightbtn, javax.swing.GroupLayout.DEFAULT_SIZE, 73, Short.MAX_VALUE)
+                    .addComponent(cbFontType, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cbFontSize, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(146, 146, 146)
+                                .addComponent(btnBack)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnPlayPause)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnNext))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(44, 44, 44)
+                                .addComponent(lblMusic, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(fileLocationField, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btn_Browse, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 995, javax.swing.GroupLayout.PREFERRED_SIZE))))
+
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addComponent(cbFontType, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -403,14 +535,30 @@ public class GroovyEditGUI extends javax.swing.JFrame {
                     .addComponent(doublebtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1))
+
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(leftbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnPlayPause)
+                            .addComponent(btnNext)))
+                    .addComponent(btnBack))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(centerbtn)
+                    .addComponent(fileLocationField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblMusic)
+                    .addComponent(btn_Browse))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 511, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
@@ -430,10 +578,12 @@ public class GroovyEditGUI extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(doublebtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap())))
+
         );
 
         jToolBar1.getAccessibleContext().setAccessibleDescription("");
         jToolBar1.getAccessibleContext().setAccessibleParent(jTextPane1);
+        fileLocationField.setEditable(false);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -461,10 +611,14 @@ public class GroovyEditGUI extends javax.swing.JFrame {
             if (dialogResult == JOptionPane.YES_OPTION) {
                 jTextPane1.setText("");
                 unsaved = false;
+                currentFilePath = "";
+                currentFileExt = "";
             }
         } else {
             jTextPane1.setText("");
             unsaved = false;
+            currentFilePath = "";
+            currentFileExt = "";
         }
 
     }//GEN-LAST:event_menuItem_NewActionPerformed
@@ -492,10 +646,8 @@ public class GroovyEditGUI extends javax.swing.JFrame {
                     currentFileExt += ch;
                 }
             }
-            FileHandler currFile = new FileHandler(currentFilePath, currentFileExt,encrypted);
+            FileHandler currFile = new FileHandler(currentFilePath, currentFileExt, encrypted);
             jTextPane1.setText(currFile.getContents());
-        } else {
-            System.out.println("Open command cancelled by user." + "\n");
         }
     }//GEN-LAST:event_menuItem_OpenActionPerformed
 
@@ -524,11 +676,11 @@ public class GroovyEditGUI extends javax.swing.JFrame {
 
     private void menuItem_SaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItem_SaveActionPerformed
         // SAVE FUNCTION IN FILE MENU
-        System.out.println(currentFilePath);
         if (!currentFilePath.equals("")) {
             // There is a current file open
-            FileHandler saveThis = new FileHandler(currentFilePath, currentFileExt,encrypted);
-            System.out.println(jTextPane1.getText());
+
+            FileHandler saveThis = new FileHandler(currentFilePath, currentFileExt, encrypted);
+
             saveThis.writeFile(jTextPane1.getText(), currentFileExt);
         } else {
             JFileChooser fileChooser = new JFileChooser();
@@ -544,15 +696,24 @@ public class GroovyEditGUI extends javax.swing.JFrame {
                 if (extension.equals("*.txt,*.TXT")) {
                     currentFileExt = ".txt";
                 } else {
+                    // All Files
                     currentFileExt = ".txt";
                 }
 
                 File fileToSave = fileChooser.getSelectedFile();
 
-                System.out.println("Save as file: " + fileToSave.getAbsolutePath());
                 try {
-                    File newFile = new File(fileToSave.getAbsolutePath() + currentFileExt);
-                    FileWriter myWriter = new FileWriter(newFile);
+                    FileHandler saveThis;
+                    currentFilePath = fileToSave.getAbsolutePath();
+                    if (currentFilePath.contains(".txt")) {
+                        // If the file name contains the extension, don't add it again
+                        System.out.println("has extension");
+                        saveThis = new FileHandler(currentFilePath.substring(0, currentFilePath.length() - 3), currentFileExt, encrypted);
+                    } else {
+                        System.out.println("hasn't extension");
+                        saveThis = new FileHandler(currentFilePath + currentFileExt, currentFileExt, encrypted);
+                    }
+                    saveThis.writeFile(jTextPane1.getText(), currentFileExt);
                     this.unsaved = false;
                 } catch (Exception e) {
                     System.out.println("File save error: " + e.getMessage());
@@ -571,6 +732,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         lines = (jTextPane1.getText() + "|").split("\n").length;
         words = jTextPane1.getText().trim().split("\\s+").length;
         counter.setText("Length:   " + length + " Lines:   " + lines + " Words:   " + words);
+        calcCursPos(); // update the cursor location displayed
     }//GEN-LAST:event_jTextPane1KeyPressed
 
     private void changeColorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeColorActionPerformed
@@ -622,7 +784,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         Font font = new Font("Serif", Font.PLAIN, size);
 
         if (cbFontType.getSelectedItem().toString() != null) {
-            c.changeFont(jTextPane1, font.getSize(), cbFontType.getSelectedItem().toString());
+            cS.changeFont(jTextPane1, font.getSize(), cbFontType.getSelectedItem().toString());
         }
     }//GEN-LAST:event_cbFontTypeActionPerformed
 
@@ -632,17 +794,82 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         Font font = new Font("Serif", Font.PLAIN, size);
 
         if (cbFontSize.getSelectedItem().toString() != null) {
-            c.changeFont(jTextPane1, Integer.parseInt(cbFontSize.getSelectedItem().toString()), font.getFontName());
+            cS.changeFont(jTextPane1, Integer.parseInt(cbFontSize.getSelectedItem().toString()), font.getFontName());
         }
     }//GEN-LAST:event_cbFontSizeActionPerformed
 
     private void menuItemSettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemSettingsActionPerformed
-        // TODO add your handling code here:
-        Settings settingsWindow = new Settings(this);
-        settingsWindow.setVisible(true);
+        Settings settingsWindow = new Settings();
 
+        settingsWindow.setVisible(true);
     }//GEN-LAST:event_menuItemSettingsActionPerformed
 
+    private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
+        // TODO add your handling code here:
+        handleSettings.readTxtFile();
+        settingsContents = handleSettings.getContentsArry();
+        if (!settingsContents.isEmpty()) {
+            if (settingsContents.get(0).equals("Enable")) {
+                darkMode = true;
+            } else {
+                darkMode = false;
+            }
+        }
+        changeDarkMode(darkMode);
+    }//GEN-LAST:event_formWindowGainedFocus
+
+    private void btnPlayPauseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPlayPauseActionPerformed
+        if (savedFilePath.contains(".wav")) {filePath = savedFilePath;}
+        if (!filePath.isEmpty()) {
+            // A file has been loaded
+            int extStart = filePath.indexOf(".");
+            if (filePath.substring(extStart).equals(".wav")) {
+                if (isPlaying) {
+                    // User has paused the audio
+                    clipTimePosition = player.clip.getMicrosecondPosition();
+                    player.clip.stop();
+                    btnPlayPause.setText("▶");
+                } else {
+                    // User has resumed the audio
+                    player.clip.setMicrosecondPosition(clipTimePosition);
+                    player.clip.start();
+                    btnPlayPause.setText("⏸");
+                }
+                isPlaying = !isPlaying;
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Please select a .wav audio file first.", "Error", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }//GEN-LAST:event_btnPlayPauseActionPerformed
+
+    private void btn_BrowsebrowseForMusicFile(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_BrowsebrowseForMusicFile
+        // TODO add your handling code here:
+
+        final JFileChooser fc = new JFileChooser();
+
+        //Handle open button action.
+        int returnVal = fc.showOpenDialog(GroovyEditGUI.this);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            // retrieve the file from the file selector screen
+            File file = fc.getSelectedFile();
+            filePath = file.getAbsolutePath();
+            fileLocationField.setText(filePath);
+            int extStart = filePath.indexOf(".");
+            trackTitle = file.getPath().substring(0, extStart);
+            if (filePath.substring(extStart).equals(".wav")) {
+                player.loadMusic(filePath);
+                savedFilePath = filePath;
+                settingsContents.set(2, savedFilePath); // write last file location to settings
+                handleSettings.clearTxtFile();
+                System.out.println("f " + settingsContents);
+                handleSettings.writeTxtFile(handleSettings.arraylistToString(settingsContents));
+            } else {
+                // not a supported file
+                JOptionPane.showMessageDialog(null, "Please select a wav file.", "File Compatibility Error", JOptionPane.INFORMATION_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_btn_BrowsebrowseForMusicFile
+          
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         new Thread(() -> {  //Multithread it so that it doesn't freeze the system
             PrinterJob job = PrinterJob.getPrinterJob();
@@ -681,6 +908,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         StyleConstants.setLineSpacing(spacing, (float)1);
         jTextPane1.getStyledDocument().setParagraphAttributes(0, jTextPane1.getDocument().getLength(), spacing, false);
     }//GEN-LAST:event_doublebtnActionPerformed
+          
     public void clearFormat(JTextPane jtp, Font font, Color c, int start) {
         MutableAttributeSet attrs = jtp.getInputAttributes();
         StyleConstants.setFontFamily(attrs, font.getFamily());
@@ -739,6 +967,16 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         }); // end addCaretListener
     }
 
+    private void changeDarkMode(boolean dark) {
+        if (dark) {
+            this.getContentPane().setBackground(Color.GRAY);
+            this.jTextPane1.setBackground(Color.LIGHT_GRAY);
+        } else {
+            this.getContentPane().setBackground(UIManager.getColor("Panel.background"));
+            this.jTextPane1.setBackground(Color.WHITE);
+        }
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -774,8 +1012,12 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBack;
     private javax.swing.JButton btnBold;
     private javax.swing.JButton btnItalic;
+    private javax.swing.JButton btnNext;
+    private javax.swing.JButton btnPlayPause;
+    private javax.swing.JButton btn_Browse;
     private javax.swing.JComboBox<String> cbFontSize;
     private javax.swing.JComboBox<String> cbFontType;
     private javax.swing.JButton centerbtn;
@@ -783,6 +1025,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
     private javax.swing.JLabel counter;
     private javax.swing.JButton doublebtn;
     private javax.swing.JMenuItem emojib;
+    public javax.swing.JTextField fileLocationField;
     private javax.swing.JButton halfbtn;
     private javax.swing.JButton insertImage;
     private javax.swing.JButton jButton1;
@@ -796,6 +1039,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextPane jTextPane1;
     private javax.swing.JToolBar jToolBar1;
+    private javax.swing.JLabel lblMusic;
     private javax.swing.JLabel lblRowColNums;
     private javax.swing.JButton leftbtn;
     private javax.swing.JMenuItem menuItemSettings;

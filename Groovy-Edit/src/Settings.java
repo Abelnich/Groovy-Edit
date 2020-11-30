@@ -4,16 +4,16 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.JColorChooser;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.UIManager;
-
-
+import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author Nick
@@ -23,20 +23,12 @@ public class Settings extends javax.swing.JFrame {
     /**
      * Creates new form Settings
      */
-    
-    //Create Global music player object
-    static musicPlayer player = musicPlayer.getInstance();
-    static String filePath = "C:\\Users\\Sheku\\Desktop\\Programming Stuff\\Software Engennering and Practice\\Groovy-Edit\\Groovy-Edit\\src\\Vaporwave Chillwave - Ultimate Mix.wav";
-    static long clipTimePosition;
-    
+
     boolean encrypted = false;
     GroovyEditGUI parent;
-    static boolean isPlaying = true;
-    static boolean isLooping = false;
-    
     private FileHandler fileHandle;
     private ArrayList<String> settingsList;
-    
+
     private String darkMode;
     
     public Settings(GroovyEditGUI par) {
@@ -45,21 +37,6 @@ public class Settings extends javax.swing.JFrame {
         parent = par;
         fileHandle = new FileHandler("settings.txt", ".txt", false);
         settingsList = fileHandle.getContentsArry();
-        player.loadMusic(filePath);
-        
-        if (settingsList.isEmpty()) {
-            // File has not been written to yet
-            settingsList.add("Disable"); // dark mode toggle : index 0
-            settingsList.add("-16777216"); // default text color (black in this case) in rgb : index 1
-            fileHandle.writeTxtFile(fileHandle.arraylistToString(settingsList)); // save the new file
-        } else {
-            // Set settings page to match previously saved settings
-            changeDarkMode(settingsList.get(0)); // will be either "Enable" or "Disable"
-            String rgb = settingsList.get(1);
-            Color savedColor = new Color(Integer.parseInt(rgb));
-            System.out.println(rgb);
-            lblTextTest.setForeground(savedColor);
-        }
     }
 
     /**
@@ -73,18 +50,9 @@ public class Settings extends javax.swing.JFrame {
 
         lblDark = new javax.swing.JLabel();
         lblDefaultTxtColor = new javax.swing.JLabel();
-        lblMusic = new javax.swing.JLabel();
-        btnBack = new javax.swing.JButton();
-        btnPlayPause = new javax.swing.JButton();
-        btnNext = new javax.swing.JButton();
-        lblCurrentTrack = new javax.swing.JLabel();
         tglDark = new javax.swing.JToggleButton();
         btnSelectColor = new javax.swing.JButton();
         lblTextTest = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
-        fileInputTextField = new javax.swing.JTextField();
-        loadButton = new javax.swing.JButton();
-        btnPause = new javax.swing.JButton();
         jToggleButton1 = new javax.swing.JToggleButton();
         jLabel2 = new javax.swing.JLabel();
 
@@ -95,28 +63,6 @@ public class Settings extends javax.swing.JFrame {
 
         lblDefaultTxtColor.setText("Default Text Color");
         lblDefaultTxtColor.setToolTipText("");
-
-        lblMusic.setText("Music:");
-        lblMusic.setAutoscrolls(true);
-
-        btnBack.setText("⏮");
-        btnBack.setToolTipText("Restart");
-        btnBack.setOpaque(false);
-
-        btnPlayPause.setText("▶⏸");
-        btnPlayPause.setToolTipText("Play/Pause");
-        btnPlayPause.setOpaque(false);
-        btnPlayPause.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnPlayPauseActionPerformed(evt);
-            }
-        });
-
-        btnNext.setText("⏭");
-        btnNext.setToolTipText("Next");
-        btnNext.setOpaque(false);
-
-        lblCurrentTrack.setText("Nothing Playing");
 
         tglDark.setText("Enable");
         tglDark.setToolTipText("Enable Dark Mode");
@@ -137,30 +83,6 @@ public class Settings extends javax.swing.JFrame {
         lblTextTest.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         lblTextTest.setText("abc ABC");
         lblTextTest.setToolTipText("Sample text");
-
-        jLabel1.setText("FilePath");
-
-        fileInputTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fileInputTextFieldActionPerformed(evt);
-            }
-        });
-
-        loadButton.setText("Load");
-        loadButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                loadButtonActionPerformed(evt);
-            }
-        });
-
-        btnPause.setText("⏸");
-        btnPause.setToolTipText("Play/Pause");
-        btnPause.setOpaque(false);
-        btnPause.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnPauseActionPerformed(evt);
-            }
-        });
 
         jToggleButton1.setText("Enable");
         jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -233,6 +155,7 @@ public class Settings extends javax.swing.JFrame {
                     .addComponent(lblDefaultTxtColor)
                     .addComponent(btnSelectColor)
                     .addComponent(lblTextTest, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jToggleButton1)
@@ -260,7 +183,7 @@ public class Settings extends javax.swing.JFrame {
 
     private void tglDarkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tglDarkActionPerformed
         // When the dark mode toggle is toggled
-        
+
         changeDarkMode(evt.getActionCommand()); // sends "Enable" or "Disable"
         settingsList.set(0, evt.getActionCommand());
         fileHandle.writeTxtFile(fileHandle.arraylistToString(settingsList));
@@ -269,50 +192,13 @@ public class Settings extends javax.swing.JFrame {
 
     private void btnSelectColorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectColorActionPerformed
         // Shows user color chooser. Takes rgb value from chosen color and saves it to the appropriate spot in the settings file
-        
+
         Color newColor = JColorChooser.showDialog(this, "Select Color", lblTextTest.getForeground());
-        lblTextTest.setForeground(newColor);  
+        lblTextTest.setForeground(newColor);
         int rgb = newColor.getRGB();
         settingsList.set(1, Integer.toString(rgb));
         fileHandle.writeTxtFile(fileHandle.arraylistToString(settingsList));
     }//GEN-LAST:event_btnSelectColorActionPerformed
-
-    private void btnPlayPauseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPlayPauseActionPerformed
-            player.clip.setMicrosecondPosition(0);
-            clipTimePosition = 0;
-            player.clip.start();
-    }//GEN-LAST:event_btnPlayPauseActionPerformed
-
-    private void loadButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadButtonActionPerformed
-        filePath = fileInputTextField.getText();
-        player.clip.stop();
-        player.clip.setMicrosecondPosition(0);
-        clipTimePosition = 0;
-        player.loadMusic(filePath);
-        
-        
-    }//GEN-LAST:event_loadButtonActionPerformed
-
-    private void btnPauseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPauseActionPerformed
-        // TODO add your handling code here:
-        if(isPlaying)
-        {
-            clipTimePosition = player.clip.getMicrosecondPosition();
-            player.clip.stop();
-            btnPause.setText("Resume");
-        }
-        else
-        {
-            player.clip.setMicrosecondPosition(clipTimePosition);
-            player.clip.start();
-            btnPause.setText("Pause");
-        }
-        isPlaying = !isPlaying;
-    }//GEN-LAST:event_btnPauseActionPerformed
-
-    private void fileInputTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileInputTextFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_fileInputTextFieldActionPerformed
 
     private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
         if (parent!=null){
@@ -330,22 +216,18 @@ public class Settings extends javax.swing.JFrame {
         if (eOrD.equals("Disable")) {
             tglDark.setText("Enable");
             tglDark.setToolTipText("Enable Dark Mode");
-            this.getContentPane().setBackground(UIManager.getColor ( "Panel.background" ));
+            this.getContentPane().setBackground(UIManager.getColor("Panel.background"));
             lblDark.setForeground(Color.BLACK);
             lblDefaultTxtColor.setForeground(Color.BLACK);
-            lblMusic.setForeground(Color.BLACK);
-            lblCurrentTrack.setForeground(Color.BLACK);
         } else if (eOrD.equals("Enable")) {
             tglDark.setText("Disable");
             tglDark.setToolTipText("Disable Dark Mode");
             this.getContentPane().setBackground(Color.GRAY);
             lblDark.setForeground(Color.WHITE);
             lblDefaultTxtColor.setForeground(Color.WHITE);
-            lblMusic.setForeground(Color.WHITE);
-            lblCurrentTrack.setForeground(Color.WHITE);
         }
     }
-    
+
     /**
      * @param args the command line arguments
      */
@@ -383,23 +265,13 @@ public class Settings extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnBack;
-    private javax.swing.JButton btnNext;
-    private javax.swing.JButton btnPause;
-    private javax.swing.JButton btnPlayPause;
     private javax.swing.JButton btnSelectColor;
-    private javax.swing.JTextField fileInputTextField;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JToggleButton jToggleButton1;
-    private javax.swing.JLabel lblCurrentTrack;
     private javax.swing.JLabel lblDark;
     private javax.swing.JLabel lblDefaultTxtColor;
-    private javax.swing.JLabel lblMusic;
     private javax.swing.JLabel lblTextTest;
-    private javax.swing.JButton loadButton;
     private javax.swing.JToggleButton tglDark;
     // End of variables declaration//GEN-END:variables
-
 
 }
