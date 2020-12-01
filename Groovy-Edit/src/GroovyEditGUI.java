@@ -20,6 +20,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextPane;
 import javax.swing.ImageIcon;
 import javax.swing.JColorChooser;
+import javax.swing.UIManager;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import javax.swing.text.AttributeSet;
@@ -199,7 +200,6 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         menuItem_New = new javax.swing.JMenuItem();
         menuItem_Open = new javax.swing.JMenuItem();
-        menuItem_OpenPrev = new javax.swing.JMenuItem();
         menuItem_Save = new javax.swing.JMenuItem();
         menuItemSettings = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
@@ -214,6 +214,18 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         jButton1.setText("jButton1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                formFocusGained(evt);
+            }
+        });
+        addWindowFocusListener(new java.awt.event.WindowFocusListener() {
+            public void windowGainedFocus(java.awt.event.WindowEvent evt) {
+                formWindowGainedFocus(evt);
+            }
+            public void windowLostFocus(java.awt.event.WindowEvent evt) {
+            }
+        });
 
         jTextPane1.setFont(new java.awt.Font("Segoe UI Emoji", 0, 11)); // NOI18N
         jTextPane1.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -396,14 +408,6 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         });
         jMenu1.add(menuItem_Open);
 
-        menuItem_OpenPrev.setText("Open Previous");
-        menuItem_OpenPrev.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuItem_OpenPrevActionPerformed(evt);
-            }
-        });
-        jMenu1.add(menuItem_OpenPrev);
-
         menuItem_Save.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         menuItem_Save.setText("Save");
         menuItem_Save.addActionListener(new java.awt.event.ActionListener() {
@@ -552,10 +556,14 @@ public class GroovyEditGUI extends javax.swing.JFrame {
             if (dialogResult == JOptionPane.YES_OPTION) {
                 jTextPane1.setText("");
                 unsaved = false;
+                currentFilePath = "";
+                currentFileExt = "";
             }
         } else {
             jTextPane1.setText("");
             unsaved = false;
+            currentFilePath = "";
+            currentFileExt = "";
         }
 
     }//GEN-LAST:event_menuItem_NewActionPerformed
@@ -590,10 +598,6 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_menuItem_OpenActionPerformed
 
-    private void menuItem_OpenPrevActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItem_OpenPrevActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_menuItem_OpenPrevActionPerformed
-
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         String s = jTextPane1.getText();
         new FindGUI(s, jTextPane1).setVisible(true);
@@ -618,7 +622,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         System.out.println(currentFilePath);
         if (!currentFilePath.equals("")) {
             // There is a current file open
-            FileHandler saveThis = new FileHandler(currentFilePath, currentFileExt,encrypted);
+            FileHandler saveThis = new FileHandler(currentFilePath, currentFileExt, encrypted);
             System.out.println(jTextPane1.getText());
             saveThis.writeFile(jTextPane1.getText(), currentFileExt);
         } else {
@@ -640,10 +644,18 @@ public class GroovyEditGUI extends javax.swing.JFrame {
 
                 File fileToSave = fileChooser.getSelectedFile();
 
-                System.out.println("Save as file: " + fileToSave.getAbsolutePath());
                 try {
-                    File newFile = new File(fileToSave.getAbsolutePath() + currentFileExt);
-                    FileWriter myWriter = new FileWriter(newFile);
+                    FileHandler saveThis;
+                    currentFilePath = fileToSave.getAbsolutePath();
+                    if (currentFilePath.contains(".txt")) {
+                        // If the file name contains the extension, don't add it again
+                        System.out.println("has extension");
+                        saveThis = new FileHandler(currentFilePath.substring(0, currentFilePath.length() - 3), currentFileExt, encrypted);
+                    } else {
+                        System.out.println("hasn't extension");
+                        saveThis = new FileHandler(currentFilePath + currentFileExt, currentFileExt, encrypted);
+                    }
+                    saveThis.writeFile(jTextPane1.getText(), currentFileExt);
                     this.unsaved = false;
                 } catch (Exception e) {
                     System.out.println("File save error: " + e.getMessage());
@@ -835,6 +847,30 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         StyleConstants.setLeftIndent(margins, 150);
         jTextPane1.getStyledDocument().setParagraphAttributes(0, jTextPane1.getDocument().getLength(), margins, false);
     }//GEN-LAST:event_btnTwoInchActionPerformed
+
+    private void formFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_formFocusGained
+
+    }//GEN-LAST:event_formFocusGained
+
+    private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
+        // update dark mode if needed
+        handleSettings.readTxtFile();
+        settingsContents = handleSettings.getContentsArry();
+        if (!settingsContents.isEmpty()) { // make sure the settings file has been created
+            if (settingsContents.get(0).equals("Enable")) {
+                darkMode = true;
+            } else {
+                darkMode = false;
+            }
+        }
+        changeDarkMode(darkMode);
+        
+        // Create a new color based on the saved rgb values from the settings file (parsed saved string as int)
+        Color savedColor = new Color(Integer.parseInt(handleSettings.getContentsArry().get(1)));
+        // Sets the text color
+        jTextPane1.setForeground(savedColor);
+        
+    }//GEN-LAST:event_formWindowGainedFocus
     public void clearFormat(JTextPane jtp, Font font, Color c, int start) {
         MutableAttributeSet attrs = jtp.getInputAttributes();
         StyleConstants.setFontFamily(attrs, font.getFamily());
@@ -891,6 +927,20 @@ public class GroovyEditGUI extends javax.swing.JFrame {
                 }
             }
         }); // end addCaretListener
+    }
+    
+    private void changeDarkMode(boolean dark) {
+        if (dark) {
+            jToolBar1.setBackground(Color.GRAY);
+            this.getContentPane().setBackground(Color.GRAY);
+            jTextPane1.setBackground(Color.LIGHT_GRAY);
+            lblMusic.setForeground(Color.WHITE);
+        } else {
+            jToolBar1.setBackground(UIManager.getColor("Panel.background"));
+            this.getContentPane().setBackground(UIManager.getColor("Panel.background"));
+            jTextPane1.setBackground(Color.WHITE);
+            lblMusic.setForeground(Color.BLACK);
+        }
     }
 
     /**
@@ -960,7 +1010,6 @@ public class GroovyEditGUI extends javax.swing.JFrame {
     private javax.swing.JMenuItem menuItemSettings;
     private javax.swing.JMenuItem menuItem_New;
     private javax.swing.JMenuItem menuItem_Open;
-    private javax.swing.JMenuItem menuItem_OpenPrev;
     private javax.swing.JMenuItem menuItem_Save;
     private javax.swing.JButton removeFormatting;
     private javax.swing.JButton rightbtn;
