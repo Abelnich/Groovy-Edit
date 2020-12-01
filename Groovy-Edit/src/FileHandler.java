@@ -13,12 +13,12 @@ public class FileHandler {
 
     private File myFile;
     private Scanner fileIn;
-
+    private boolean encrypted = false;
     private String fileName;
     private String fileExtension = "";
     private ArrayList<String> fileContents;
-
-    public FileHandler(String fileName, String fileExtension) {
+    public FileHandler(String fileName, String fileExtension, boolean enc) {
+        encrypted = enc;
         this.fileName = fileName;
         myFile = new File(fileName);
         
@@ -32,7 +32,6 @@ public class FileHandler {
         }
         
         fileContents = new ArrayList();
-
         boolean extension = false;
         String tempStr = ""; // Temporary string for file name w/o extension
         for (char ch : fileName.toCharArray()) {
@@ -89,23 +88,55 @@ public class FileHandler {
         while (fileIn.hasNext()) {
             // Iterates through the file line by line. Adds each whole line to the array.
             line = fileIn.nextLine();
-            fileContents.add(line);
-        }
+            if(encrypted){
+                fileContents.add(decrypt(line));
+            } else {
+                fileContents.add(line);
+            }
+        } // end while
 
         // Close file to avoid potential corruption.
         fileIn.close();
     }
 
     public void writeTxtFile(String writeMe) {
+        // Converts writeMe Array to a String seperated by a new line character
 
         try {
             FileWriter myWriter = new FileWriter(this.fileName);
-            myWriter.write(writeMe);
+            if(encrypted){
+                String enc = encrypt(writeMe);
+                myWriter.write(enc);
+            } else {
+                myWriter.write(writeMe);
+            }
             myWriter.close();
         } catch (Exception e) {
             System.out.println("An error occurred: " + e.getMessage());
         }
 
+    }
+
+    private String encrypt(String writeMe){
+        String enc = "";
+        String key = System.getProperty("user.name");
+        for (int i = 0;i<writeMe.length();i++){
+            int orig = (int)writeMe.charAt(i);
+            int keychar = (int)key.charAt(i%key.length());
+            enc = enc.concat(Character.toString((char)(orig+keychar)));  //shift cipher by key to the right to get encoded
+        }
+        return enc;
+    }
+    
+    private String decrypt(String readMe){
+        String orig = "";
+        String key = System.getProperty("user.name");
+        for (int i = 0;i<readMe.length();i++){
+            int enc = (int)readMe.charAt(i);
+            int keychar = (int)key.charAt(i%key.length());
+            orig = orig.concat(Character.toString((char)(enc-keychar)));  //shift cipher by key to the left to get original
+        }
+        return orig;
     }
 
     public String getFileExt() {
@@ -114,6 +145,7 @@ public class FileHandler {
 
     public String arraylistToString(ArrayList<String> changeMe) {
         // Converts writeMe Array to a String seperated by a new line character
+
         String arrayToString = String.join("\n", changeMe);
         return arrayToString;
     }
