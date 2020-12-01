@@ -180,16 +180,12 @@ public class Settings extends javax.swing.JFrame {
             this.getContentPane().setBackground(UIManager.getColor ( "Panel.background" ));
             lblDark.setForeground(Color.BLACK);
             lblDefaultTxtColor.setForeground(Color.BLACK);
-            lblMusic.setForeground(Color.BLACK);
-            lblCurrentTrack.setForeground(Color.BLACK);
         } else if (eOrD.equals("Enable")) {
             tglDark.setText("Disable");
             tglDark.setToolTipText("Disable Dark Mode");
             this.getContentPane().setBackground(Color.GRAY);
             lblDark.setForeground(Color.WHITE);
             lblDefaultTxtColor.setForeground(Color.WHITE);
-            lblMusic.setForeground(Color.WHITE);
-            lblCurrentTrack.setForeground(Color.WHITE);
         }
     }
     
