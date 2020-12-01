@@ -40,7 +40,8 @@ public class Settings extends javax.swing.JFrame {
         parent = par;
         fileHandle = new FileHandler("settings.txt", ".txt", false);
         settingsList = fileHandle.getContentsArry();
-       
+        changeDarkMode(settingsList.get(0)); // Enable or Disable
+        
     }
 
     /**
@@ -58,7 +59,7 @@ public class Settings extends javax.swing.JFrame {
         btnSelectColor = new javax.swing.JButton();
         lblTextTest = new javax.swing.JLabel();
         jToggleButton1 = new javax.swing.JToggleButton();
-        jLabel2 = new javax.swing.JLabel();
+        lblEncrypt = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Settings");
@@ -95,7 +96,7 @@ public class Settings extends javax.swing.JFrame {
             }
         });
 
-        jLabel2.setText("Encrypt Save");
+        lblEncrypt.setText("Encrypt Save");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -115,7 +116,7 @@ public class Settings extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(lblTextTest))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel2)
+                        .addComponent(lblEncrypt)
                         .addGap(55, 55, 55)
                         .addComponent(jToggleButton1)))
                 .addContainerGap(133, Short.MAX_VALUE))
@@ -135,7 +136,7 @@ public class Settings extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jToggleButton1)
-                    .addComponent(jLabel2))
+                    .addComponent(lblEncrypt))
                 .addContainerGap(159, Short.MAX_VALUE))
         );
 
@@ -180,12 +181,14 @@ public class Settings extends javax.swing.JFrame {
             this.getContentPane().setBackground(UIManager.getColor ( "Panel.background" ));
             lblDark.setForeground(Color.BLACK);
             lblDefaultTxtColor.setForeground(Color.BLACK);
+            lblEncrypt.setForeground(Color.BLACK);
         } else if (eOrD.equals("Enable")) {
             tglDark.setText("Disable");
             tglDark.setToolTipText("Disable Dark Mode");
             this.getContentPane().setBackground(Color.GRAY);
             lblDark.setForeground(Color.WHITE);
             lblDefaultTxtColor.setForeground(Color.WHITE);
+            lblEncrypt.setForeground(Color.WHITE);
         }
     }
     
@@ -227,10 +230,10 @@ public class Settings extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSelectColor;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JToggleButton jToggleButton1;
     private javax.swing.JLabel lblDark;
     private javax.swing.JLabel lblDefaultTxtColor;
+    private javax.swing.JLabel lblEncrypt;
     private javax.swing.JLabel lblTextTest;
     private javax.swing.JToggleButton tglDark;
     // End of variables declaration//GEN-END:variables
