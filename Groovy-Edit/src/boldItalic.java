@@ -19,7 +19,7 @@ import javax.swing.text.StyledDocument;
  * @author Robert Brosig
  */
 public class boldItalic {
-    public boolean changeItB(JTextPane inp, int style){ //0 is italic, 1 is bold
+    public boolean changeStyle(JTextPane inp, int style){ //0 is italic, 1 is bold
         StyledDocument d = (StyledDocument) inp.getStyledDocument();
         int selSt = inp.getSelectionStart();
         int selEn = inp.getSelectionEnd();

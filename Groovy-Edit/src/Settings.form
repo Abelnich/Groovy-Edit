@@ -30,6 +30,14 @@
                   <Component id="lblDark" alignment="0" min="-2" max="-2" attributes="0"/>
                   <Component id="lblDefaultTxtColor" alignment="0" min="-2" max="-2" attributes="0"/>
               </Group>
+              <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                  <Component id="tglDark" max="32767" attributes="0"/>
+                  <Component id="btnSelectColor" alignment="0" max="32767" attributes="0"/>
+              </Group>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Component id="lblTextTest" min="-2" max="-2" attributes="0"/>
+              <EmptySpace pref="133" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -47,31 +55,8 @@
                   <Component id="btnSelectColor" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="lblTextTest" alignment="3" min="-2" pref="23" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="219" max="32767" attributes="0"/>//<<<<<<< Music
-              <EmptySpace type="separate" max="-2" attributes="0"/> //=======
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jToggleButton1" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="lblMusic" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="lblCurrentTrack" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="fileInputTextField" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="loadButton" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="btnBack" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="btnPlayPause" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="btnNext" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Component id="btnPause" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="32767" attributes="0"/>
-          </Group>//>>>>>>> master
+              <EmptySpace pref="219" max="32767" attributes="0"/>
+          </Group>
       </Group>
     </DimensionLayout>
   </Layout>
@@ -85,41 +70,6 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Default Text Color"/>
         <Property name="toolTipText" type="java.lang.String" value=""/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="lblMusic">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Music:"/>
-        <Property name="autoscrolls" type="boolean" value="true"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JButton" name="btnBack">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="&#x23ee;"/>
-        <Property name="toolTipText" type="java.lang.String" value="Restart"/>
-        <Property name="opaque" type="boolean" value="false"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JButton" name="btnPlayPause">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="&#x25b6;&#x23f8;"/>
-        <Property name="toolTipText" type="java.lang.String" value="Play/Pause"/>
-        <Property name="opaque" type="boolean" value="false"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnPlayPauseActionPerformed"/>
-      </Events>
-    </Component>
-    <Component class="javax.swing.JButton" name="btnNext">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="&#x23ed;"/>
-        <Property name="toolTipText" type="java.lang.String" value="Next"/>
-        <Property name="opaque" type="boolean" value="false"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="lblCurrentTrack">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Nothing Playing"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JToggleButton" name="tglDark">
