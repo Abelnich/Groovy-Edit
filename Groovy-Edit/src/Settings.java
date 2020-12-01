@@ -23,20 +23,43 @@ public class Settings extends javax.swing.JFrame {
     /**
      * Creates new form Settings
      */
- 
+    
+    //Create Global music player object
+    static musicPlayer player = musicPlayer.getInstance();
+    static String filePath = "C:\\Users\\Sheku\\Desktop\\Programming Stuff\\Software Engennering and Practice\\Groovy-Edit\\Groovy-Edit\\src\\Vaporwave Chillwave - Ultimate Mix.wav";
+    static long clipTimePosition;
+    
     boolean encrypted = false;
     GroovyEditGUI parent;
+    static boolean isPlaying = true;
+    static boolean isLooping = false;
     
     private FileHandler fileHandle;
     private ArrayList<String> settingsList;
     
     private String darkMode;
-
-    public Settings() {
+    
+    public Settings(GroovyEditGUI par) {
         initComponents();
-
-        fileHandle = new FileHandler("settings.txt", ".txt");
+        
+        parent = par;
+        fileHandle = new FileHandler("settings.txt", ".txt", false);
         settingsList = fileHandle.getContentsArry();
+        player.loadMusic(filePath);
+        
+        if (settingsList.isEmpty()) {
+            // File has not been written to yet
+            settingsList.add("Disable"); // dark mode toggle : index 0
+            settingsList.add("-16777216"); // default text color (black in this case) in rgb : index 1
+            fileHandle.writeTxtFile(fileHandle.arraylistToString(settingsList)); // save the new file
+        } else {
+            // Set settings page to match previously saved settings
+            changeDarkMode(settingsList.get(0)); // will be either "Enable" or "Disable"
+            String rgb = settingsList.get(1);
+            Color savedColor = new Color(Integer.parseInt(rgb));
+            System.out.println(rgb);
+            lblTextTest.setForeground(savedColor);
+        }
     }
 
     /**
@@ -155,15 +178,48 @@ public class Settings extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(21, 21, 21)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblDark)
-                    .addComponent(lblDefaultTxtColor))
-                .addGap(31, 31, 31)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(tglDark, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnSelectColor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(lblTextTest)
-                .addContainerGap(133, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblDark)
+                                    .addComponent(lblDefaultTxtColor))
+                                .addGap(31, 31, 31)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(tglDark, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(btnSelectColor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lblMusic)
+                                .addGap(18, 18, 18)
+                                .addComponent(lblCurrentTrack)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(fileInputTextField))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lblTextTest)
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnBack)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnPlayPause)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnNext)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 101, Short.MAX_VALUE)
+                        .addComponent(loadButton, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(37, 37, 37))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(61, 61, 61)
+                                .addComponent(btnPause))
+                            .addComponent(jLabel2))
+                        .addGap(15, 15, 15)
+                        .addComponent(jToggleButton1)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -177,8 +233,7 @@ public class Settings extends javax.swing.JFrame {
                     .addComponent(lblDefaultTxtColor)
                     .addComponent(btnSelectColor)
                     .addComponent(lblTextTest, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(219, Short.MAX_VALUE))//<<<<<<< Music
-                .addGap(18, 18, 18)//=======
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jToggleButton1)
                     .addComponent(jLabel2))
@@ -198,7 +253,7 @@ public class Settings extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(btnPause)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );//>>>>>>> master
+        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -294,7 +349,7 @@ public class Settings extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+    public void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -319,9 +374,10 @@ public class Settings extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
+        final GroovyEditGUI pare = parent;
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Settings().setVisible(true);
+                new Settings(pare).setVisible(true);
             }
         });
     }
