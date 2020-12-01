@@ -148,6 +148,9 @@
                   <Component id="rightbtn" pref="73" max="32767" attributes="0"/>
                   <Component id="cbFontType" alignment="1" max="32767" attributes="0"/>
                   <Component id="cbFontSize" max="32767" attributes="0"/>
+                  <Component id="btnOneInch" alignment="0" max="32767" attributes="0"/>
+                  <Component id="btnOneAndHalfInch" alignment="0" max="32767" attributes="0"/>
+                  <Component id="btnTwoInch" alignment="0" max="32767" attributes="0"/>
               </Group>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
@@ -186,11 +189,17 @@
                       <Component id="centerbtn" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="rightbtn" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="btnOneInch" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="btnOneAndHalfInch" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="btnTwoInch" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
                       <Component id="cbFontType" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="cbFontSize" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="339" max="32767" attributes="0"/>
+                      <EmptySpace pref="281" max="32767" attributes="0"/>
                   </Group>
                   <Component id="jScrollPane1" max="32767" attributes="0"/>
               </Group>
@@ -416,6 +425,30 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnBrowseActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnOneInch">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="1&quot;"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnOneInchActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnOneAndHalfInch">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="1.5&quot;"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnOneAndHalfInchActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnTwoInch">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="2&quot;"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnTwoInchActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

@@ -192,6 +192,9 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         lblMusic = new javax.swing.JLabel();
         fileLocationField = new javax.swing.JTextField();
         btnBrowse = new javax.swing.JButton();
+        btnOneInch = new javax.swing.JButton();
+        btnOneAndHalfInch = new javax.swing.JButton();
+        btnTwoInch = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         menuItem_New = new javax.swing.JMenuItem();
@@ -352,6 +355,27 @@ public class GroovyEditGUI extends javax.swing.JFrame {
             }
         });
 
+        btnOneInch.setText("1\"");
+        btnOneInch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOneInchActionPerformed(evt);
+            }
+        });
+
+        btnOneAndHalfInch.setText("1.5\"");
+        btnOneAndHalfInch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOneAndHalfInchActionPerformed(evt);
+            }
+        });
+
+        btnTwoInch.setText("2\"");
+        btnTwoInch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTwoInchActionPerformed(evt);
+            }
+        });
+
         jMenu1.setText("File");
 
         menuItem_New.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_DOWN_MASK));
@@ -450,7 +474,10 @@ public class GroovyEditGUI extends javax.swing.JFrame {
                     .addComponent(centerbtn, javax.swing.GroupLayout.DEFAULT_SIZE, 73, Short.MAX_VALUE)
                     .addComponent(rightbtn, javax.swing.GroupLayout.DEFAULT_SIZE, 73, Short.MAX_VALUE)
                     .addComponent(cbFontType, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(cbFontSize, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(cbFontSize, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnOneInch, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnOneAndHalfInch, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnTwoInch, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(18, 18, 18)
@@ -482,11 +509,17 @@ public class GroovyEditGUI extends javax.swing.JFrame {
                         .addComponent(centerbtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(rightbtn)
-                        .addGap(39, 39, 39)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnOneInch)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnOneAndHalfInch)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnTwoInch)
+                        .addGap(10, 10, 10)
                         .addComponent(cbFontType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(cbFontSize, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(339, Short.MAX_VALUE))
+                        .addContainerGap(281, Short.MAX_VALUE))
                     .addComponent(jScrollPane1)))
         );
 
@@ -787,6 +820,21 @@ public class GroovyEditGUI extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_btnBrowseActionPerformed
+
+    private void btnOneInchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOneInchActionPerformed
+        StyleConstants.setLeftIndent(margins, 75);
+        jTextPane1.getStyledDocument().setParagraphAttributes(0, jTextPane1.getDocument().getLength(), margins, false);    
+    }//GEN-LAST:event_btnOneInchActionPerformed
+
+    private void btnOneAndHalfInchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOneAndHalfInchActionPerformed
+        StyleConstants.setLeftIndent(margins, 113);
+        jTextPane1.getStyledDocument().setParagraphAttributes(0, jTextPane1.getDocument().getLength(), margins, false);
+    }//GEN-LAST:event_btnOneAndHalfInchActionPerformed
+
+    private void btnTwoInchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTwoInchActionPerformed
+        StyleConstants.setLeftIndent(margins, 150);
+        jTextPane1.getStyledDocument().setParagraphAttributes(0, jTextPane1.getDocument().getLength(), margins, false);
+    }//GEN-LAST:event_btnTwoInchActionPerformed
     public void clearFormat(JTextPane jtp, Font font, Color c, int start) {
         MutableAttributeSet attrs = jtp.getInputAttributes();
         StyleConstants.setFontFamily(attrs, font.getFamily());
@@ -835,7 +883,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
 
                     // Get the x and y coords from the rect and assign them to appropriate variable
                     // Math accounts for character size
-                    rowNum = (int) (((rect.getY() - 4) / 16) + 1); // 
+                    rowNum = (int) (((rect.getY() - 4) / 16) + 1) +1; // 
                     colNum = (int) (((rect.getX() - 6) / 7));
                     lblRowColNums.setText(" Row: " + rowNum + " Col: " + colNum);
                 } catch (Exception ex) {
@@ -883,7 +931,10 @@ public class GroovyEditGUI extends javax.swing.JFrame {
     private javax.swing.JButton btnBold;
     private javax.swing.JButton btnBrowse;
     private javax.swing.JButton btnItalic;
+    private javax.swing.JButton btnOneAndHalfInch;
+    private javax.swing.JButton btnOneInch;
     private javax.swing.JButton btnPlayPause;
+    private javax.swing.JButton btnTwoInch;
     private javax.swing.JComboBox<String> cbFontSize;
     private javax.swing.JComboBox<String> cbFontType;
     private javax.swing.JButton centerbtn;
