@@ -24,11 +24,6 @@ public static void main(String[] args) throws Exception {
         obj.setVisible(true);
         obj.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
-        //For Music Stuff
-        //MusicPlayerForm playerForm = new MusicPlayerForm();
-        //playerForm.setVisible(true);
-        //playerForm.setResizable(false);
-        //playerForm.setLocationRelativeTo(null);
     }
     
 }

@@ -14,13 +14,10 @@ public class FileHandler {
     private File myFile;
     private Scanner fileIn;
     private boolean encrypted = false;
-
     private String fileName;
     private String fileExtension = "";
     private ArrayList<String> fileContents;
-
     public FileHandler(String fileName, String fileExtension, boolean enc) {
-        
         encrypted = enc;
         this.fileName = fileName;
         myFile = new File(fileName);
@@ -35,8 +32,6 @@ public class FileHandler {
         }
         
         fileContents = new ArrayList();
-        System.out.println("File " + fileContents.size());
-
         boolean extension = false;
         String tempStr = ""; // Temporary string for file name w/o extension
         for (char ch : fileName.toCharArray()) {
@@ -80,6 +75,7 @@ public class FileHandler {
     } // end readFile()
 
     public void readTxtFile() {
+        fileContents.clear(); // clears the saved contents so it isn't duplicated
 
         try {
             fileIn = new Scanner(myFile);
@@ -97,7 +93,7 @@ public class FileHandler {
             } else {
                 fileContents.add(line);
             }
-        }
+        } // end while
 
         // Close file to avoid potential corruption.
         fileIn.close();
@@ -115,13 +111,12 @@ public class FileHandler {
                 myWriter.write(writeMe);
             }
             myWriter.close();
-            System.out.println("Successfully wrote to the file.");
         } catch (Exception e) {
             System.out.println("An error occurred: " + e.getMessage());
         }
 
     }
-    
+
     private String encrypt(String writeMe){
         String enc = "";
         String key = System.getProperty("user.name");
@@ -149,6 +144,8 @@ public class FileHandler {
     }
 
     public String arraylistToString(ArrayList<String> changeMe) {
+        // Converts writeMe Array to a String seperated by a new line character
+
         String arrayToString = String.join("\n", changeMe);
         return arrayToString;
     }
@@ -165,6 +162,10 @@ public class FileHandler {
     
     public ArrayList<String> getContentsArry() {
         return fileContents;
+    }
+    
+    public void clearTxtFile() {
+        writeTxtFile("");
     }
 
 }
