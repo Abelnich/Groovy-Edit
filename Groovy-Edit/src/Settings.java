@@ -24,10 +24,8 @@ public class Settings extends javax.swing.JFrame {
      * Creates new form Settings
      */
     
-    boolean encrypted = false;
-    GroovyEditGUI parent;
-    static boolean isPlaying = true;
-    static boolean isLooping = false;
+    private boolean encrypted = false;
+    private GroovyEditGUI parent;
     
     private FileHandler fileHandle;
     private ArrayList<String> settingsList;
