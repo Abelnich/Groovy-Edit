@@ -735,11 +735,9 @@ public class GroovyEditGUI extends javax.swing.JFrame {
 
     private void menuItem_SaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItem_SaveActionPerformed
         // SAVE FUNCTION IN FILE MENU
-        System.out.println(currentFilePath);
         if (!currentFilePath.equals("")) {
             // There is a current file open
             FileHandler saveThis = new FileHandler(currentFilePath, currentFileExt, encrypted);
-            System.out.println(jTextPane1.getText());
             saveThis.writeFile(jTextPane1.getText(), currentFileExt);
         } else {
             JFileChooser fileChooser = new JFileChooser();
@@ -765,10 +763,8 @@ public class GroovyEditGUI extends javax.swing.JFrame {
                     currentFilePath = fileToSave.getAbsolutePath();
                     if (currentFilePath.contains(".txt")) {
                         // If the file name contains the extension, don't add it again
-                        System.out.println("has extension");
                         saveThis = new FileHandler(currentFilePath.substring(0, currentFilePath.length() - 3), currentFileExt, encrypted);
                     } else {
-                        System.out.println("hasn't extension");
                         saveThis = new FileHandler(currentFilePath + currentFileExt, currentFileExt, encrypted);
                     }
                     saveThis.writeFile(jTextPane1.getText(), currentFileExt);
