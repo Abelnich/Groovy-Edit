@@ -145,6 +145,9 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItem2">
               <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Ctrl+P"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Print"/>
               </Properties>
               <Events>
@@ -219,24 +222,37 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Component id="jToolBar1" pref="919" max="32767" attributes="0"/>
           <Group type="102" attributes="0">
-              <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                  <Component id="leftbtn" pref="73" max="32767" attributes="0"/>
-                  <Component id="centerbtn" pref="73" max="32767" attributes="0"/>
-                  <Component id="rightbtn" pref="73" max="32767" attributes="0"/>
-                  <Component id="cbFontType" alignment="1" max="32767" attributes="0"/>
-                  <Component id="cbFontSize" max="32767" attributes="0"/>
-                  <Component id="btnOneInch" alignment="0" max="32767" attributes="0"/>
-                  <Component id="btnOneAndHalfInch" alignment="0" max="32767" attributes="0"/>
-                  <Component id="btnTwoInch" alignment="0" max="32767" attributes="0"/>
-              </Group>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="jScrollPane1" max="32767" attributes="0"/>
+              <EmptySpace min="15" pref="15" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                      <Component id="cbFontType" alignment="1" pref="91" max="32767" attributes="0"/>
+                      <Component id="cbFontSize" max="32767" attributes="0"/>
+                      <Component id="btnOneInch" alignment="0" max="32767" attributes="0"/>
+                      <Component id="btnOneAndHalfInch" alignment="0" max="32767" attributes="0"/>
+                      <Component id="btnTwoInch" alignment="0" max="32767" attributes="0"/>
                   </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="leftbtn" min="-2" pref="43" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="btnHalfSpacing" min="-2" pref="43" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="centerbtn" alignment="0" min="-2" pref="43" max="-2" attributes="0"/>
+                          <Component id="rightbtn" alignment="0" min="-2" pref="43" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="btnDoubleSpacing" pref="0" max="32767" attributes="0"/>
+                          <Component id="btnSingleSpacing" pref="0" max="32767" attributes="0"/>
+                      </Group>
+                  </Group>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="jScrollPane1" max="32767" attributes="0"/>
                   <Group type="102" attributes="0">
-                      <EmptySpace min="-2" pref="89" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="71" max="-2" attributes="0"/>
                       <Component id="lblMusic" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="fileLocationField" min="-2" pref="219" max="-2" attributes="0"/>
@@ -254,30 +270,39 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <Component id="jToolBar1" min="-2" pref="77" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="leftbtn" alignment="3" min="-2" pref="23" max="-2" attributes="0"/>
-                  <Component id="lblMusic" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="fileLocationField" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="btnBrowse" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="btnPlayPause" alignment="3" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="leftbtn" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="lblMusic" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="fileLocationField" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="btnBrowse" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="btnPlayPause" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Component id="btnHalfSpacing" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
-                      <Component id="centerbtn" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="centerbtn" min="-2" pref="40" max="-2" attributes="0"/>
+                          <Component id="btnSingleSpacing" min="-2" max="-2" attributes="0"/>
+                      </Group>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="rightbtn" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Component id="rightbtn" min="-2" pref="40" max="-2" attributes="0"/>
+                          <Component id="btnDoubleSpacing" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="btnOneInch" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
                       <Component id="btnOneAndHalfInch" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="btnTwoInch" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="cbFontType" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="cbFontSize" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="281" max="32767" attributes="0"/>
+                      <EmptySpace pref="204" max="32767" attributes="0"/>
                   </Group>
                   <Component id="jScrollPane1" max="32767" attributes="0"/>
               </Group>
@@ -325,9 +350,6 @@
       </Properties>
       <AccessibilityProperties>
         <Property name="AccessibleContext.accessibleDescription" type="java.lang.String" value=""/>
-        <Property name="AccessibleContext.accessibleParent" type="javax.accessibility.Accessible" editor="org.netbeans.modules.form.ComponentChooserEditor">
-          <ComponentRef name="default"/>
-        </Property>
       </AccessibilityProperties>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JToolBar()"/>
@@ -340,10 +362,14 @@
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/Icons/colorText.png"/>
             </Property>
+            <Property name="toolTipText" type="java.lang.String" value="Change Text Color"/>
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
             <Property name="verticalTextPosition" type="int" value="3"/>
           </Properties>
+          <AccessibilityProperties>
+            <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="Change Text Color"/>
+          </AccessibilityProperties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="changeColorActionPerformed"/>
           </Events>
@@ -353,10 +379,14 @@
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/Icons/format-text-underline.png"/>
             </Property>
+            <Property name="toolTipText" type="java.lang.String" value="Underline Text"/>
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
             <Property name="verticalTextPosition" type="int" value="3"/>
           </Properties>
+          <AccessibilityProperties>
+            <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="Underline Text"/>
+          </AccessibilityProperties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="underlineActionPerformed"/>
           </Events>
@@ -366,10 +396,14 @@
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/Icons/format-text-bold.png"/>
             </Property>
+            <Property name="toolTipText" type="java.lang.String" value="Bold Text"/>
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
             <Property name="verticalTextPosition" type="int" value="3"/>
           </Properties>
+          <AccessibilityProperties>
+            <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="Bold Text"/>
+          </AccessibilityProperties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnBoldActionPerformed"/>
           </Events>
@@ -379,10 +413,14 @@
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/Icons/format-text-italic.png"/>
             </Property>
+            <Property name="toolTipText" type="java.lang.String" value="Italicize Text"/>
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
             <Property name="verticalTextPosition" type="int" value="3"/>
           </Properties>
+          <AccessibilityProperties>
+            <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="Italicize Text"/>
+          </AccessibilityProperties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnItalicActionPerformed"/>
           </Events>
@@ -392,10 +430,14 @@
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/Icons/Eraser-icon.png"/>
             </Property>
+            <Property name="toolTipText" type="java.lang.String" value="Remove Formatting"/>
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
             <Property name="verticalTextPosition" type="int" value="3"/>
           </Properties>
+          <AccessibilityProperties>
+            <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="Remove Formatting"/>
+          </AccessibilityProperties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="removeFormattingActionPerformed"/>
           </Events>
@@ -405,10 +447,14 @@
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/Icons/image-x-generic.png"/>
             </Property>
+            <Property name="toolTipText" type="java.lang.String" value="Insert Image"/>
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
             <Property name="verticalTextPosition" type="int" value="3"/>
           </Properties>
+          <AccessibilityProperties>
+            <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="Insert Image"/>
+          </AccessibilityProperties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="insertImageActionPerformed"/>
           </Events>
@@ -427,24 +473,41 @@
     </Container>
     <Component class="javax.swing.JButton" name="leftbtn">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Left"/>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+          <Image iconType="3" name="/Icons/align-left-4-32.png"/>
+        </Property>
       </Properties>
+      <AccessibilityProperties>
+        <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="Align Left"/>
+      </AccessibilityProperties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="leftbtnActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="centerbtn">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Center"/>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+          <Image iconType="3" name="/Icons/align-center-2-32.png"/>
+        </Property>
+        <Property name="toolTipText" type="java.lang.String" value="Align Center"/>
       </Properties>
+      <AccessibilityProperties>
+        <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="Align Center"/>
+      </AccessibilityProperties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="centerbtnActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="rightbtn">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Right"/>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+          <Image iconType="3" name="/Icons/align-right-4-32.png"/>
+        </Property>
+        <Property name="toolTipText" type="java.lang.String" value="Align Right"/>
       </Properties>
+      <AccessibilityProperties>
+        <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="Align Right"/>
+      </AccessibilityProperties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rightbtnActionPerformed"/>
       </Events>
@@ -459,7 +522,11 @@
             <StringItem index="3" value="Item 4"/>
           </StringArray>
         </Property>
+        <Property name="toolTipText" type="java.lang.String" value="Choose Font"/>
       </Properties>
+      <AccessibilityProperties>
+        <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="Choose Font"/>
+      </AccessibilityProperties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbFontTypeActionPerformed"/>
       </Events>
@@ -477,7 +544,11 @@
             <StringItem index="3" value="Item 4"/>
           </StringArray>
         </Property>
+        <Property name="toolTipText" type="java.lang.String" value="Choose Font Size"/>
       </Properties>
+      <AccessibilityProperties>
+        <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="Choose Font Size"/>
+      </AccessibilityProperties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbFontSizeActionPerformed"/>
       </Events>
@@ -493,7 +564,11 @@
     <Component class="javax.swing.JButton" name="btnPlayPause">
       <Properties>
         <Property name="text" type="java.lang.String" value="&#x23ef;"/>
+        <Property name="toolTipText" type="java.lang.String" value="Play/Pause Music"/>
       </Properties>
+      <AccessibilityProperties>
+        <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="Play/Pause Music"/>
+      </AccessibilityProperties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnPlayPauseActionPerformed"/>
       </Events>
@@ -511,14 +586,20 @@
     <Component class="javax.swing.JButton" name="btnBrowse">
       <Properties>
         <Property name="text" type="java.lang.String" value="..."/>
+        <Property name="toolTipText" type="java.lang.String" value="Browse for Music"/>
       </Properties>
+      <AccessibilityProperties>
+        <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="Browse for Music"/>
+        <Property name="AccessibleContext.accessibleDescription" type="java.lang.String" value="Browse for Music"/>
+      </AccessibilityProperties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnBrowseActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnOneInch">
       <Properties>
-        <Property name="text" type="java.lang.String" value="1&quot;"/>
+        <Property name="text" type="java.lang.String" value="1&quot; Margin"/>
+        <Property name="toolTipText" type="java.lang.String" value="Set Margins to 1 Inch"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnOneInchActionPerformed"/>
@@ -526,7 +607,8 @@
     </Component>
     <Component class="javax.swing.JButton" name="btnOneAndHalfInch">
       <Properties>
-        <Property name="text" type="java.lang.String" value="1.5&quot;"/>
+        <Property name="text" type="java.lang.String" value="1.5&quot; Margin"/>
+        <Property name="toolTipText" type="java.lang.String" value="Set Margin to 1.5 Inches"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnOneAndHalfInchActionPerformed"/>
@@ -534,10 +616,53 @@
     </Component>
     <Component class="javax.swing.JButton" name="btnTwoInch">
       <Properties>
-        <Property name="text" type="java.lang.String" value="2&quot;"/>
+        <Property name="text" type="java.lang.String" value="2&quot; Margin"/>
+        <Property name="toolTipText" type="java.lang.String" value="Set Margins to 2 Inches"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnTwoInchActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnHalfSpacing">
+      <Properties>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+          <Image iconType="3" name="/Icons/half.png"/>
+        </Property>
+        <Property name="toolTipText" type="java.lang.String" value="Half Spacing"/>
+      </Properties>
+      <AccessibilityProperties>
+        <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="Half Spacing"/>
+      </AccessibilityProperties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnHalfSpacingActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnSingleSpacing">
+      <Properties>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+          <Image iconType="3" name="/Icons/single.png"/>
+        </Property>
+        <Property name="toolTipText" type="java.lang.String" value="Single Spacing"/>
+      </Properties>
+      <AccessibilityProperties>
+        <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="Single Spacing"/>
+      </AccessibilityProperties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSingleSpacingActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnDoubleSpacing">
+      <Properties>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+          <Image iconType="3" name="/Icons/double.png"/>
+        </Property>
+        <Property name="toolTipText" type="java.lang.String" value="Double Spacing"/>
+      </Properties>
+      <AccessibilityProperties>
+        <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="Double Spacing"/>
+      </AccessibilityProperties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDoubleSpacingActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

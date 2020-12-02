@@ -61,10 +61,10 @@ public class GroovyEditGUI extends javax.swing.JFrame {
     private Color fontColor;
     private Color clrCrnt;
     private changeStyle c;
-    SimpleAttributeSet alignment = new SimpleAttributeSet();
-    SimpleAttributeSet margins = new SimpleAttributeSet();
-    SimpleAttributeSet spacing = new SimpleAttributeSet();
-    
+    private SimpleAttributeSet alignment = new SimpleAttributeSet();
+    private SimpleAttributeSet margins = new SimpleAttributeSet();
+    private SimpleAttributeSet spacing = new SimpleAttributeSet();
+
     //Create Global music player object
     private static musicPlayer player = musicPlayer.getInstance();
     private static String filePath;
@@ -74,17 +74,16 @@ public class GroovyEditGUI extends javax.swing.JFrame {
 
     private static boolean isPlaying = false;
     private static boolean isLooping = false;
-    
+
     private FileHandler handleSettings;
     private ArrayList<String> settingsContents;
     private boolean darkMode;
-    
-// End of Custom Variables
 
+// End of Custom Variables
     JMenuBar mbar;
 
     JMenu menu;
-    
+
     public GroovyEditGUI() {
         // Constructor
         initComponents();
@@ -96,22 +95,20 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         this.currentFilePath = "";
         this.unsaved = false;
         c = new changeStyle();
-        
-        mbar=new JMenuBar(){
 
-        @Override
-        public void paintComponent(Graphics g)
+        mbar = new JMenuBar() {
 
-        {
+            @Override
+            public void paintComponent(Graphics g) {
 
-            boolean j = g.drawImage(Toolkit.getDefaultToolkit().getImage("GradientToolbar.png"),0,0,this);
+                boolean j = g.drawImage(Toolkit.getDefaultToolkit().getImage("GradientToolbar.png"), 0, 0, this);
 
-        }
+            }
 
         };
-       
-        jMenuBar1=mbar;
-        
+
+        jMenuBar1 = mbar;
+
         this.jMenuBar1.paintComponents(this.jMenuBar1.getGraphics());
 
         String[] fontType = {"Ariel", "Serif", "Comic Sans", "Times New Roman", "Calibari"}; //Makes the options for font type
@@ -138,13 +135,13 @@ public class GroovyEditGUI extends javax.swing.JFrame {
             handleSettings.clearTxtFile();
             handleSettings.writeTxtFile(handleSettings.arraylistToString(handleSettings.getContentsArry()));
         }
-        
+
         if (settingsContents.get(0).equals("Enable")) {
             darkMode = true;
         } else {
             darkMode = false;
         }
-        
+
         // Default text color
         if (settingsContents.size() == 1) {
             // if settings file is missing the second item
@@ -157,7 +154,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         Color savedColor = new Color(Integer.parseInt(handleSettings.getContentsArry().get(1)));
         // Sets the text color
         jTextPane1.setForeground(savedColor);
-                
+
         // Last saved music file location
         if (settingsContents.size() == 2) {
             // if settings file is missing the third item
@@ -171,8 +168,8 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         rowNum = 1;
         colNum = 0;
         lblRowColNums.setText(" Row: " + rowNum + " Col: " + colNum); // Sets the initial row and col display
-        
-                // Music Stuff
+
+        // Music Stuff
         player.loadMusic(savedFilePath);
         if (isPlaying) {
             // There is currently music playing
@@ -229,6 +226,9 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         btnOneInch = new javax.swing.JButton();
         btnOneAndHalfInch = new javax.swing.JButton();
         btnTwoInch = new javax.swing.JButton();
+        btnHalfSpacing = new javax.swing.JButton();
+        btnSingleSpacing = new javax.swing.JButton();
+        btnDoubleSpacing = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu3 = new javax.swing.JMenu();
         jMenu1 = new javax.swing.JMenu();
@@ -340,6 +340,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         jToolBar1.setPreferredSize(new java.awt.Dimension(430, 20));
 
         changeColor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/colorText.png"))); // NOI18N
+        changeColor.setToolTipText("Change Text Color");
         changeColor.setFocusable(false);
         changeColor.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         changeColor.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -349,8 +350,10 @@ public class GroovyEditGUI extends javax.swing.JFrame {
             }
         });
         jToolBar1.add(changeColor);
+        changeColor.getAccessibleContext().setAccessibleName("Change Text Color");
 
         underline.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/format-text-underline.png"))); // NOI18N
+        underline.setToolTipText("Underline Text");
         underline.setFocusable(false);
         underline.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         underline.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -360,8 +363,10 @@ public class GroovyEditGUI extends javax.swing.JFrame {
             }
         });
         jToolBar1.add(underline);
+        underline.getAccessibleContext().setAccessibleName("Underline Text");
 
         btnBold.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/format-text-bold.png"))); // NOI18N
+        btnBold.setToolTipText("Bold Text");
         btnBold.setFocusable(false);
         btnBold.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnBold.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -371,8 +376,10 @@ public class GroovyEditGUI extends javax.swing.JFrame {
             }
         });
         jToolBar1.add(btnBold);
+        btnBold.getAccessibleContext().setAccessibleName("Bold Text");
 
         btnItalic.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/format-text-italic.png"))); // NOI18N
+        btnItalic.setToolTipText("Italicize Text");
         btnItalic.setFocusable(false);
         btnItalic.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnItalic.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -382,8 +389,10 @@ public class GroovyEditGUI extends javax.swing.JFrame {
             }
         });
         jToolBar1.add(btnItalic);
+        btnItalic.getAccessibleContext().setAccessibleName("Italicize Text");
 
         removeFormatting.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/Eraser-icon.png"))); // NOI18N
+        removeFormatting.setToolTipText("Remove Formatting");
         removeFormatting.setFocusable(false);
         removeFormatting.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         removeFormatting.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -393,8 +402,10 @@ public class GroovyEditGUI extends javax.swing.JFrame {
             }
         });
         jToolBar1.add(removeFormatting);
+        removeFormatting.getAccessibleContext().setAccessibleName("Remove Formatting");
 
         insertImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/image-x-generic.png"))); // NOI18N
+        insertImage.setToolTipText("Insert Image");
         insertImage.setFocusable(false);
         insertImage.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         insertImage.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -404,6 +415,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
             }
         });
         jToolBar1.add(insertImage);
+        insertImage.getAccessibleContext().setAccessibleName("Insert Image");
 
         counter.setText("Length:   Lines:   Words:   ");
         jToolBar1.add(counter);
@@ -412,8 +424,6 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         jToolBar1.add(lblRowColNums);
 
         leftbtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/align-left-4-32.png"))); // NOI18N
-
-        leftbtn.setFocusable(false);
         leftbtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 leftbtnActionPerformed(evt);
@@ -421,8 +431,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         });
 
         centerbtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/align-center-2-32.png"))); // NOI18N
-
-        centerbtn.setFocusable(false);
+        centerbtn.setToolTipText("Align Center");
         centerbtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 centerbtnActionPerformed(evt);
@@ -430,8 +439,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         });
 
         rightbtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/align-right-4-32.png"))); // NOI18N
-
-        rightbtn.setFocusable(false);
+        rightbtn.setToolTipText("Align Right");
         rightbtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 rightbtnActionPerformed(evt);
@@ -439,6 +447,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         });
 
         cbFontType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbFontType.setToolTipText("Choose Font");
         cbFontType.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbFontTypeActionPerformed(evt);
@@ -446,6 +455,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         });
 
         cbFontSize.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbFontSize.setToolTipText("Choose Font Size");
         cbFontSize.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbFontSizeActionPerformed(evt);
@@ -455,6 +465,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         jLabel2.setText("jLabel2");
 
         btnPlayPause.setText("⏯");
+        btnPlayPause.setToolTipText("Play/Pause Music");
         btnPlayPause.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnPlayPauseActionPerformed(evt);
@@ -466,30 +477,58 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         fileLocationField.setText("No file selected");
 
         btnBrowse.setText("...");
+        btnBrowse.setToolTipText("Browse for Music");
         btnBrowse.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnBrowseActionPerformed(evt);
             }
         });
 
-        btnOneInch.setText("1\"");
+        btnOneInch.setText("1\" Margin");
+        btnOneInch.setToolTipText("Set Margins to 1 Inch");
         btnOneInch.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnOneInchActionPerformed(evt);
             }
         });
 
-        btnOneAndHalfInch.setText("1.5\"");
+        btnOneAndHalfInch.setText("1.5\" Margin");
+        btnOneAndHalfInch.setToolTipText("Set Margin to 1.5 Inches");
         btnOneAndHalfInch.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnOneAndHalfInchActionPerformed(evt);
             }
         });
 
-        btnTwoInch.setText("2\"");
+        btnTwoInch.setText("2\" Margin");
+        btnTwoInch.setToolTipText("Set Margins to 2 Inches");
         btnTwoInch.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnTwoInchActionPerformed(evt);
+            }
+        });
+
+        btnHalfSpacing.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/half.png"))); // NOI18N
+        btnHalfSpacing.setToolTipText("Half Spacing");
+        btnHalfSpacing.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHalfSpacingActionPerformed(evt);
+            }
+        });
+
+        btnSingleSpacing.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/single.png"))); // NOI18N
+        btnSingleSpacing.setToolTipText("Single Spacing");
+        btnSingleSpacing.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSingleSpacingActionPerformed(evt);
+            }
+        });
+
+        btnDoubleSpacing.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/double.png"))); // NOI18N
+        btnDoubleSpacing.setToolTipText("Double Spacing");
+        btnDoubleSpacing.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDoubleSpacingActionPerformed(evt);
             }
         });
 
@@ -514,7 +553,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
 
         jMenu1.setText("File");
 
-        menuItem_New.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
+        menuItem_New.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         menuItem_New.setText("New");
         menuItem_New.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -523,7 +562,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         });
         jMenu1.add(menuItem_New);
 
-        menuItem_Open.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
+        menuItem_Open.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         menuItem_Open.setText("Open");
         menuItem_Open.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -532,7 +571,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         });
         jMenu1.add(menuItem_Open);
 
-        menuItem_Save.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
+        menuItem_Save.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         menuItem_Save.setText("Save");
         menuItem_Save.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -549,6 +588,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         });
         jMenu1.add(menuItemSettings);
 
+        jMenuItem2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         jMenuItem2.setText("Print");
         jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -561,7 +601,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
 
         jMenu2.setText("Edit");
 
-        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         jMenuItem1.setText("Find");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -597,21 +637,30 @@ public class GroovyEditGUI extends javax.swing.JFrame {
             .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 919, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addGap(15, 15, 15)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(cbFontType, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(cbFontSize, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnOneInch, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnOneAndHalfInch, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnTwoInch, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(leftbtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(centerbtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(rightbtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(cbFontType, 0, 91, Short.MAX_VALUE)
+                        .addComponent(cbFontSize, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnOneInch, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnOneAndHalfInch, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnTwoInch, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(leftbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnHalfSpacing, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(centerbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(rightbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnDoubleSpacing, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                            .addComponent(btnSingleSpacing, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(89, 89, 89)
+                        .addGap(71, 71, 71)
                         .addComponent(lblMusic)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(fileLocationField, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -625,33 +674,50 @@ public class GroovyEditGUI extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(leftbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblMusic)
-                    .addComponent(fileLocationField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnBrowse)
-                    .addComponent(btnPlayPause))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(leftbtn)
+                        .addComponent(lblMusic)
+                        .addComponent(fileLocationField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnBrowse)
+                        .addComponent(btnPlayPause))
+                    .addComponent(btnHalfSpacing))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(centerbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(centerbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnSingleSpacing))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(rightbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(rightbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnDoubleSpacing))
+                        .addGap(18, 18, 18)
                         .addComponent(btnOneInch)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(12, 12, 12)
                         .addComponent(btnOneAndHalfInch)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(18, 18, 18)
                         .addComponent(btnTwoInch)
-                        .addGap(10, 10, 10)
+                        .addGap(18, 18, 18)
                         .addComponent(cbFontType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(cbFontSize, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(243, Short.MAX_VALUE))
+                        .addContainerGap(204, Short.MAX_VALUE))
                     .addComponent(jScrollPane1)))
         );
 
         jToolBar1.getAccessibleContext().setAccessibleDescription("");
+        leftbtn.getAccessibleContext().setAccessibleName("Align Left");
+        centerbtn.getAccessibleContext().setAccessibleName("Align Center");
+        rightbtn.getAccessibleContext().setAccessibleName("Align Right");
+        cbFontType.getAccessibleContext().setAccessibleName("Choose Font");
+        cbFontSize.getAccessibleContext().setAccessibleName("Choose Font Size");
+        btnPlayPause.getAccessibleContext().setAccessibleName("Play/Pause Music");
+        btnBrowse.getAccessibleContext().setAccessibleName("Browse for Music");
+        btnBrowse.getAccessibleContext().setAccessibleDescription("Browse for Music");
+        btnHalfSpacing.getAccessibleContext().setAccessibleName("Half Spacing");
+        btnSingleSpacing.getAccessibleContext().setAccessibleName("Single Spacing");
+        btnDoubleSpacing.getAccessibleContext().setAccessibleName("Double Spacing");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -691,10 +757,10 @@ public class GroovyEditGUI extends javax.swing.JFrame {
 
     }//GEN-LAST:event_menuItem_NewActionPerformed
 
-    public void toggleEncrypt(){
+    public void toggleEncrypt() {
         encrypted = !encrypted;
     }
-    
+
     private void menuItem_OpenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItem_OpenActionPerformed
         // OPEN FUNCTION IN FILE MENU
         final JFileChooser fc = new JFileChooser();
@@ -714,7 +780,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
                     currentFileExt += ch;
                 }
             }
-            FileHandler currFile = new FileHandler(currentFilePath, currentFileExt,encrypted);
+            FileHandler currFile = new FileHandler(currentFilePath, currentFileExt, encrypted);
             jTextPane1.setText(currFile.getContents());
         } else {
             System.out.println("Open command cancelled by user." + "\n");
@@ -874,7 +940,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
             pap.setImageableArea(40, 40, pap.getWidth() - 40 * 2, pap.getHeight() - 40 * 2); //Margin is 40, can change to variable later
             form.setPaper(pap);
             Printable gPrint = jTextPane1.getPrintable(null, null);  //Header and footer are arguments, we don't need those
-            job.setPrintable(gPrint,form); 
+            job.setPrintable(gPrint, form);
             boolean doPrint = job.printDialog();
             if (doPrint) {
                 try {
@@ -885,25 +951,27 @@ public class GroovyEditGUI extends javax.swing.JFrame {
             }
         }).start();
     }//GEN-LAST:event_jMenuItem2ActionPerformed
-    
+
     private void halfbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_halfbtnActionPerformed
-        StyleConstants.setLineSpacing(spacing, (float).25);
+        StyleConstants.setLineSpacing(spacing, (float) .25);
         jTextPane1.getStyledDocument().setParagraphAttributes(0, jTextPane1.getDocument().getLength(), spacing, false);
     }//GEN-LAST:event_halfbtnActionPerformed
 
     private void singlebtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_singlebtnActionPerformed
-        StyleConstants.setLineSpacing(spacing, (float).5);
+        StyleConstants.setLineSpacing(spacing, (float) .5);
         jTextPane1.getStyledDocument().setParagraphAttributes(0, jTextPane1.getDocument().getLength(), spacing, false);
 
     }//GEN-LAST:event_singlebtnActionPerformed
 
     private void doublebtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doublebtnActionPerformed
-        StyleConstants.setLineSpacing(spacing, (float)1);
+        StyleConstants.setLineSpacing(spacing, (float) 1);
         jTextPane1.getStyledDocument().setParagraphAttributes(0, jTextPane1.getDocument().getLength(), spacing, false);
     }//GEN-LAST:event_doublebtnActionPerformed
 
     private void btnPlayPauseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPlayPauseActionPerformed
-        if (savedFilePath.contains(".wav")) {filePath = savedFilePath;}
+        if (savedFilePath.contains(".wav")) {
+            filePath = savedFilePath;
+        }
         if (!filePath.isEmpty()) {
             // A file has been loaded
             int extStart = filePath.indexOf(".");
@@ -927,7 +995,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnPlayPauseActionPerformed
 
     private void btnBrowseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBrowseActionPerformed
-         final JFileChooser fc = new JFileChooser();
+        final JFileChooser fc = new JFileChooser();
 
         //Handle open button action.
         int returnVal = fc.showOpenDialog(GroovyEditGUI.this);
@@ -954,7 +1022,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
 
     private void btnOneInchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOneInchActionPerformed
         StyleConstants.setLeftIndent(margins, 75);
-        jTextPane1.getStyledDocument().setParagraphAttributes(0, jTextPane1.getDocument().getLength(), margins, false);    
+        jTextPane1.getStyledDocument().setParagraphAttributes(0, jTextPane1.getDocument().getLength(), margins, false);
     }//GEN-LAST:event_btnOneInchActionPerformed
 
     private void btnOneAndHalfInchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOneAndHalfInchActionPerformed
@@ -983,13 +1051,28 @@ public class GroovyEditGUI extends javax.swing.JFrame {
             }
         }
         changeDarkMode(darkMode);
-        
+
         // Create a new color based on the saved rgb values from the settings file (parsed saved string as int)
         Color savedColor = new Color(Integer.parseInt(handleSettings.getContentsArry().get(1)));
         // Sets the text color
         jTextPane1.setForeground(savedColor);
-        
+
     }//GEN-LAST:event_formWindowGainedFocus
+
+    private void btnHalfSpacingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHalfSpacingActionPerformed
+        StyleConstants.setLineSpacing(spacing, (float) .25);
+        jTextPane1.getStyledDocument().setParagraphAttributes(0, jTextPane1.getDocument().getLength(), spacing, false);
+    }//GEN-LAST:event_btnHalfSpacingActionPerformed
+
+    private void btnSingleSpacingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSingleSpacingActionPerformed
+        StyleConstants.setLineSpacing(spacing, (float) .5);
+        jTextPane1.getStyledDocument().setParagraphAttributes(0, jTextPane1.getDocument().getLength(), spacing, false);
+    }//GEN-LAST:event_btnSingleSpacingActionPerformed
+
+    private void btnDoubleSpacingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDoubleSpacingActionPerformed
+        StyleConstants.setLineSpacing(spacing, (float) 1);
+        jTextPane1.getStyledDocument().setParagraphAttributes(0, jTextPane1.getDocument().getLength(), spacing, false);
+    }//GEN-LAST:event_btnDoubleSpacingActionPerformed
     public void clearFormat(JTextPane jtp, Font font, Color c, int start) {
         MutableAttributeSet attrs = jtp.getInputAttributes();
         StyleConstants.setFontFamily(attrs, font.getFamily());
@@ -1038,7 +1121,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
 
                     // Get the x and y coords from the rect and assign them to appropriate variable
                     // Math accounts for character size
-                    rowNum = (int) (((rect.getY() - 4) / 16) + 1) +1; // 
+                    rowNum = (int) (((rect.getY() - 4) / 16) + 1) + 1; // 
                     colNum = (int) (((rect.getX() - 6) / 7));
                     lblRowColNums.setText(" Row: " + rowNum + " Col: " + colNum);
                 } catch (Exception ex) {
@@ -1047,7 +1130,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
             }
         }); // end addCaretListener
     }
-    
+
     private void changeDarkMode(boolean dark) {
         if (dark) {
             jToolBar1.setBackground(Color.GRAY);
@@ -1099,10 +1182,13 @@ public class GroovyEditGUI extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBold;
     private javax.swing.JButton btnBrowse;
+    private javax.swing.JButton btnDoubleSpacing;
+    private javax.swing.JButton btnHalfSpacing;
     private javax.swing.JButton btnItalic;
     private javax.swing.JButton btnOneAndHalfInch;
     private javax.swing.JButton btnOneInch;
     private javax.swing.JButton btnPlayPause;
+    private javax.swing.JButton btnSingleSpacing;
     private javax.swing.JButton btnTwoInch;
     private javax.swing.JComboBox<String> cbFontSize;
     private javax.swing.JComboBox<String> cbFontType;
