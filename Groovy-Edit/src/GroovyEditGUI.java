@@ -60,13 +60,13 @@ public class GroovyEditGUI extends javax.swing.JFrame {
     private JTextPane activePane;
     private Color fontColor;
     private Color clrCrnt;
-    private changeStyle c;
+    private ChangeStyle c;
     private SimpleAttributeSet alignment = new SimpleAttributeSet();
     private SimpleAttributeSet margins = new SimpleAttributeSet();
     private SimpleAttributeSet spacing = new SimpleAttributeSet();
 
     //Create Global music player object
-    private static musicPlayer player = musicPlayer.getInstance();
+    private static MusicPlayer player = MusicPlayer.getInstance();
     private static String filePath;
     private String savedFilePath;
     private static String trackTitle;
@@ -94,7 +94,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         this.currentFileExt = "";
         this.currentFilePath = "";
         this.unsaved = false;
-        c = new changeStyle();
+        c = new ChangeStyle();
 
         mbar = new JMenuBar() {
 
