@@ -21,8 +21,8 @@ public static void main(String[] args) throws Exception {
         GroovyEditGUI obj = new GroovyEditGUI();
         obj.setTitle("Groovy Edit");
         obj.setResizable(true);
-        obj.setVisible(true);
         obj.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        obj.setVisible(true);
         
     }
     

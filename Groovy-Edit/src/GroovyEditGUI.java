@@ -3,6 +3,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.KeyboardFocusManager;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
@@ -20,6 +21,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextPane;
 import javax.swing.ImageIcon;
 import javax.swing.JColorChooser;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 import javax.swing.UIManager;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
@@ -78,15 +81,38 @@ public class GroovyEditGUI extends javax.swing.JFrame {
     
 // End of Custom Variables
 
+    JMenuBar mbar;
+
+    JMenu menu;
+    
     public GroovyEditGUI() {
         // Constructor
         initComponents();
+        //dispose();
+        //setUndecorated(true);
         b = new boldItalic();
 
         this.currentFileExt = "";
         this.currentFilePath = "";
         this.unsaved = false;
         c = new changeStyle();
+        
+        mbar=new JMenuBar(){
+
+        @Override
+        public void paintComponent(Graphics g)
+
+        {
+
+            boolean j = g.drawImage(Toolkit.getDefaultToolkit().getImage("GradientToolbar.png"),0,0,this);
+
+        }
+
+        };
+       
+        jMenuBar1=mbar;
+        
+        this.jMenuBar1.paintComponents(this.jMenuBar1.getGraphics());
 
         String[] fontType = {"Ariel", "Serif", "Comic Sans", "Times New Roman", "Calibari"}; //Makes the options for font type
         cbFontType.setModel(new javax.swing.DefaultComboBoxModel(fontType));
@@ -173,6 +199,12 @@ public class GroovyEditGUI extends javax.swing.JFrame {
 
         jCheckBoxMenuItem1 = new javax.swing.JCheckBoxMenuItem();
         jButton1 = new javax.swing.JButton();
+        jFrame1 = new javax.swing.JFrame();
+        jFrame2 = new javax.swing.JFrame();
+        jFrame3 = new javax.swing.JFrame();
+        jLabel1 = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        jMenuItem4 = new javax.swing.JMenuItem();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextPane1 = new javax.swing.JTextPane();
         jToolBar1 = new javax.swing.JToolBar();
@@ -189,6 +221,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         rightbtn = new javax.swing.JButton();
         cbFontType = new javax.swing.JComboBox<>();
         cbFontSize = new javax.swing.JComboBox<>();
+        jLabel2 = new javax.swing.JLabel();
         btnPlayPause = new javax.swing.JButton();
         lblMusic = new javax.swing.JLabel();
         fileLocationField = new javax.swing.JTextField();
@@ -197,6 +230,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         btnOneAndHalfInch = new javax.swing.JButton();
         btnTwoInch = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu3 = new javax.swing.JMenu();
         jMenu1 = new javax.swing.JMenu();
         menuItem_New = new javax.swing.JMenuItem();
         menuItem_Open = new javax.swing.JMenuItem();
@@ -213,6 +247,54 @@ public class GroovyEditGUI extends javax.swing.JFrame {
 
         jButton1.setText("jButton1");
 
+        javax.swing.GroupLayout jFrame1Layout = new javax.swing.GroupLayout(jFrame1.getContentPane());
+        jFrame1.getContentPane().setLayout(jFrame1Layout);
+        jFrame1Layout.setHorizontalGroup(
+            jFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 400, Short.MAX_VALUE)
+        );
+        jFrame1Layout.setVerticalGroup(
+            jFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 300, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout jFrame2Layout = new javax.swing.GroupLayout(jFrame2.getContentPane());
+        jFrame2.getContentPane().setLayout(jFrame2Layout);
+        jFrame2Layout.setHorizontalGroup(
+            jFrame2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 400, Short.MAX_VALUE)
+        );
+        jFrame2Layout.setVerticalGroup(
+            jFrame2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 300, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout jFrame3Layout = new javax.swing.GroupLayout(jFrame3.getContentPane());
+        jFrame3.getContentPane().setLayout(jFrame3Layout);
+        jFrame3Layout.setHorizontalGroup(
+            jFrame3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 400, Short.MAX_VALUE)
+        );
+        jFrame3Layout.setVerticalGroup(
+            jFrame3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 300, Short.MAX_VALUE)
+        );
+
+        jLabel1.setText("jLabel1");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+
+        jMenuItem4.setText("jMenuItem4");
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -227,6 +309,21 @@ public class GroovyEditGUI extends javax.swing.JFrame {
             }
         });
 
+        jTextPane1 = new javax.swing.JTextPane(){
+
+            @Override
+            public void paintComponent(Graphics g)
+
+            {
+
+                Dimension size = this.getSize();
+                g.drawImage(new ImageIcon(this.getClass().getResource("Space.png")).getImage(),0,0,size.width,size.height,this);
+                super.paintComponent(g);
+            }
+
+        };
+
+        jTextPane1.setOpaque(false);
         jTextPane1.setFont(new java.awt.Font("Segoe UI Emoji", 0, 11)); // NOI18N
         jTextPane1.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -348,7 +445,27 @@ public class GroovyEditGUI extends javax.swing.JFrame {
                 cbFontSizeActionPerformed(evt);
             }
         });
+  
+        jLabel2.setText("jLabel2");
 
+        jMenuBar1 = new javax.swing.JMenuBar(){
+
+            @Override
+            public void paintComponent(Graphics g)
+
+            {
+                Dimension size = this.getSize();
+                g.drawImage(new ImageIcon(this.getClass().getResource("GradientToolbar.png")).getImage(),0,0,size.width,size.height,this);
+
+            }
+
+        };
+
+        jMenu3.setText("—| | Groovy Edit | |—");
+        jMenu3.setFocusable(false);
+        jMenu3.setRequestFocusEnabled(false);
+        jMenu3.setRolloverEnabled(false);
+        jMenuBar1.add(jMenu3);
         btnPlayPause.setText("⏯");
         btnPlayPause.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -528,7 +645,6 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         );
 
         jToolBar1.getAccessibleContext().setAccessibleDescription("");
-        jToolBar1.getAccessibleContext().setAccessibleParent(jTextPane1);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -995,12 +1111,20 @@ public class GroovyEditGUI extends javax.swing.JFrame {
     private javax.swing.JButton insertImage;
     private javax.swing.JButton jButton1;
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
+    private javax.swing.JFrame jFrame1;
+    private javax.swing.JFrame jFrame2;
+    private javax.swing.JFrame jFrame3;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextPane jTextPane1;
     private javax.swing.JToolBar jToolBar1;
