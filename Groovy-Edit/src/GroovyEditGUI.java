@@ -66,7 +66,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
     private SimpleAttributeSet spacing = new SimpleAttributeSet();
 
     //Create Global music player object
-    private static MusicPlayer player = MusicPlayer.getInstance();
+    private static musicPlayer player = musicPlayer.getInstance();
     private static String filePath;
     private String savedFilePath;
     private static String trackTitle;
@@ -78,11 +78,11 @@ public class GroovyEditGUI extends javax.swing.JFrame {
     private FileHandler handleSettings;
     private ArrayList<String> settingsContents;
     private boolean darkMode;
+    
+    private JMenuBar mbar;
+    private JMenu menu;
 
 // End of Custom Variables
-    JMenuBar mbar;
-
-    JMenu menu;
 
     public GroovyEditGUI() {
         // Constructor
@@ -424,6 +424,7 @@ public class GroovyEditGUI extends javax.swing.JFrame {
         jToolBar1.add(lblRowColNums);
 
         leftbtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/align-left-4-32.png"))); // NOI18N
+        leftbtn.setToolTipText("Align Left");
         leftbtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 leftbtnActionPerformed(evt);
