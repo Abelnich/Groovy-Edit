@@ -8,10 +8,10 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
-public class changeStyle {
+public class ChangeStyle {
     
-    public void changeStyle() {
-        int x = 0;
+    public ChangeStyle() {
+        
     }
     
     public boolean changeFont(JTextPane inp, int size, String style) {

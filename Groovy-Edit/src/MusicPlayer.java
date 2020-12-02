@@ -9,22 +9,22 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
- import javax.sound.sampled.Clip;
+import javax.sound.sampled.Clip;
 import javax.sound.sampled.UnsupportedAudioFileException;
 /**
  *
  * @author Sheku
  */
-public class MusicPlayer {
-    static MusicPlayer player = new MusicPlayer(); //helo
+public class musicPlayer {
+    static musicPlayer player = new musicPlayer(); //helo
     static Clip clip;
     
-    private MusicPlayer()
+    public musicPlayer()
     {
         
     }
     
-    public static MusicPlayer getInstance()
+    public static musicPlayer getInstance()
     {
         return player;
     }
