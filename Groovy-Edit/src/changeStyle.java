@@ -11,7 +11,7 @@ import javax.swing.text.StyledDocument;
 public class changeStyle {
     
     public void changeStyle() {
-        
+        int x = 0;
     }
     
     public boolean changeFont(JTextPane inp, int size, String style) {
