@@ -19,7 +19,7 @@ public class musicPlayer {
     static musicPlayer player = new musicPlayer(); //helo
     static Clip clip;
     
-    private musicPlayer()
+    public musicPlayer()
     {
         
     }
